@@ -5,6 +5,8 @@ Use HPC techniques to wrangle a large, irregular housing-market dataset on an or
 
 * out of memory
 * parallelism
+## Process analytics
+![Image description](image/process_analytics.jpg)
 
 ## License
 
