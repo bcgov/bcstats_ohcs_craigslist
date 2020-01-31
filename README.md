@@ -1,6 +1,8 @@
 # bcstats ohcs craigslist
 Custom parser written for web-scraped craigslist data provided to BC Stats, by Harmari Inc.
 
+* Use HPC techniques to wrangle a large, irregular housing-market dataset on an ordinary laptop, in a finite amount of time
+
 ## License
 
 Copyright 2020 Province of British Columbia
