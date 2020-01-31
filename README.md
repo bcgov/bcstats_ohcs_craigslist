@@ -1,7 +1,5 @@
-# andrew
-for Andrew. to be moved into bcgov/idd
-
-Parser written for craigslist web-scraped data provided to BC Stats, by Harmari Inc.
+# bcstats ohcs craigslist
+Custom parser written for web-scraped craigslist data provided to BC Stats, by Harmari Inc.
 
 ## License
 
