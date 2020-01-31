@@ -6,7 +6,9 @@ Use HPC techniques to wrangle a large, irregular housing-market dataset on an or
 * out of memory
 * parallelism
 
-The data include an irregularly formatted CSV file (22GB) incl. approx. 1 million HTML files stuffed into the CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" weren't able to read the data at this time, so custom out-of-memory slicing was developed. Moreover, Python3's BeautifulSoup html-parsing, was applied and accelerated using full machine-parallelism  
+The data include an irregularly formatted CSV file (22GB) incl. approx. 1 million HTML files stuffed into the CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" weren't able to read the data at this time, so custom out-of-memory slicing was developed. Moreover, Python3's BeautifulSoup html-parsing, was applied and accelerated using full machine-parallelism
+
+The data contain sensitive information and will not be posted, however the project documentation will be included when approved
 
 ## Process analytics
 Sample visualization of process monitor for one of the steps in this "big-data" application
