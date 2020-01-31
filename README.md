@@ -9,7 +9,7 @@ Use HPC techniques to wrangle a large, irregular housing-market dataset on an or
 The data include an irregularly formatted CSV file (22GB) incl. approx. 1 million HTML files stuffed into the CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" weren't able to read the data at this time, so custom out-of-memory slicing was developed (with Python3's BeautifulSoup html-parsing, accelerated using full machine-parallelism)  
 
 ## Process analytics
-Sample visualization of process monitor for this "big-data" application
+Sample visualization of process monitor for one of the steps in this "big-data" application
 ![Process analytics](img/process_analytics.jpg)
 
 ## License
