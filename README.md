@@ -5,6 +5,9 @@ Use HPC techniques to wrangle a large, irregular housing-market dataset on an or
 
 * out of memory
 * parallelism
+
+The data include an irregularly formatted CSV file with approx. 1 million HTML files stuffed into the CSV, as attributes spanning multiple lines. Python 3's "import csv" and R's library{vroom} weren't able to read the data 
+
 ## Process analytics
 Sample visualization of process monitor for this "big-data" application
 ![Process analytics](img/process_analytics.jpg)
