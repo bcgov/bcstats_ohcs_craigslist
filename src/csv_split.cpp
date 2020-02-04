@@ -1,9 +1,4 @@
 #include"misc_cpp.h"
-#include<string>
-#include<vector>
-#include<iterator>
-#include<iostream>
-#include<algorithm>
 
 using namespace std;
 
