@@ -1,7 +1,5 @@
 #include"misc_cpp.h"
 
-using namespace std;
-
 int main(int argc, char ** argv){
   long unsigned int n_error = 0;
 
