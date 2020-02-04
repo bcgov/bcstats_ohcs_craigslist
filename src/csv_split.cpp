@@ -3,18 +3,21 @@
 int main(int argc, char ** argv){
   long unsigned int n_error = 0;
 
-  if(argc < 2) err("split csv file into multiple data sets, for efficiency. usage:\n\tcsv_split.cpp [input file to split]");
-  string f_n(argv[1]); //mfile t(f_n, "rb");
+  if(argc < 2){
+    cout << "csv_split.cpp: split csv into columnar sets\n";
+    err("usage:\n\tcsv_split.cpp [input file to split]");
+  }
+  string f_n(argv[1]);
   ifstream t(f_n);
   string s;
 
   int error;
   unsigned int i;
-  unsigned int n_f = 0; // number of fields
-  long unsigned int l_i = 0; // line index
-  vector<string> words; // comma delimited chunks
-  vector<string> field_names; // names of the fields
-  FILE ** f = NULL;
+  FILE ** f = NULL;  // output files
+  unsigned int n_f = 0;  // number of fields
+  long unsigned int l_i = 0;  // line index
+  vector<string> words;  // comma delimited chunks
+  vector<string> field_names;  // names of the fields
 
   string newline("\n");
   while(getline(t,s)){
@@ -27,6 +30,7 @@ int main(int argc, char ** argv){
 
       /* open a file for each field */
       f = (FILE **) alloc(sizeof(FILE *) * n_f);
+
       for0(i, n_f){
         str field_name(words[i]);
         std::replace(field_name.begin(), field_name.end(), '.', '_');
@@ -66,12 +70,14 @@ int main(int argc, char ** argv){
       }
     }
 
-    if((++l_i) % 1000000 ==0){
+    if((++l_i) % 1000000 == 0){
       cout << words << endl;
     }
   }
   t.close();
-  for0(i, n_f) fclose(f[i]);
+  for0(i, n_f){
+    fclose(f[i]);
+  }
   cout << "n_error " << n_error << endl;
   return 0;
 }
