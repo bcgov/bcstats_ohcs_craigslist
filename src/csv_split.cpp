@@ -14,17 +14,19 @@ int main(int argc, char ** argv){
   int error;
   unsigned int i;
   FILE ** f = NULL;  // output files
+  str newline("\n");
   unsigned int n_f = 0;  // number of fields
   long unsigned int l_i = 0;  // line index
   vector<string> words;  // comma delimited chunks
   vector<string> field_names;  // names of the fields
 
-  string newline("\n");
   while(getline(t,s)){
+
     error = false;
     words = split(s);
 
     if(l_i == 0){
+
       field_names = words;
       n_f = words.size();
 
@@ -33,10 +35,20 @@ int main(int argc, char ** argv){
 
       for0(i, n_f){
         str field_name(words[i]);
-        std::replace(field_name.begin(), field_name.end(), '.', '_');
-        str result("");
-        std::remove_copy(field_name.begin(), field_name.end(), std::back_inserter(result), '*');
-        field_name = result;
+
+        std::replace(field_name.begin(),
+		     field_name.end(),
+		     '.',
+		     '_');
+        
+	str result("");
+
+        std::remove_copy(field_name.begin(),
+			 field_name.end(),
+			 std::back_inserter(result),
+			 '*');
+        
+	field_name = result;
         string fn_i(string(f_n) + string("_") + field_name);
         cout << " +w " << fn_i << endl;
         f[i] = wopen(fn_i);
@@ -45,7 +57,8 @@ int main(int argc, char ** argv){
     }
     else{
       if(words.size() != n_f){
-        cout << "l_i " << l_i << " " << words.size() << " n_f=" << n_f << " " << words << endl;
+        cout << " l_i " << l_i << " " << words.size();
+        cout <<	" n_f=" << n_f << " " << words << endl;
         error = true;
         n_error ++;
         exit(1);
@@ -53,13 +66,25 @@ int main(int argc, char ** argv){
     }
 
     if(!error){
+
       for0(i, n_f){
         const char * word;
+
         if(l_i == 0){
           str field(words[i]);
-          std::replace(field.begin(), field.end(), '.', '_');
+
+          std::replace(field.begin(),
+		       field.end(),
+		       '.',
+		       '_');
+
           str result("");
-          std::remove_copy(field.begin(), field.end(), std::back_inserter(result), '*');
+
+          std::remove_copy(field.begin(),
+			   field.end(),
+			   std::back_inserter(result),
+			   '*');
+
           words[i] = result;
         }
         else{
