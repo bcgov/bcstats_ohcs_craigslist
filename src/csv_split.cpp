@@ -81,5 +81,6 @@ int main(int argc, char ** argv){
     fclose(f[i]);
   }
   cout << "n_error " << n_error << endl;
+  cout << "done" << endl;
   return 0;
 }
