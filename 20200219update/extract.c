@@ -207,7 +207,6 @@ int main(int argc, char ** argv){
       printf("%%%.3f +w %s eta: %fs i=%zu\n", frac, t, eta, i );
     }
     free(t);
-
   }
   while(n > 0);
 

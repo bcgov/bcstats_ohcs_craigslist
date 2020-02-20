@@ -15,22 +15,7 @@ from misc import *
 from cleanup_html import cleanup_html as cleanup_html
 
 in_f , meta_f = args[1], args[2]
-'''
-# choose a data set via the input parameter
-flag, meta_f = args[1], None
-if flag == 'apa':
-    pass
-elif flag == 'sublet':
-    pass
-else:
-    err("input flag must be \in {'apa', 'sublet'}")
-'''
 n_skip = 0 # record the number of metadata records, skipped
-
-# unused this script, this is where the data in html/ came from
-# big_f = 'craigslist-' + flag + '-data-bc-html-othermeta.csv'
-# read metadata to get approx records count
-# meta_f = 'craigslist-' + flag + '-data-bc.csv'
 
 meta_fields = ['id', 'title', 'url', 'postDate', 'categoryId', 'cityId',
                'location', 'phoneNumbers', 'contactName', 'emails',

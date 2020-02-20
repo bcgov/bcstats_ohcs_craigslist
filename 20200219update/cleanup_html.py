@@ -116,8 +116,6 @@ def cleanup_html(fn):
             bed = bed[:-2]
             data['bed'] = bed
 
-
-
     bath = ''  # get number of bathrooms
     try:
         x = a.split('<b>')[2].split('</b>')[0]

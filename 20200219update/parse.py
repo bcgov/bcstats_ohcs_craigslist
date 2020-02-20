@@ -22,17 +22,6 @@ from misc import *
 # from ansicolor import *
 from bs4 import BeautifulSoup # comment out import, to find upstream dependencies
 
-'''flag, in_f = args[1], None
-if flag == 'apa':
-    pass
-elif flag == 'sublet':
-    pass
-else:
-    err("input flag must be \in {'apa', 'sublet'}")
-'''
-
-# python3 parse.py craigslist-apa-data-bc-html-sep.csv craigslist-bc-apa-data-sep.csv
-
 # unused this script, this is where the data in html/ came from
 in_f = args[1] # e.g., craigslist-apa-data-bc-html-sep.csv
 
