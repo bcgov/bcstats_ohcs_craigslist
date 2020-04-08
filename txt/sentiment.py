@@ -1,4 +1,5 @@
-''' compare simple with vaderSentiment approach
+''' compare two sentiment analysis metrics:
+simple one, with vaderSentiment approach
 
 python3 vader.py
 python3 sentiment.py vader.pkl '''
