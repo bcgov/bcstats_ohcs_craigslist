@@ -1,5 +1,7 @@
-# compare simple with vaderSentiment approach
+''' compare simple with vaderSentiment approach
 
+python3 vader.py
+python3 sentiment.py vader.pkl '''
 # need a filter for MOST HAPPY / MOST ANGRY # need a filter for HIGHEST ENTROPY!!!!! # need to describe the stats of each parameter: in terms of distribution
 
 import os; exists = os.path.exists
