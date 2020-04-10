@@ -1,0 +1,1 @@
+These codes are for extracting data in the form rec'd from Harmari Inc.
