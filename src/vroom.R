@@ -1,17 +1,19 @@
 # Rscript vroom.R [input csv file name]
 library(vroom)
 library(tictoc)
+args = commandArgs(trailingOnly=TRUE)
 
 if(length(args)==0){
   stop("vroom.R [input csv file name]");
 }
+fn <- args[1]
 
-# parameters
+# vroom parameters
 VROOM_THREADS = 4
 VROOM_SHOW_PROGRESS = TRUE
 
 tic()
-x <- vroom(args[1], delim=",", altrep = TRUE)
+x <- vroom(fn, delim=",", altrep = TRUE)
 a <- head(x)
 print(a)
 toc()
