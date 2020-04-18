@@ -1,3 +1,7 @@
+# still need to search for / match the different pairs of files! and need to search for and match the compiled blobs!
+# also need to check that merged APA vs SUB are distinguished in the product
+html_file <- "craigslist-sublet-data-bc-html-mar.csv"
+
 p_sep <- .Platform$file.sep
 
 # get the name of a variable
@@ -14,6 +18,7 @@ mod<-function(x, m){
 
 library(Rcpp)
 src<-function(x){
+  print(paste("src(\"", x, ")\"", sep=""), quote=FALSE)
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
@@ -36,15 +41,15 @@ for(i in 0: 7){
 
 # test file indexing
 src("cpp/find_start.cpp") # index a file with HTML nested inside csv, finding locations of <HTML> start tags
+tag_file <-paste(html_file, "_tag", sep="")
+if(!file.exists(tag_file)){
+  find_start(html_file)
+}
 
 
 # test HTML file extraction
 src("cpp/extract.cpp")
-
-
-
-
-
+extract(html_file)
 
 
 
