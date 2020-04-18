@@ -19,9 +19,10 @@ void err(const char * msg){
 
 // allocate memory
 void * alloc(size_t nb){
+  // printf("alloc(%zu)\n", nb);
   void * d = malloc(nb);
   if(!d){
-    printf("%zu\n", nb);
+    printf("bytes requested: %zu\n", nb);
     err("failed to allocate memory");
   }
   memset(d, '\0', nb);
@@ -45,11 +46,12 @@ size_t gs(FILE * f, char ** b){
   size_t fp = ftell(f);
   char c = fgetc(f);
   while(c != EOF && c != '\n' && c != '\r'){
-    // printf("%c", c);
+    printf("%c ", c);
     n++;
     c = fgetc(f);
   }
-  size_t fp2 = ftell(f); // printf("\nn %zu\n", n);
+  size_t fp2 = ftell(f);
+  printf("\nn %zu\n", n);
 
   // allocate as much memory as we need
   char * buf = (char *) (void *) alloc(n);
