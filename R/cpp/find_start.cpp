@@ -1,5 +1,8 @@
 /* clear; rm a.out; gcc -O4 find_start.c; ./a.out craigslist-apa-data-bc-html-othermeta.csv */
+#include<Rcpp.h>
 #include"misc.h"
+using namespace std;
+using namespace Rcpp;
 
 FILE *f, *g, *h; // linear, random access, and write handles
 const char * start_tag = "<!DOCTYPE html>"; // tag to match
@@ -44,7 +47,12 @@ int match(const char * tag, size_t tag_len, char * buf, size_t * next, size_t * 
   return 0;
 }
 
-int main(int argc, char ** argv){
+//[[Rcpp::export]]
+int find_start(StringVector args){
+  int argc = args.size();
+  if(argc != 1) err("find_start [input csv filename]");
+  string arg(args[0]);
+  
   size_t next, fp;
   size_t start_tag_len = (size_t) strlen(start_tag); // set up variables
   // printf("%zu\n", start_tag_len);
@@ -56,9 +64,11 @@ int main(int argc, char ** argv){
 
   time_t t0; // start clock and open files
   time(&t0);
-  f = fopen(argv[1], "rb");
-  g = fopen(argv[1], "rb");
-  h = fopen(strcat(argv[1], "_tag"), "wb");
+  f = fopen(arg.c_str(), "rb");
+  g = fopen(arg.c_str(), "rb");
+
+  string c(arg + string("_tag"));
+  h = fopen(c.c_str(), "wb");
 
   fseek(f, 0L, SEEK_END); // get file size
   size_t fs = ftell(f);
