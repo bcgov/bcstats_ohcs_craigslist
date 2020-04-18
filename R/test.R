@@ -28,13 +28,23 @@ csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
 	  paste("test", p_sep, "B.csv", sep=""),
 	  paste("test", p_sep, "C.csv", sep="")))
 
-x <- read.csv(paste("test", p_sep, "C.csv", sep=""), header=TRUE)
-
+x <- read.csv(paste("test", p_sep, "C.csv", sep=""),
+	      header=TRUE)
 for(i in 0: 7){
   a <- ceiling((i + 1)/ 2)
   b <- b <- 1 + mod(i, 2)
   insist(x[a, b] == i + 1)
 }
+
+
+
+
+
+
+
+
+
+
 
 # should be able to automatically generate:
 # Rcpp::sourceCpp("name of cpp file")
