@@ -74,3 +74,12 @@ size_t file_size(const char * fn){
   fclose(f);
   return s;
 }
+
+inline char separator(){
+  #if defined _WIN32 || defined WIN32 || defined __CYGWIN__
+    return '\\';
+  #else
+    return '/';
+  #endif
+}
+
