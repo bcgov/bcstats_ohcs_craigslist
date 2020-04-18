@@ -35,4 +35,3 @@ insist(x[4, 2] == 8)
 # https://gallery.rcpp.org/articles/working-with-Rcpp-StringVector/
 # http://dirk.eddelbuettel.com/code/rcpp.html
 # http://dirk.eddelbuettel.com/code/rcpp/Rcpp-quickref.pdf
-
