@@ -69,17 +69,23 @@ void cr(FILE * f){
 
 //[[Rcpp::export]]
 int extract(StringVector args){
+  printf("extract()\n");
+
   int argc = args.size();
   if(argc != 1) err("extract [input csv filename]"); 
 
   // int main(int argc, char ** argv)
   int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
   int a = system("mkdir -p html");
-  if(a != 0) err("command failed: mkdir -p html");
+  if(a != 0){
+    err("command failed: mkdir -p html");
+  }
 
-  int debug = 0; // apply this to print statments in a moment
+  int debug = 0; // 1; // apply int debug=1; to print debug statements
   a = system("mkdir -p otherAttributes"); // some random stuff that was stuffed in next to the html, yikes!
-  if(a != 0) err("command failed: mkdir -p otherAttributes");
+  if(a != 0){
+    err("command failed: mkdir -p otherAttributes");
+  }
 
   size_t next, fp;
   const char * end_tag = "</html>";
@@ -93,36 +99,63 @@ int extract(StringVector args){
   time_t t0; time(&t0);
   clock_t c0 = clock();
 
-  const char * fn = string(args[0]).c_str(); //argv[1];
+  string arg1(args[0]);
+  const char * fn = arg1.c_str(); //argv[1];
+  printf("check file size: %s\n", fn);
   size_t infile_size = file_size(fn); // file size
+  printf("fopen(%s)\n", fn);
+
   FILE * f = fopen(fn, "rb");
+  string t_f(arg1 + string("_tag"));
+  string arg2;
 
   const char * tf;
   if(argc < 2){
-    string t_f(string(args[0]) + string("_tag"));
     tf = t_f.c_str(); // strcat(argv[1], "_tag");
   }
   else{
     err("this option not supported");
     // allow an option to read from separate file, for parallelism case
-    string arg2(args[1]);
+    string a(args[1]);
+    arg2.assign(a);
     tf = arg2.c_str(); // tf = argv[2];
   }
 
+  printf("fopen2(%s)\n", tf);
   FILE * g = fopen(tf, "rb");
-  if(!f) err("failed to open input file"); // the file itself
-  if(!g) err("failed to open start tag file *_tag: run find_start.c first"); // html start tag file
+  if(!f){
+    printf("\tfn: %s\n", fn);
+    err("failed to open input file"); // the file itself
+  }
+  if(!g){
+    printf("\tfn: %s\n", tf);
+    err("failed to open start tag file *_tag: run find_start.c first"); // html start tag file
+  }
+
   size_t n;
   char ** s = (char **) alloc(sizeof(char *));;
   *s = NULL;
 
   size_t i = 0;
   do{
+    printf("\n---------------------------------------------------------------------------------------------\n");
+    printf("gs()\n");
     n = gs(g, s);
+    printf("end gs()\n");
     if(n < 1) break;
 
     size_t start_p;
-    sscanf(*s, "%zu", &start_p);
+    if(debug){
+      printf("s[%s]\n", *s);
+    }
+
+    // the next five lines replace the statement: sscanf(*s, "%zu", &start_p);
+    char * tmp1 = (char *)(void *) alloc(n + 1);
+    for(int m = 0; m < n; m++) tmp1[m] = (*s)[m];
+    tmp1[n] = '\0';
+    sscanf(tmp1, "%zu", &start_p);
+    free(tmp1);
+
     fseek(f, start_p, SEEK_SET);
     n = gs(f, s);
 
@@ -131,7 +164,9 @@ int extract(StringVector args){
     while(!go_to(f, end_tag, tag_len, buf, &next, &fp));
 
     // this is the span of the html
-    if(debug) printf("\n%zu %zu\n", start_p, fp + tag_len - 1);
+    if(debug){
+      printf("\nstart_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
+    }
 
     // now just need to apply CR and grab the start tag, and we've split the file
     fseek(f, start_p, SEEK_SET);
@@ -147,7 +182,6 @@ int extract(StringVector args){
     sscanf(*s, "%zu,", &id); // don't need strtok to get the number
     if(debug) printf("[%zu]\n", id);
 
-
     string pre_s(string("html") + string(sep()));
     const char * pre = pre_s.c_str(); // "html/";
     char * t = (char *)(void *)alloc(strlen(pre) + strlen(id_s) + 1);
@@ -160,13 +194,14 @@ int extract(StringVector args){
 
     // secondary file to save otherAttributes string
     string pre_s2(string("otherAttributes") + string(sep()));
+    cout << "pre_s2:[" << pre_s2 << "]" << endl;
     const char * pre2 = pre_s2.c_str(); // "otherAttributes/";
     char * t2 = (char *)(void *)alloc(strlen(pre2) + strlen(id_s) + 1);
     strcpy(t2, pre2);
     strcpy(t2 + strlen(pre2), id_s);
     t2[strlen(pre2) + strlen(id_s)] = '\0';
     if(debug){
-      printf("\n%s\n", t2);
+      printf("\nofn:[%s]\n", t2);
     }
     FILE * j = fopen(t2, duplicates?"ab":"wb");
 
