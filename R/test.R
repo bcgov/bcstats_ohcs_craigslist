@@ -28,7 +28,7 @@ csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
 	  paste("test", p_sep, "B.csv", sep=""),
 	  paste("test", p_sep, "C.csv", sep="")))
 
-x <- read.csv("test/C.csv", header=TRUE)
+x <- read.csv(paste("test", p_sep, "C.csv", sep=""), header=TRUE)
 
 for(i in 0: 7){
   a <- ceiling((i + 1)/ 2)
