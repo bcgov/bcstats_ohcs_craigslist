@@ -75,7 +75,7 @@ int extract(StringVector args){
   // int main(int argc, char ** argv)
   int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
   int a = system("mkdir -p html");
-  if(a != 0) err("command failed: mkdir -p html")
+  if(a != 0) err("command failed: mkdir -p html");
 
   int debug = 0; // apply this to print statments in a moment
   a = system("mkdir -p otherAttributes"); // some random stuff that was stuffed in next to the html, yikes!
@@ -93,19 +93,20 @@ int extract(StringVector args){
   time_t t0; time(&t0);
   clock_t c0 = clock();
 
-  const char * fn = args[0].c_str(); //argv[1];
+  const char * fn = string(args[0]).c_str(); //argv[1];
   size_t infile_size = file_size(fn); // file size
   FILE * f = fopen(fn, "rb");
 
   const char * tf;
   if(argc < 2){
-    string t_f(args[0] + str("_tag"))
-    tf = t_f.c_string(); // strcat(argv[1], "_tag");
+    string t_f(string(args[0]) + string("_tag"));
+    tf = t_f.c_str(); // strcat(argv[1], "_tag");
   }
   else{
     err("this option not supported");
     // allow an option to read from separate file, for parallelism case
-    tf = args[1].c_str(); // tf = argv[2];
+    string arg2(args[1]);
+    tf = arg2.c_str(); // tf = argv[2];
   }
 
   FILE * g = fopen(tf, "rb");
@@ -147,7 +148,7 @@ int extract(StringVector args){
     if(debug) printf("[%zu]\n", id);
 
 
-    string pre_s(string("html") + string(separator()));
+    string pre_s(string("html") + string(sep()));
     const char * pre = pre_s.c_str(); // "html/";
     char * t = (char *)(void *)alloc(strlen(pre) + strlen(id_s) + 1);
     strcpy(t, pre);
@@ -158,7 +159,7 @@ int extract(StringVector args){
     FILE * h = fopen(t, duplicates?"ab":"wb");
 
     // secondary file to save otherAttributes string
-    string pre_s2(string("otherAttributes") + string(separator()));
+    string pre_s2(string("otherAttributes") + string(sep()));
     const char * pre2 = pre_s2.c_str(); // "otherAttributes/";
     char * t2 = (char *)(void *)alloc(strlen(pre2) + strlen(id_s) + 1);
     strcpy(t2, pre2);

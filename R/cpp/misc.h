@@ -9,6 +9,8 @@
 
 #define str string
 
+using namespace std;
+
 // error message
 void err(const char * msg){
   printf("Error: %s\n", msg);
@@ -82,4 +84,13 @@ inline char separator(){
     return '/';
   #endif
 }
+
+const char * sep(){
+  char c[2];
+  c[0] = separator();
+  c[1] = '\0';
+  string s(&c[0]);
+  return s.c_str();
+}
+
 

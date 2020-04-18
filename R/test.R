@@ -17,13 +17,11 @@ src<-function(x){
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
+# test big-data resilient csv-file concatenation
 src("cpp/insist.cpp") # assertion
 src("cpp/csv_cat.cpp") # merge arbitrarily large csv, asserting headers matching, keeping one copy of header only
-src("cpp/find_start.cpp") # index a file with HTML nested inside csv, finding locations of <HTML> start tags
 
 print(paste("test", p_sep, "A.csv", sep=""))
-
-# test csv concatenation
 csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
 	  paste("test", p_sep, "B.csv", sep=""),
 	  paste("test", p_sep, "C.csv", sep="")))
@@ -36,6 +34,12 @@ for(i in 0: 7){
   insist(x[a, b] == i + 1)
 }
 
+# test file indexing
+src("cpp/find_start.cpp") # index a file with HTML nested inside csv, finding locations of <HTML> start tags
+
+
+# test HTML file extraction
+src("cpp/extract.cpp")
 
 
 
