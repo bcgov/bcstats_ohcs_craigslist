@@ -7,9 +7,9 @@
 #include<memory.h>
 #include<iostream>
 
-#define str string
-
 using namespace std;
+
+#define str string
 
 // error message
 void err(const char * msg){
