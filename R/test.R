@@ -4,15 +4,13 @@ p_sep <- .Platform$file.sep
 name<-function(x){
   return(deparse(substitute(x)))
 }
-
 pr<-function(x){
-  print(paste(paste(name(x), "="), x), quote=FALSE)	
+  print(paste(paste(name(x), "="), x), quote=FALSE)
 }
 
 mod<-function(x, m){
   return(x - floor(x / m) * m)
 }
-
 
 library(Rcpp)
 src<-function(x){
@@ -44,7 +42,6 @@ for(i in 0: 7){
 # using namespace Rcpp;
 # //[[Rcpp::export]]
 # need to add cacheDir as well (need to make the directory, too)!
-
 
 # http://adv-r.had.co.nz/Rcpp.html
 # http://dirk.eddelbuettel.com/papers/rcpp_sydney-rug_jul2013.pdf
