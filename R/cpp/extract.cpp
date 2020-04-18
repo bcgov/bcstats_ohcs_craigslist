@@ -1,4 +1,8 @@
+#include<Rcpp.h>
 #include"misc.h"
+using namespace std;
+using namespace Rcpp;
+
 /* rm extract; gcc -O4 extract.c -o extract; ./extract craigslist-apa-data-bc-html-othermeta.csv
  note: should delete the html and otherAttributes folders before (re)running
 
@@ -8,34 +12,29 @@
 
 int go_to(FILE * f, const char * tag, size_t tag_len, char * buf, size_t * next, size_t * fp){
   if(*next == 0){
-    // if we're at the start of a match, record the present position
-    *fp = ftell(f);
+    *fp = ftell(f);  // if at start of match, record position
   }
 
   char c = fgetc(f);
   if(c != tag[(*next)++]){
-    // if we failed to match a char
-    *next = 0;
+    *next = 0;  // failed to match a char
     return 0;
   }
   else{
-    // we matched a char
+    // matched a char! 
     // printf("%c,next=%zu\n", c, *next);
   }
 
   if(*next == tag_len){
-    // if we matched the whole tag
-    *next = 0;
+    *next = 0;  // if we matched the whole tag
 
-    // read the stuff from the match position to confirm
-    fseek(f, *fp, SEEK_SET);
+    fseek(f, *fp, SEEK_SET);  // read stuff from match pos'n to confirm
     size_t br = fread(&buf[0], sizeof(char), tag_len, f);
     if(br != tag_len){
       printf("Err: br != tag_len\n");
       exit(1);
     }
-    buf[tag_len] = '\0';
-    // printf("buf[%s]\n", buf); // print out match
+    buf[tag_len] = '\0';  // printf("match: buf[%s]\n", buf);
     if(strncmp(buf, tag, tag_len) != 0){
       printf("Err: mismatch\n");
       exit(1);
@@ -53,9 +52,7 @@ char fgetc2(FILE * f){
 }
 
 void cr(FILE * f){
-  // return to start of a line
-
-  size_t fp = ftell(f); // where are we?
+  size_t fp = ftell(f); // return file to start of line. Where are we?
   if(fp == 0) return; // done if at beginning of file
 
   char c;
@@ -67,14 +64,22 @@ void cr(FILE * f){
   while(c == '\n' || c == '\r'){
     c = fgetc(f);
   }
-  fseek(f, -1, SEEK_CUR); // back one
+  fseek(f, -1, SEEK_CUR); // go back one
 }
 
-int main(int argc, char ** argv){
+//[[Rcpp::export]]
+int extract(StringVector args){
+  int argc = args.size();
+  if(argc != 1) err("extract [input csv filename]"); 
+
+  // int main(int argc, char ** argv)
   int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
   int a = system("mkdir -p html");
+  if(a != 0) err("command failed: mkdir -p html")
+
   int debug = 0; // apply this to print statments in a moment
   a = system("mkdir -p otherAttributes"); // some random stuff that was stuffed in next to the html, yikes!
+  if(a != 0) err("command failed: mkdir -p otherAttributes");
 
   size_t next, fp;
   const char * end_tag = "</html>";
@@ -88,17 +93,19 @@ int main(int argc, char ** argv){
   time_t t0; time(&t0);
   clock_t c0 = clock();
 
-  const char * fn = argv[1];
+  const char * fn = args[0].c_str(); //argv[1];
   size_t infile_size = file_size(fn); // file size
   FILE * f = fopen(fn, "rb");
 
   const char * tf;
-  if(argc < 3){
-    tf = strcat(argv[1], "_tag");
+  if(argc < 2){
+    string t_f(args[0] + str("_tag"))
+    tf = t_f.c_string(); // strcat(argv[1], "_tag");
   }
   else{
+    err("this option not supported");
     // allow an option to read from separate file, for parallelism case
-    tf = argv[2];
+    tf = args[1].c_str(); // tf = argv[2];
   }
 
   FILE * g = fopen(tf, "rb");
@@ -139,7 +146,9 @@ int main(int argc, char ** argv){
     sscanf(*s, "%zu,", &id); // don't need strtok to get the number
     if(debug) printf("[%zu]\n", id);
 
-    const char * pre = "html/";
+
+    string pre_s(string("html") + string(separator()));
+    const char * pre = pre_s.c_str(); // "html/";
     char * t = (char *)(void *)alloc(strlen(pre) + strlen(id_s) + 1);
     strcpy(t, pre);
     strcpy(t + strlen(pre), id_s);
@@ -149,7 +158,8 @@ int main(int argc, char ** argv){
     FILE * h = fopen(t, duplicates?"ab":"wb");
 
     // secondary file to save otherAttributes string
-    const char * pre2 = "otherAttributes/";
+    string pre_s2(string("otherAttributes") + string(separator()));
+    const char * pre2 = pre_s2.c_str(); // "otherAttributes/";
     char * t2 = (char *)(void *)alloc(strlen(pre2) + strlen(id_s) + 1);
     strcpy(t2, pre2);
     strcpy(t2 + strlen(pre2), id_s);
