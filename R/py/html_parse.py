@@ -1,8 +1,6 @@
 import os
 import sys
 exec(open("py" + os.path.sep + "misc.py").read())
-# from misc import *
-# from ansicolor import *
 from bs4 import BeautifulSoup # comment out import, to find upstream dependencies
 
 def fp(pattern, soup):
@@ -39,17 +37,13 @@ def parse_file(fn):
                 '.postinginfos']
 
     ret = [fp(x, soup) for x in patterns]
-
     ofn = "parsed" + os.path.sep + fn.split(os.path.sep)[-1]
     open(ofn, "wb").write(("\n".join(ret)).encode())
     
     # periodic status update
     n = int(fn.split(os.path.sep)[-1])
-    if n % 111 == 0:
-        print("\t" + ofn)
-
+    if n % 111 == 0: print("\t" + ofn)
     return ofn  # return output file name
-
 
 def parse_html(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
     '''
@@ -69,8 +63,8 @@ def parse_html(args_s): # parse(args_s) where args_s is a string of form html_fi
     in_f = args[0] # unused this script, file where html/ came from e.g., craigslist-apa-data-bc-html-sep.csv
     nrow = int(args[1]) # row count from metadata file
 
-    if not os.path.exists("parsed"): os.mkdir("parsed") # make "parsed" folder
-    
+    if not os.path.exists("parsed"):
+        os.mkdir("parsed") # make "parsed" folder
     t0, ci, inputs = time.time(), 0, []
     
     # walk the file structure and list the files to parse
