@@ -1,3 +1,5 @@
+# use R.utils:: countLines() to get a line count and pass that into here
+
 '''parse html data in parallel, to extract relevant segments
 - this is an "initial" coarse parsing, to reduce the volume of "data" by
 removing javascript codes, and other "nondata" portions of the html files

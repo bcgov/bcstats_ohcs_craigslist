@@ -101,9 +101,9 @@ int extract(StringVector args){
 
   string arg1(args[0]);
   const char * fn = arg1.c_str(); //argv[1];
-  printf("check file size: %s\n", fn);
+  if(debug) printf("check file size: %s\n", fn);
   size_t infile_size = file_size(fn); // file size
-  printf("fopen(%s)\n", fn);
+  if(debug) printf("fopen(%s)\n", fn);
 
   FILE * f = fopen(fn, "rb");
   string t_f(arg1 + string("_tag"));
@@ -121,7 +121,7 @@ int extract(StringVector args){
     tf = arg2.c_str(); // tf = argv[2];
   }
 
-  printf("fopen2(%s)\n", tf);
+  if(debug) printf("fopen2(%s)\n", tf);
   FILE * g = fopen(tf, "rb");
   if(!f){
     printf("\tfn: %s\n", fn);
@@ -138,10 +138,7 @@ int extract(StringVector args){
 
   size_t i = 0;
   do{
-    printf("\n---------------------------------------------------------------------------------------------\n");
-    printf("gs()\n");
     n = gs(g, s);
-    printf("end gs()\n");
     if(n < 1) break;
 
     size_t start_p;
@@ -194,7 +191,7 @@ int extract(StringVector args){
 
     // secondary file to save otherAttributes string
     string pre_s2(string("otherAttributes") + string(sep()));
-    cout << "pre_s2:[" << pre_s2 << "]" << endl;
+    // cout << "pre_s2:[" << pre_s2 << "]" << endl;
     const char * pre2 = pre_s2.c_str(); // "otherAttributes/";
     char * t2 = (char *)(void *)alloc(strlen(pre2) + strlen(id_s) + 1);
     strcpy(t2, pre2);
@@ -244,7 +241,7 @@ int extract(StringVector args){
       float dt = (float)(clock() - c0) / (float) CLOCKS_PER_SEC; // (float)t1 - (float)t0;
       float nps = (float)fp / dt;
       float eta = (float)(infile_size - fp) / nps;
-      printf("%%%.3f +w %s eta: %fs i=%zu\n", frac, t, eta, i );
+      printf("  %%%.3f +w %s eta: %fs i=%zu\n", frac, t, eta, i );
     }
     free(t);
   }

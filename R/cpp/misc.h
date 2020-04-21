@@ -46,12 +46,12 @@ size_t gs(FILE * f, char ** b){
   size_t fp = ftell(f);
   char c = fgetc(f);
   while(c != EOF && c != '\n' && c != '\r'){
-    printf("%c ", c);
+    //printf("%c ", c);
     n++;
     c = fgetc(f);
   }
   size_t fp2 = ftell(f);
-  printf("\nn %zu\n", n);
+  //printf("\nn %zu\n", n);
 
   // allocate as much memory as we need
   char * buf = (char *) (void *) alloc(n);

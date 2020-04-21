@@ -1,7 +1,13 @@
-# still need to search for / match the different pairs of files! and need to search for and match the compiled blobs!
-# also need to check that merged APA vs SUB are distinguished in the product
+# 1) need to search for / match new blobs
+# 2) need to search for / match blobs that have already been produced
+# 3) check that sublet vs apa are distinguished in the merged product
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
 
+library(R.utils) # install.packages("R.utils")
+library(Rcpp) # install.packages("Rcpp")
+library(reticulate) # install.packages("reticulate")
+
+# platform specific path separator
 p_sep <- .Platform$file.sep
 
 # get the name of a variable
@@ -16,7 +22,7 @@ mod<-function(x, m){
   return(x - floor(x / m) * m)
 }
 
-library(Rcpp)
+# source a cpp function
 src<-function(x){
   print(paste("src(\"", x, ")\"", sep=""), quote=FALSE)
   Rcpp::sourceCpp(x, cacheDir='tmp')
@@ -49,7 +55,22 @@ if(!file.exists(tag_file)){
 
 # test HTML file extraction
 src("cpp/extract.cpp")
-extract(html_file)
+if(FALSE){
+  extract(html_file)
+}
+print("extract html complete.", quote=FALSE)
+
+
+
+# test parsing, python!
+print("if you're prompted to install Miniconda, please say yes")
+py_discover_config()
+py_available(initialize=TRUE)
+if(!py_available()){
+  print("Error: python not initialized", quote=FALSE)
+  quit()
+}
+source_python("py/test.py")
 
 
 
