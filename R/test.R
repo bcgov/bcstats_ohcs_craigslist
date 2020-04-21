@@ -2,6 +2,7 @@
 # 1) need to search for / match new blobs
 # 2) need to search for / match blobs that have already been produced
 # 3) check that sublet vs apa are distinguished in the merged product
+# 4) retain only non-redundant records
 meta_file <- "craigslist-bc-sublets-data-mar.csv"
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
 
@@ -57,6 +58,7 @@ print("extract html complete.", quote=FALSE)
 # count number of records from "meta" file
 src("cpp/lc.cpp") # wc -l analog
 n_records <-lc(meta_file)
+print(n_records)
 
 
 # test parsing, python!
@@ -67,10 +69,9 @@ if(!py_available()){
   print("Error: python not initialized", quote=FALSE)
   quit()
 }
-source_python("py/parse.py")
-
-
-
+import_from_path("py")
+source_python("py/parse_html.py")
+parse_html(paste(html_file, n_records, sep=","))
 
 # should be able to automatically generate:
 # Rcpp::sourceCpp("name of cpp file")
