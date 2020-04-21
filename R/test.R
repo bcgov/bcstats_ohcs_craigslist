@@ -54,6 +54,10 @@ if(FALSE){
 print("extract html complete.", quote=FALSE)
 
 
+# count number of records from "meta" file
+src("cpp/lc.cpp") # wc -l analog
+n_records <-lc(meta_file)
+
 
 # test parsing, python!
 print("if you're prompted to install Miniconda, please say yes")
@@ -63,10 +67,7 @@ if(!py_available()){
   print("Error: python not initialized", quote=FALSE)
   quit()
 }
-source_python("py/test.py")
-
-src("cpp/lc.cpp") # wc -l analog
-n_records <-lc(meta_file)
+source_python("py/parse.py")
 
 
 
