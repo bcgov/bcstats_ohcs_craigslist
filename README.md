@@ -1,7 +1,7 @@
 # bcstats ohcs craigslist
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
 
-** coming soon:** R-interface!
+** coming soon: R-interface!**
 
 Use HPC techniques to wrangle a large, irregular housing-market dataset on an ordinary laptop, in a finite amount of time
 
