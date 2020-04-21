@@ -2,22 +2,14 @@
 # 1) need to search for / match new blobs
 # 2) need to search for / match blobs that have already been produced
 # 3) check that sublet vs apa are distinguished in the merged product
+meta_file <- "craigslist-bc-sublets-data-mar.csv"
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
-cat(html_file)
-cat("\n")
+
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
 
 # platform specific path separator
 p_sep <- .Platform$file.sep
-
-# get the name of a variable
-# name_<-function(x){
-#   return(deparse(substitute(x)))
-# }
-# pr<-function(x){
-#   print(paste(paste(name_(x), "="), x), quote=FALSE)
-# }
 
 mod<-function(x, m){
   return(x - floor(x / m) * m)
@@ -30,9 +22,6 @@ src<-function(x){
 }
 
 # test big-data resilient csv-file concatenation
-src("cpp/lc.cpp") # wc -l analog
-print(lc(html_file))
-
 src("cpp/insist.cpp") # assertion
 src("cpp/csv_cat.cpp") # merge arbitrarily large csv, asserting headers matching, keeping one copy of header only
 
@@ -76,6 +65,8 @@ if(!py_available()){
 }
 source_python("py/test.py")
 
+src("cpp/lc.cpp") # wc -l analog
+n_records <-lc(meta_file)
 
 
 
