@@ -1,9 +1,10 @@
+# 0) track existing blobs
 # 1) need to search for / match new blobs
 # 2) need to search for / match blobs that have already been produced
 # 3) check that sublet vs apa are distinguished in the merged product
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
-
-library(R.utils) # install.packages("R.utils")
+cat(html_file)
+cat("\n")
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
 
@@ -11,12 +12,12 @@ library(reticulate) # install.packages("reticulate")
 p_sep <- .Platform$file.sep
 
 # get the name of a variable
-name<-function(x){
-  return(deparse(substitute(x)))
-}
-pr<-function(x){
-  print(paste(paste(name(x), "="), x), quote=FALSE)
-}
+# name_<-function(x){
+#   return(deparse(substitute(x)))
+# }
+# pr<-function(x){
+#   print(paste(paste(name_(x), "="), x), quote=FALSE)
+# }
 
 mod<-function(x, m){
   return(x - floor(x / m) * m)
@@ -24,11 +25,14 @@ mod<-function(x, m){
 
 # source a cpp function
 src<-function(x){
-  print(paste("src(\"", x, ")\"", sep=""), quote=FALSE)
+  cat(paste("src(\"", x, "\")\n", sep="")) # , quote=FALSE)
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
 # test big-data resilient csv-file concatenation
+src("cpp/lc.cpp") # wc -l analog
+print(lc(html_file))
+
 src("cpp/insist.cpp") # assertion
 src("cpp/csv_cat.cpp") # merge arbitrarily large csv, asserting headers matching, keeping one copy of header only
 
