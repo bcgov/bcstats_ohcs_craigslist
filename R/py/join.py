@@ -100,7 +100,7 @@ def join(args_s):
                 except Exception:
                     other = other.decode('utf-8')
 
-                other = other.strip().strip("!") # bang) # chr(33)) # "!")
+                other = other.strip().strip("!")
                 other = other[2:]
                 other = other.replace('"', '')
                 other = other.replace(';', '&')
@@ -108,9 +108,7 @@ def join(args_s):
     
                 new_row.append(other)
                 new_row = '\n' + ','.join(new_row)
-    
-                # write out header
-                outf.write(new_row.encode())
+                outf.write(new_row.encode())  # write out header
             ci += 1
     
             if ci % 111 == 0:
