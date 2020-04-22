@@ -12,8 +12,6 @@ exec(open("py" + os.path.sep + "strtok.py").read())
         without price:  python3 html_cleanup.py parsed/4760673195
 '''
 
-
-'''
 def fp(soup, pattern): # use beautifulsoup to parse out a pattern from the doc
     s = ""
     try:
@@ -22,7 +20,6 @@ def fp(soup, pattern): # use beautifulsoup to parse out a pattern from the doc
     except Exception:
         pass
     return s.replace('\n', '')
-'''
 
 def cleanse(s):
     return s.replace(',', '').replace('\n', '').replace('\r', '').strip()
