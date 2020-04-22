@@ -13,7 +13,7 @@ if not os.path.exists(in_fn):
 
 try:
     shift_width = int(args[2])
-except Exception: 
+except Exception:
     err('failed to parse shiftwidth parameter')
 
 shutil.copyfile(in_fn, in_fn + '.bak')
