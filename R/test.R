@@ -12,6 +12,11 @@ library(reticulate) # install.packages("reticulate")
 # platform specific path separator
 p_sep <- .Platform$file.sep
 
+pr<-function(x){
+  # thanks to Sam Albers for helping figure this out
+  print(paste(paste(deparse(substitute(x)), "="), x))
+}
+
 mod<-function(x, m){
   return(x - floor(x / m) * m)
 }
@@ -28,11 +33,11 @@ src("cpp/csv_cat.cpp") # merge arbitrarily large csv, asserting headers matching
 
 print(paste("test", p_sep, "A.csv", sep=""))
 csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
-	  paste("test", p_sep, "B.csv", sep=""),
-	  paste("test", p_sep, "C.csv", sep="")))
+paste("test", p_sep, "B.csv", sep=""),
+paste("test", p_sep, "C.csv", sep="")))
 
 x <- read.csv(paste("test", p_sep, "C.csv", sep=""),
-	      header=TRUE)
+header=TRUE)
 for(i in 0: 7){
   a <- ceiling((i + 1)/ 2)
   b <- b <- 1 + mod(i, 2)
@@ -46,7 +51,6 @@ if(!file.exists(tag_file)){
   find_start(html_file)
 }
 
-
 # test HTML file extraction
 src("cpp/extract.cpp")
 if(FALSE){
@@ -54,12 +58,10 @@ if(FALSE){
 }
 print("extract html complete.", quote=FALSE)
 
-
 # count number of records from "meta" file
 src("cpp/lc.cpp") # wc -l analog
 n_records <-lc(meta_file)
 print(n_records)
-
 
 # test parsing, python!
 print("if you're prompted to install Miniconda, please say yes")
@@ -78,7 +80,6 @@ source_python("py/html_parse.py")
 source_python("py/join.py")
 
 # don't forget to remove all the intermediary files, after the join!
-
 
 # should be able to automatically generate:
 # Rcpp::sourceCpp("name of cpp file")
