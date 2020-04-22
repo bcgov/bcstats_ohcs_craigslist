@@ -5,4 +5,5 @@ def strtok(s, delim):
         if s[i] == delim:
             j = i
             break
-    return [s, None] if j < 0: else [s[0: j], s[j + 1: ]]
+    if j < 0: return [s, None]
+    return [s[0: j], s[j + 1: ]]
