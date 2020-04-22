@@ -1,4 +1,4 @@
-'''indent a file: save old data in .bak file'''
+'''indent a file: save old data in .bak file. This function was needed in development'''
 import shutil
 from misc import *
 

@@ -5,7 +5,7 @@ import time
 args = sys.argv
 
 def err(msg):
-    print("Error:" + str(msg))
+    print("Error: " + str(msg))
     sys.exit(1)
 
 def parfor(my_function, my_inputs):
