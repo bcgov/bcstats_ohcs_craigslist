@@ -94,10 +94,6 @@ def join(args_s):
                     n_skip += 1
                     continue
     
-                # other = open(fn2).read().strip().strip("!")
-                if chr(33) != "!":
-                    err("invalid ascii code translation")
-                # bang = u'!' # bang = str(str(chr(33)).encode('latin-1'))  # str(chr(33).encode("utf-8"))
                 other = open(fn2, 'rb').read()
                 try:
                     other = other.decode('latin-1')
