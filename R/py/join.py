@@ -37,7 +37,9 @@ def join(args_s):
     
             if is_hdr:
                 hdr = row
-                if str(hdr) != str(meta_fields): err('unexpected fields')
+                if str(hdr) != str(meta_fields):
+                    err('unexpected fields')
+                
                 new_hdr = [*meta_fields, *html_fields]  # concatenate
                 new_hdr.append('otherAttributes') # add otherAttributes
                 print(','.join(new_hdr))  # add in other set of fields too
@@ -92,16 +94,19 @@ def join(args_s):
                 new_row.append(other)
                 new_row = '\n' + ','.join(new_row)
                 outf.write(new_row.encode())  # write out header
-            ci += 1
     
             if ci % 111 == 0:
                 nt = time.time()
                 tr = (nt - t0) / (ci + 1)
                 trem = tr * (nr - ci)
-                print("%" + str(round(100. * float(ci) / float(nr),2)),
+                pct_s = str(round(100. * float(ci) / float(nr),2)).zfill(4)
+                if pct_s[0] == '0':
+                    pct_s = ' ' + pct_s[1:]
+                print("%" + pct_s,
                       "t=" + str(round(nt - t0, 2)) + 's',
                       "eta=" + str(round(trem, 2)) + 's',
                       "eta=" + str(round(trem / 3600., 2)) + 'h',
                       "n=" + str(ci))
+            ci += 1
     print("number of records", ci)
     print("metadata records skipped", n_skip)
