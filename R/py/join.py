@@ -7,7 +7,7 @@ def join(args_s):
     '''join together the following sources, join on ID number
             1) metadata entry
             2) attr from parsed/ files
-            3) attr from otherAttributes/ files '''
+            3) attr from otherAttributes/ files'''
 
     args = args_s.split(",")
     if len(args) != 3: err('usage: join(html_file,meta_file,line_count_meta_file)')
