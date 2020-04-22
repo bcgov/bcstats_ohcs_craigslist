@@ -81,8 +81,7 @@ source_python("py/join.py")
 source_python("py/strtok.py")
 source_python("py/html_cleanup.py")
 
-join(paste(html_file, meta_file, sep=','))
-
+join(paste(html_file, meta_file, n_records, sep=','))
 
 # don't forget to remove all the intermediary files, after the join!
 
