@@ -79,7 +79,7 @@ def join(args_s):
                     continue
     
                 # print("fn", fn)
-                fields, line = cleanup_html(fn)
+                fields, line = html_cleanup(fn)
                 if len(line.split(',')) != len(html_fields):
                     print(line)
                     err('bad parse: ' + str(len(line)) + ' ' + str(len(html_fields)))
@@ -94,7 +94,17 @@ def join(args_s):
                     n_skip += 1
                     continue
     
-                other = open(fn2).read().strip().strip('!')
+                # other = open(fn2).read().strip().strip("!")
+                if chr(33) != "!":
+                    err("invalid ascii code translation")
+                # bang = u'!' # bang = str(str(chr(33)).encode('latin-1'))  # str(chr(33).encode("utf-8"))
+                other = open(fn2, 'rb').read()
+                try:
+                    other = other.decode('latin-1')
+                except Exception:
+                    other = other.decode('utf-8')
+
+                other = other.strip().strip("!") # bang) # chr(33)) # "!")
                 other = other[2:]
                 other = other.replace('"', '')
                 other = other.replace(';', '&')
