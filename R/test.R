@@ -3,14 +3,15 @@
 # 2) need to search for / match blobs that have already been produced
 # 3) check that sublet vs apa are distinguished in the merged product
 # 4) retain only non-redundant records
+# 5) remove intermed. files, after "join"
+
 meta_file <- "craigslist-bc-sublets-data-mar.csv"
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
 
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
 
-# platform specific path separator
-p_sep <- .Platform$file.sep
+p_sep <- .Platform$file.sep  # platform specific path separator
 
 pr<-function(x){
   # thanks to Sam Albers and Craig Hutton for helping solve this:
@@ -29,7 +30,7 @@ src<-function(x){
 
 # test big-data resilient csv-file concatenation
 src("cpp/insist.cpp") # assertion
-src("cpp/csv_cat.cpp") # merge arbitrarily large csv, asserting headers matching, keeping one copy of header only
+src("cpp/csv_cat.cpp") # merge arbitrarily large csv: assert headers match, keep first header
 
 print(paste("test", p_sep, "A.csv", sep=""))
 csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
@@ -73,27 +74,7 @@ if(!py_available()){
 }
 import_from_path("py")
 source_python("py/html_parse.py")
-
-# DONT FORGET TO TURN THIS BACK ON LATER!
-# html_parse(paste(html_file, n_records, sep=","))
+html_parse(paste(html_file, n_records, sep=","))
 
 source_python("py/join.py")
-source_python("py/strtok.py")
-source_python("py/html_cleanup.py")
-
 join(paste(html_file, meta_file, n_records, sep=','))
-
-# don't forget to remove all the intermediary files, after the join!
-
-# should be able to automatically generate:
-# Rcpp::sourceCpp("name of cpp file")
-# #include<Rcpp.h>
-# using namespace Rcpp;
-# //[[Rcpp::export]]
-# need to add cacheDir as well (need to make the directory, too)!
-
-# http://adv-r.had.co.nz/Rcpp.html
-# http://dirk.eddelbuettel.com/papers/rcpp_sydney-rug_jul2013.pdf
-# https://gallery.rcpp.org/articles/working-with-Rcpp-StringVector/
-# http://dirk.eddelbuettel.com/code/rcpp.html
-# http://dirk.eddelbuettel.com/code/rcpp/Rcpp-quickref.pdf
