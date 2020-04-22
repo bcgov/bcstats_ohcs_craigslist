@@ -10,10 +10,8 @@ def join(args_s):
             3) attr from otherAttributes/ files '''
     
     args = args_s.split(",")
-    if len(args) != 2:
-        err('usage: join(html_file,meta_file)')
-
-    in_f , meta_f = args[0], args[1]
+    if len(args) != 3: err('usage: join(html_file,meta_file,line_count_meta_file)')
+    in_f , meta_f, nr = args[0], args[1], int(args[2])
     n_skip = 0 # record the number of metadata records, skipped
     
     meta_fields = ['id', 'title', 'url', 'postDate', 'categoryId', 'cityId',
@@ -26,7 +24,7 @@ def join(args_s):
                    'h_attrgroup', 'h_mapbox', 'h_housing']
     
     # read the metadata file to count the number of records
-    nr = int(os.popen('wc -l ' + meta_f).read().strip().split()[0])
+    # nr = int(os.popen('wc -l ' + meta_f).read().strip().split()[0])
     t0 = time.time()  # start timer
     
     out_fn = meta_f + '_merge.csv' # output data, merged file
