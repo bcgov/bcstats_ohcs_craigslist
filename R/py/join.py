@@ -11,8 +11,7 @@ def join(args_s):
     
     args = args_s.split(",")
     if len(args) != 3: err('usage: join(html_file,meta_file,line_count_meta_file)')
-    in_f , meta_f, nr = args[0], args[1], int(args[2])
-    n_skip = 0 # record the number of metadata records, skipped
+    in_f , meta_f, nr, n_skip = args[0], args[1], int(args[2]), 0
     
     meta_fields = ['id', 'title', 'url', 'postDate', 'categoryId', 'cityId',
                    'location', 'phoneNumbers', 'contactName', 'emails',
