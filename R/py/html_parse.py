@@ -42,7 +42,7 @@ def parse_file(fn):
 
     # periodic status update
     n = int(fn.split(os.path.sep)[-1])
-    if n % 111 == 0: print("\t" + ofn)
+    if n % 222 == 0: print("\t" + ofn)
     return ofn  # return output file name
 
 def html_parse(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
@@ -75,7 +75,7 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
 
             # simple progress bar
             ci += 1
-            if ci % 111 == 0:
+            if ci % 222 == 0:
                 nt = time.time()
                 trow = (nt - t0) / (ci + 1)
                 trem = trow * (nrow - ci)
