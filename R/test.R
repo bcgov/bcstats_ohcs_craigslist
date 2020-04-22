@@ -77,11 +77,10 @@ source_python("py/html_parse.py")
 # DONT FORGET TO TURN THIS BACK ON LATER!
 # html_parse(paste(html_file, n_records, sep=","))
 
+source_python("py/join.py")
 source_python("py/strtok.py")
-
 source_python("py/html_cleanup.py")
 
-# source_python("py/join.py")
 
 # don't forget to remove all the intermediary files, after the join!
 

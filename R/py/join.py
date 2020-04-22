@@ -1,19 +1,19 @@
+import os
+import time
+exec(open("py" + os.path.sep + "misc.py").read())
+exec(open("py" + os.path.sep + "html_cleanup.py").read())
+
+def join(args_s):
     '''join together the following sources, join on ID number
-    - metadata entry
-    - attr from parsed/ files
-    - attr from otherAttributes/ files
+            1) metadata entry
+            2) attr from parsed/ files
+            3) attr from otherAttributes/ files '''
     
-    usage:
-        python3 join.py [flag \in {'apa', 'sublet'}]
-    e.g.:
-        python3 join.py apa
-    '''
-    
-    import time
-    from misc import *
-    from cleanup_html import cleanup_html as cleanup_html
-    
-    in_f , meta_f = args[1], args[2]
+    args = args_s.split(",")
+    if len(args) != 2:
+        err('usage: join(html_file,meta_file)')
+
+    in_f , meta_f = args[0], args[1]
     n_skip = 0 # record the number of metadata records, skipped
     
     meta_fields = ['id', 'title', 'url', 'postDate', 'categoryId', 'cityId',
@@ -24,8 +24,6 @@
                    'h_map_address', 'h_map_latitude', 'h_map_longitude',
                    'h_map_zoom', 'h_movein_date', 'h_notices', 'h_postingbody',
                    'h_attrgroup', 'h_mapbox', 'h_housing']
-    
-    other_fields = []  # fill this in
     
     # read the metadata file to count the number of records
     nr = int(os.popen('wc -l ' + meta_f).read().strip().split()[0])
