@@ -1,45 +1,39 @@
-''' fine-grained parsing and clean up of html files produced by
-     1) extract.c
+import os
+from bs4 import BeautifulSoup
+exec(open("py" + os.path.sep + "misc.py").read())
+exec(open("py" + os.path.sep + "strtok.py").read())
+
+''' finer-grained parsing and clean up, of html files produced by
+     1) extract.cpp
      2) parse.py
     
-    example incl. price:
-     python3 cleanup_html.py parsed/5447094859
-    
-    example of one without price:
-        python3 cleanup_html.py parsed/4760673195
+    examples:
+        incl. price:    python3 html_cleanup.py parsed/5447094859
+        without price:  python3 html_cleanup.py parsed/4760673195
 '''
-from misc import *
-from strtok import strtok
-from bs4 import BeautifulSoup
- 
-data = {}
 
-def cleanup_html(fn):
-    global data
+
+'''
+def fp(soup, pattern): # use beautifulsoup to parse out a pattern from the doc
+    s = ""
+    try:
+        s = str(soup.select(pattern)[0])
+        s = " ".join(s.strip().split())
+    except Exception:
+        pass
+    return s.replace('\n', '')
+'''
+
+def cleanse(s):
+    return s.replace(',', '').replace('\n', '').replace('\r', '').strip()
+
+def html_cleanup(fn):
     data = {}
     if not os.path.exists(fn):
         err("Error: could not find file: " + str(fn))
     
     html = open(fn).read()  # open the data
     soup = BeautifulSoup(html, 'lxml')  # parse the data
-    
-    # use beautifulsoup to parse out a pattern from the doc
-    def fp(pattern):
-        s = ""
-        try:
-            s = str(soup.select(pattern)[0])
-            s = " ".join(s.strip().split())
-        except:
-            pass
-        return s.replace('\n', '')
-    
-    data = {}
-    
-    
-    # parse out a pattern and enter it into a dict variable
-    def rt(s):
-        global data
-        data[s[1: ]] = fp(s)
     
     # results from fp() get keyed w./ tag, minus symbol prefix \in {., #}
     tags = ['.price',
@@ -50,29 +44,27 @@ def cleanup_html(fn):
             '.notices',
             '.mapbox']
     
-    [rt(t) for t in tags] # list comprehension syntax instead of for loop
+    for s in tags:
+        data[s[1: ]] = fp(soup, t)
     
     data['postingbody'] = data['postingbody'].replace('<br/>','')
     data['postingbody'] = data['postingbody'].replace('<section id="postingbody">','')
     data['postingbody'] = data['postingbody'].replace('</section>','')
-    data['postingbody'] = " ".join(data['postingbody'].split())
-    
+    data['postingbody'] = " ".join(data['postingbody'].split())   
     data['notices'] = data['notices'].replace('<ul class="notices">', '')
     data['notices'] = data['notices'].replace('<li>', '')
     data['notices'] = data['notices'].replace('</ul>', '')
     data['notices'] = data['notices'].replace('</li>', '')
     
-    
-    # clean up price
+    # clean up price:
     try:
-        # strip outer tags and remove $ sign
+        # strip outer tags, remove $ sign
         p = data['price']
         p = strtok(p, '>')[1]
         p = strtok(p, '<')[0]
         p = p.strip('$')
         data['price'] = p
-    except Exception:
-        pass
+    except Exception: pass
     
     # clean up housing
     try:
@@ -81,8 +73,7 @@ def cleanup_html(fn):
         h = strtok(h, '>')[1]
         h = strtok(h, '<')[0]
         data['housing'] = h
-    except Exception:
-        pass
+    except Exception: pass
     
     # clean up housing
     data['title'] = ''
@@ -93,20 +84,17 @@ def cleanup_html(fn):
         t = strtok(t, '<')[0]
         del data['titletextonly']
         data['title'] = t
-    except Exception:
-        pass
+    except Exception: pass
     
-    # clean up attrgroup
-    # e.g.: ['<p class="attrgroup"><span><b>3</b>BR / <b>1.5</b>Ba</span> <span><b>1150</b>ft<sup>2</sup></span>']
+    # clean up attrgroup e.g.: ['<p class="attrgroup"><span><b>3</b>BR / <b>1.5</b>Ba</span> <span><b>1150</b>ft<sup>2</sup></span>']
     a = data['attrgroup'].strip()
     data['attrgroup'] = a
     
-    bed = ''  # get no of bedrooms
+    # get number of bedrooms
+    bed = ''
     try:
-        x = a.split('<b>')[1].split('</b>')[0]
-        bed = x
-    except Exception:
-        pass
+        bed = a.split('<b>')[1].split('</b>')[0]
+    except Exception: pass
     data['bed'] = bed
 
     # clean up bed
@@ -116,12 +104,12 @@ def cleanup_html(fn):
             bed = bed[:-2]
             data['bed'] = bed
 
-    bath = ''  # get number of bathrooms
+    # get number of bathrooms
+    bath = ''
     try:
         x = a.split('<b>')[2].split('</b>')[0]
         bath = x
-    except Exception:
-        pass
+    except Exception: pass
     data['bath'] = bath
 
     # remediate empty bath variable
@@ -135,8 +123,7 @@ def cleanup_html(fn):
                 x = a.split('Ba<')[0]
                 x = x.split('<b>')[1]
                 bath = x.strip()
-        except Exception:
-            pass
+        except Exception: pass
     data['bath'] = bath
 
     # clean up bath
@@ -165,54 +152,48 @@ def cleanup_html(fn):
     b = data['postingbody']
     try:
         b = b.split('<a class="showcontact"')[0].strip()
-    except Exception:
-        pass
+    except Exception: pass
     data['postingbody'] = b.replace('&amp;','&')
     
     # clean up mapbox
     m = data['mapbox']
     accuracy, latitude, longitude, address, mapzoom = '', '', '', '', ''
     
-    try:  # clean up data accuracy
+    # clean up data accuracy
+    try:
         accuracy = m.split('data-accuracy="')[1]
         accuracy = accuracy.split('"')[0]
-    except Exception:
-        pass
+    except Exception: pass
     data['map_accuracy'] = accuracy
     
-    try:  # clean up latitude
+    # clean up latitude
+    try:
         latitude = m.split('data-latitude="')[1]
         latitude = latitude.split('"')[0]
-    except Exception:
-        pass
+    except Exception: pass
     data['map_latitude'] = latitude
     
-    try:  # clean up longitude
+    # clean up longitude
+    try:
         longitude = m.split('data-longitude="')[1]
         longitude = longitude.split('"')[0]
-    except Exception:
-        pass
+    except Exception: pass
     data['map_longitude'] = longitude
     
-    try:  # clean up address
+    # clean up address
+    try:
         address = m.split('<p class="mapaddress">')[1]
         address = address.split('<small>')[0]
-    except Exception:
-        pass
+    except Exception: pass
     data['map_address'] = address
     
     
-    try:  # clean up map url
+    # clean up map url
+    try:
         mapzoom = m.split('<a href="')[1].split(',')[2].split('"')[0]
-        # https://www.google.com/maps/search/?api=1&query=
-        # https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393,10z
-    except Exception:
-        pass
+    except Exception: pass
     data['map_zoom'] = mapzoom.strip('z')
     
-    
-    def cleanse(s):
-        return s.replace(',', '').replace('\n', '').replace('\r', '').strip()
     
     # cleanse strings of unfriendly characters (for csv)
     for d in data:
@@ -228,21 +209,15 @@ def cleanup_html(fn):
 
     dat = [data[d] for d in elems]
     dat = ','.join(dat)
-    
-    if len(dat.split(',')) != len(elems):
-        err('encoding error')
-    
+    if len(dat.split(',')) != len(elems): err('encoding error')
     fields = ','.join(['h_' + e for e in elems])
     return fields, dat
 
 # for test purposes only
 if __name__ == '__main__':
-    fn = sys.argv[1]
-    fields, data = cleanup_html(fn)
-    print([fields])
-    print([data])
-
-'''
-notes: 
-    parsed/6663814110 failed to parse movein_date
-'''
+    if len(sys.argv) > 1:
+        fn = sys.argv[1]
+        fields, data = cleanup_html(fn)
+        print([fields])
+        print([data])
+    # notes: e.g.: parsed/6663814110 failed to parse movein_date
