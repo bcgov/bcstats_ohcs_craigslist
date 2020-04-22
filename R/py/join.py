@@ -22,10 +22,7 @@ def join(args_s):
                    'h_map_zoom', 'h_movein_date', 'h_notices', 'h_postingbody',
                    'h_attrgroup', 'h_mapbox', 'h_housing']
     
-    # read the metadata file to count the number of records
-    # nr = int(os.popen('wc -l ' + meta_f).read().strip().split()[0])
     t0 = time.time()  # start timer
-    
     out_fn = meta_f + '_merge.csv' # output data, merged file
     print('+w', out_fn)
     outf = open(out_fn, 'wb')
@@ -35,28 +32,17 @@ def join(args_s):
         ci, n_fields, rng = 0, 0, 0
         for row in csvreader:
             row = [r.strip() for r in row]
-    
-            # replace escape commas
-            row = [r.replace('\\,',';') for r in row]
-    
-            # replace actual commas ?
-            row = [r.replace(',', ';') for r in row]
+            row = [r.replace('\\,',';') for r in row]  # repl. escape commas
+            row = [r.replace(',', ';') for r in row]  # repl. actual commas?
     
             if is_hdr:
                 hdr = row
-                if str(hdr) != str(meta_fields):
-                    err('unexpected fields')
-    
+                if str(hdr) != str(meta_fields): err('unexpected fields')
                 new_hdr = [*meta_fields, *html_fields]  # concatenate
                 new_hdr.append('otherAttributes') # add otherAttributes
-                # add in other set of fields, too
-    
-                print(','.join(new_hdr))
-                is_hdr = False
-    
-                # write out header
-                new_hdr = ','.join(new_hdr)
-                outf.write(new_hdr.encode())
+                print(','.join(new_hdr))  # add in other set of fields too
+                new_hdr, is_hdr = ','.join(new_hdr), False
+                outf.write(new_hdr.encode())  # write out header
     
             else:
     
