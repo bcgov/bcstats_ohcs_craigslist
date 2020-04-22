@@ -42,7 +42,7 @@ def html_cleanup(fn):
             '.mapbox']
     
     for s in tags:
-        data[s[1: ]] = fp(soup, t)
+        data[s[1: ]] = fp(soup, s)
     
     data['postingbody'] = data['postingbody'].replace('<br/>','')
     data['postingbody'] = data['postingbody'].replace('<section id="postingbody">','')

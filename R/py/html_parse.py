@@ -3,7 +3,7 @@ import sys
 exec(open("py" + os.path.sep + "misc.py").read())
 from bs4 import BeautifulSoup # comment out import, to find upstream dependencies
 
-def fp(pattern, soup):
+def fp(soup, pattern):
     s = ""
     try:
         s = str(soup.select(pattern)[0])
@@ -36,7 +36,7 @@ def parse_file(fn):
                 '.notices',
                 '.postinginfos']
 
-    ret = [fp(x, soup) for x in patterns]
+    ret = [fp(soup, x) for x in patterns]
     ofn = "parsed" + os.path.sep + fn.split(os.path.sep)[-1]
     open(ofn, "wb").write(("\n".join(ret)).encode())
     
@@ -45,7 +45,7 @@ def parse_file(fn):
     if n % 111 == 0: print("\t" + ofn)
     return ofn  # return output file name
 
-def parse_html(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
+def html_parse(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
     '''
     input html files reside in html/
     output results will be put in parsed/
