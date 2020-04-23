@@ -36,10 +36,6 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   # c++ functionality    
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
   src("cpp/head.cpp") # head -1 analog
-  
-  head(html_file)
-  err("done")
-
   src("cpp/extract.cpp")
   src("cpp/insist.cpp") # assertion
   src("cpp/csv_cat.cpp") # merge arb. large csv: assert headers match, keep first hdr
@@ -99,7 +95,22 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
 }
 
 match_infiles<-function(in_dir){
-  print(list.files(in_dir, pattern="*.csv$"))
+  src("cpp/head.cpp") # head -1 analog
+  files<-list.files(in_dir, pattern="*.csv$")
+  for(f in files){
+    hdr<-head(f)
+    f_type = ""
+    if(hdr == "id,html,otherAttributes"){
+      f_type<-"HTML"
+    }
+    if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng"){
+      f_type<-"META"
+    }
+    if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng,h_price,h_bed,h_bath,h_title,h_map_accuracy,h_map_address,h_map_latitude,h_map_longitude,h_map_zoom,h_movein_date,h_notices,h_postingbody,h_attrgroup,h_mapbox,h_housing,otherAttributes"){
+      f_type<-"OUTP"
+    }
+    print(cat(f, " ", hdr, "\n"))
+  }
 }
 
 match_infiles(".")
