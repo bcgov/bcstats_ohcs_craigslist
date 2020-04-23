@@ -42,7 +42,8 @@ def parse_file(fn):
 
     # periodic status update
     n = int(fn.split(os.path.sep)[-1])
-    if n % 222 == 0: print("\t" + ofn)
+    if n % 222 == 0:
+        print("\t" + ofn)
     return ofn  # return output file name
 
 def html_parse(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
