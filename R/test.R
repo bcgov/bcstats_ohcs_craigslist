@@ -5,6 +5,11 @@
 # 4) retain only non-redundant records
 # 5) remove intermed. files, after "join"
 
+args = commandArgs(trailingOnly=TRUE)
+if(length(args)==0){
+  # stop("test.R [input directory name]");
+}
+
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
 
@@ -33,7 +38,7 @@ src<-function(x){
 # parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
 
-  # c++ functionality    
+  # c++ functionality
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
   src("cpp/head.cpp") # head -1 analog
   src("cpp/insist.cpp") # assertion
@@ -67,7 +72,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
     }
   }
   test_csv_cat()
-  
+
   mkdir<-function(fn){
     dir.create(fn, showWarnings = FALSE)
   }
@@ -81,7 +86,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   # 2) extract html files
   mkdir("html")
   mkdir("otherAttributes")
-  extract(html_file)  # HTML file extraction
+  extract(html_file) # HTML file extraction
 
   # 3) count records from "meta" file
   n_records <-lc(meta_file)
@@ -95,22 +100,34 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
 }
 
 match_infiles<-function(in_dir){
+  html<-character(0)
+  meta<-character(0)
+  outp<-character(0)
+
   src("cpp/head.cpp") # head -1 analog
   files<-list.files(in_dir, pattern="*.csv$")
   for(f in files){
     hdr<-head(f)
     f_type = ""
     if(hdr == "id,html,otherAttributes"){
-      f_type<-"HTML"
+      html[length(html) + 1]<-f
     }
-    if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng"){
-      f_type<-"META"
+    else if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng"){
+      meta[length(meta) + 1]<-f
     }
-    if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng,h_price,h_bed,h_bath,h_title,h_map_accuracy,h_map_address,h_map_latitude,h_map_longitude,h_map_zoom,h_movein_date,h_notices,h_postingbody,h_attrgroup,h_mapbox,h_housing,otherAttributes"){
-      f_type<-"OUTP"
+    else if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng,h_price,h_bed,h_bath,h_title,h_map_accuracy,h_map_address,h_map_latitude,h_map_longitude,h_map_zoom,h_movein_date,h_notices,h_postingbody,h_attrgroup,h_mapbox,h_housing,otherAttributes"){
+      outp[length(outp) +1]<-f
     }
-    print(cat(f, " ", hdr, "\n"))
+    else{
+      cat("Unrecognized file: ", f, "\n")
+      print(cat(f, " ", hdr, "\n"))
+    }
+    # print(cat(f, " ", hdr, "\n"))
   }
+
+  print(html)
+  print(meta)
+  print(outp)
 }
 
 match_infiles(".")
