@@ -210,11 +210,4 @@ def html_cleanup(fn):
     fields = ','.join(['h_' + e for e in elems])
     return fields, dat
 
-# for test purposes only
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        fn = sys.argv[1]
-        fields, data = cleanup_html(fn)
-        print([fields])
-        print([data])
     # notes: e.g.: parsed/6663814110 failed to parse movein_date
