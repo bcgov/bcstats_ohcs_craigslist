@@ -1,16 +1,16 @@
-import os
-from bs4 import BeautifulSoup
-exec(open("py" + os.path.sep + "misc.py").read())
-exec(open("py" + os.path.sep + "strtok.py").read())
-
 ''' finer-grained parsing and clean up, of html files produced by
-     1) extract.cpp
-     2) parse.py
+      extract.cpp
+      parse.py
 
     examples:
         incl. price:    python3 html_cleanup.py parsed/5447094859
-        without price:  python3 html_cleanup.py parsed/4760673195
-'''
+        without price:  python3 html_cleanup.py parsed/4760673195'''
+
+import os
+sep = os.path.sep
+from bs4 import BeautifulSoup
+exec(open("py" + sep + "misc.py").read())
+exec(open("py" + sep + "strtok.py").read())  # reticulate-friendly import?
 
 def fp(soup, pattern): # use beautifulsoup to parse out a pattern from the doc
     s = ""
