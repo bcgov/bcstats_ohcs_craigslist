@@ -142,7 +142,7 @@ match_infiles<-function(in_dir){
   # so, don't need to match _join.csv file, on ID
   # need to match html / meta files, on ID?
 
-  # csv_slice: extract 
+  # csv_slice: extract
 
   # process matched files
 
