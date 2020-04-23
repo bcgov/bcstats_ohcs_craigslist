@@ -53,12 +53,13 @@ size_t gs(FILE * f, char ** b){
   //printf("\nn %zu\n", n);
 
   // allocate as much memory as we need
-  char * buf = (char *) (void *) alloc(n);
+  char * buf = (char *) (void *) alloc(n + 1);
   fseek(f, fp, SEEK_SET);
   for(size_t i = 0; i < n; i++){
     c = fgetc(f);
     buf[i] = c;
   }
+  buf[n] = '\0'; // don't forget null-term
   *b = buf;
 
   // get ready for next non-nothing
