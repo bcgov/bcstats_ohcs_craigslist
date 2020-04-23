@@ -19,9 +19,6 @@ int match(const char * tag, size_t tag_len, char * buf, size_t * next, size_t * 
     *next = 0;
     return 0;
   }
-  else{
-    // printf("matched a char:%c,next=%zu\n", c, *next);
-  }
 
   if(*next == tag_len){
     // if we matched the whole tag
@@ -52,7 +49,7 @@ int find_start(StringVector args){
   int argc = args.size();
   if(argc != 1) err("find_start [input csv filename]");
   string arg(args[0]);
-  
+
   size_t next, fp;
   size_t start_tag_len = (size_t) strlen(start_tag); // set up variables
   // printf("%zu\n", start_tag_len);
@@ -77,7 +74,7 @@ int find_start(StringVector args){
 
   size_t i;
   for(i = 0; i < fs; i++){
-    if( i < fp) continue; // delete this?
+    if(i < fp) continue; // delete this?
 
     match(start_tag, start_tag_len, buf, &next, &fp);
     if(i % 100000000 == 0){

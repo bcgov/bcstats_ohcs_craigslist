@@ -21,7 +21,7 @@ int go_to(FILE * f, const char * tag, size_t tag_len, char * buf, size_t * next,
     return 0;
   }
   else{
-    // matched a char! 
+    // matched a char!
     // printf("%c,next=%zu\n", c, *next);
   }
 
@@ -72,7 +72,7 @@ int extract(StringVector args){
   printf("extract()\n");
 
   int argc = args.size();
-  if(argc != 1) err("extract [input csv filename]"); 
+  if(argc != 1) err("extract [input csv filename]");
 
   // int main(int argc, char ** argv)
   int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1

@@ -18,7 +18,7 @@ int main(int argc, char ** argv){
   sscanf(argv[3], "%zu", &end_p);
 
   // printf("file_name %s start_p %zu end_p %zu\n", fn, start_p, end_p);
-  
+
   size_t i;
   FILE * f = fopen(fn, "rb");
   if(!f){

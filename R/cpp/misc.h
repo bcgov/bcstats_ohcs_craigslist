@@ -6,7 +6,6 @@
 #include<stdlib.h>
 #include<memory.h>
 #include<iostream>
-
 using namespace std;
 
 #define str string
@@ -36,8 +35,8 @@ void prints(char * s, size_t n){
 }
 
 /* get line: from current fpos, until newline / end.
-* Dynamic memory allocation: allocates it's own memory
-* but frees existing variable at location first if needed*/
+  dynamic memory allocation: allocates it's own memory
+  but free existing variable first if needed */
 size_t gs(FILE * f, char ** b){
   // clear buffer if exists
   if(*b != NULL) free(*b);
@@ -94,5 +93,3 @@ const char * sep(){
   string s(&c[0]);
   return s.c_str();
 }
-
-
