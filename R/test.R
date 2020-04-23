@@ -19,17 +19,18 @@ err<-function(m){
   quit()
 }
 
+# thanks to Sam Albers and Craig Hutton for helping solve this
 pr<-function(x){
-  # thanks to Sam Albers and Craig Hutton for helping solve this:
   print(paste(paste(deparse(substitute(x)), "="), x))
 }
 
+# source a c++ function
 src<-function(x){
-  # source a cpp function
   cat(paste("src(\"", x, "\")\n", sep=""))
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
+# parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
 
   # c++ functionality    
@@ -50,9 +51,8 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   source_python("py/join.py")
   source_python("py/html_parse.py")
 
+  # test big-data resilient csv-file concatenation
   test_csv_cat<-function(){
-    # test big-data resilient csv-file concatenation
-  
     print(paste("test", p_sep, "A.csv", sep=""))
     csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
     paste("test", p_sep, "B.csv", sep=""),
@@ -67,17 +67,22 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   }
   test_csv_cat()
       
-  # test file indexing
+  # 1) index the html file
   tag_file <-paste(html_file, "_tag", sep="")
   if(!file.exists(tag_file)){
     find_start(html_file)
   }
 
+  # 2) extract html files
   extract(html_file)  # HTML file extraction
 
-  # count number of records from "meta" file
+  # 3) count records from "meta" file
   n_records <-lc(meta_file)
+
+  # 4) parse the html files using multithreading
   html_parse(paste(html_file, n_records, sep=","))
+
+  # 5) join the HTML data with the metadata from the other file
   join(paste(html_file, meta_file, n_records, sep=','))
 }
 
