@@ -66,7 +66,11 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
     }
   }
   test_csv_cat()
-      
+  
+  mkdir<-function(fn){
+    dir.create(fn, showWarnings = FALSE)
+  }
+
   # 1) index the html file
   tag_file <-paste(html_file, "_tag", sep="")
   if(!file.exists(tag_file)){
@@ -74,12 +78,15 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   }
 
   # 2) extract html files
+  mkdir("html")
+  mkdir("otherAttributes")
   extract(html_file)  # HTML file extraction
 
   # 3) count records from "meta" file
   n_records <-lc(meta_file)
 
   # 4) parse the html files using multithreading
+  mkdir("parsed")
   html_parse(paste(html_file, n_records, sep=","))
 
   # 5) join the HTML data with the metadata from the other file
