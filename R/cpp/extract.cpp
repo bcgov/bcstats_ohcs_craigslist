@@ -76,16 +76,7 @@ int extract(StringVector args){
 
   // int main(int argc, char ** argv)
   int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
-  int a = system("mkdir -p html");
-  if(a != 0){
-    err("command failed: mkdir -p html");
-  }
-
   int debug = 0; // 1; // apply int debug=1; to print debug statements
-  a = system("mkdir -p otherAttributes"); // some random stuff that was stuffed in next to the html, yikes!
-  if(a != 0){
-    err("command failed: mkdir -p otherAttributes");
-  }
 
   size_t next, fp;
   const char * end_tag = "</html>";
