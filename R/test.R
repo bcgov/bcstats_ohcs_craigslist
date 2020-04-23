@@ -36,8 +36,8 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   # c++ functionality    
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
   src("cpp/head.cpp") # head -1 analog
-  src("cpp/extract.cpp")
   src("cpp/insist.cpp") # assertion
+  src("cpp/extract.cpp")
   src("cpp/csv_cat.cpp") # merge arb. large csv: assert headers match, keep first hdr
   src("cpp/find_start.cpp") # index an HTML nested in csv, find <HTML> byte start locs
 
