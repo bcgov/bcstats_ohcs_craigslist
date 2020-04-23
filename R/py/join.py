@@ -3,6 +3,18 @@ import time
 exec(open("py" + os.path.sep + "misc.py").read())
 exec(open("py" + os.path.sep + "html_cleanup.py").read())
 
+def assert_remove(fn):
+    if not os.path.exists(fn):
+        err("file did not exist: " + str(fn))
+    
+    os.remove(fn)
+
+    if os.path.exists(fn):
+        err("file not removed: " + str(fn))
+
+    print("rm " + str(fn))
+
+
 def join(args_s):
     '''join together the following sources, join on ID number
             1) metadata entry
@@ -69,6 +81,8 @@ def join(args_s):
                     print(line)
                     err('bad parse: ' + str(len(line)) + ' ' + str(len(html_fields)))
 
+                assert_remove(fn)  # delete file so we know which html records aren't in meta_file
+
                 line = line.split(',')
                 new_row = [*row, *line]
 
@@ -84,6 +98,8 @@ def join(args_s):
                     other = other.decode('latin-1')
                 except Exception:
                     other = other.decode('utf-8')
+
+                assert_remove(fn2) # delete file so we know which otherAttrs records not in meta_file
 
                 other = other.strip().strip("!")
                 other = other[2:]
