@@ -35,6 +35,11 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
 
   # c++ functionality    
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
+  src("cpp/head.cpp") # head -1 analog
+  
+  head(html_file)
+  err("done")
+
   src("cpp/extract.cpp")
   src("cpp/insist.cpp") # assertion
   src("cpp/csv_cat.cpp") # merge arb. large csv: assert headers match, keep first hdr
@@ -93,7 +98,12 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   join(paste(html_file, meta_file, n_records, sep=','))
 }
 
+match_infiles<-function(in_dir){
+  print(list.files(in_dir, pattern="*.csv$"))
+}
+
+match_infiles(".")
 
 meta_file <- "craigslist-bc-sublets-data-mar.csv"
 html_file <- "craigslist-sublet-data-bc-html-mar.csv"
-harmari_craigslist_parsing(html_file, meta_file)
+# harmari_craigslist_parsing(html_file, meta_file)
