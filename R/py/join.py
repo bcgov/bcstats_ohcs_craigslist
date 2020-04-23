@@ -23,7 +23,7 @@ def join(args_s):
                    'h_attrgroup', 'h_mapbox', 'h_housing']
 
     t0 = time.time()  # start timer
-    out_fn = meta_f + '_merge.csv' # output data, merged file
+    out_fn = meta_f + '_join.csv' # output data, merged file
     print('+w', out_fn)
     outf = open(out_fn, 'wb')
 
