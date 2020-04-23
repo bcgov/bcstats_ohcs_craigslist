@@ -37,7 +37,8 @@ src<-function(x){
 
 # parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
-  join_file = cat(meta_file, "_join.csv")
+  join_file = paste(meta_file, "_join.csv", sep="")
+  print(join_file)
 
   # check if already extracted
   if(file.exists(join_file)){
@@ -132,9 +133,9 @@ match_infiles<-function(in_dir){
     # print(cat(f, " ", hdr, "\n"))
   }
 
-  print("html", html)
-  print("meta", meta)
-  print("outp", outp)
+  cat("html", html, "\n")
+  cat("meta", meta, "\n")
+  cat("outp", outp, "\n")
 
   # when the program runs, it generates a new file: meta_file_name + "_join.csv"
   # therefore, a non-identified output file, is a concatenated file
