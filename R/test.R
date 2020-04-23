@@ -38,12 +38,11 @@ src<-function(x){
 # parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
   join_file = paste(meta_file, "_join.csv", sep="")
-  print(join_file)
 
   # check if already extracted
   if(file.exists(join_file)){
-    cat("file extracted:", join_file)
-    return
+    cat(paste("file extracted:", join_file[1], sep=""), "\n")
+    return(0)
   }
 
   # c++ functionality
@@ -116,7 +115,6 @@ match_infiles<-function(in_dir){
   files<-list.files(in_dir, pattern="*.csv$")
   for(f in files){
     hdr<-head(f)
-    f_type = ""
     if(hdr == "id,html,otherAttributes"){
       html[length(html) + 1]<-f
     }
@@ -130,10 +128,10 @@ match_infiles<-function(in_dir){
       cat("Warning: Unrecognized file: ", f, "\n")
       print(cat(f, " ", hdr, "\n"))
     }
-    # print(cat(f, " ", hdr, "\n"))
   }
+  # files are now categorized
 
-  cat("html", html, "\n")
+  cat("html", html, "\n") # cat is for printing. paste() is for catting!
   cat("meta", meta, "\n")
   cat("outp", outp, "\n")
 
