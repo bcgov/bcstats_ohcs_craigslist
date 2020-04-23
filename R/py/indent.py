@@ -8,6 +8,7 @@ if len(args) < 3:
     err('indent [file name] [shift width e.g. 2 or 4]# prefix file with tab')
 
 in_fn = args[1]
+
 if not os.path.exists(in_fn):
     err('could not find input file: ' + in_fn)
 
@@ -25,4 +26,5 @@ in_f.close()
 
 lines = [((' ' * shift_width) +
          line.decode('utf-8').rstrip()) for line in lines]
+
 open(in_fn, 'wb').write(('\n'.join(lines)).encode())
