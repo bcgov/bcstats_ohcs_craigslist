@@ -37,6 +37,13 @@ src<-function(x){
 
 # parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
+  join_file = cat(meta_file, "_join.csv")
+
+  # check if already extracted
+  if(file.exists(join_file)){
+    cat("file extracted:", join_file)
+    return
+  }
 
   # c++ functionality
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
@@ -119,19 +126,32 @@ match_infiles<-function(in_dir){
       outp[length(outp) +1]<-f
     }
     else{
-      cat("Unrecognized file: ", f, "\n")
+      cat("Warning: Unrecognized file: ", f, "\n")
       print(cat(f, " ", hdr, "\n"))
     }
     # print(cat(f, " ", hdr, "\n"))
   }
 
-  print(html)
-  print(meta)
-  print(outp)
+  print("html", html)
+  print("meta", meta)
+  print("outp", outp)
+
+  # when the program runs, it generates a new file: meta_file_name + "_join.csv"
+  # therefore, a non-identified output file, is a concatenated file
+
+  # so, don't need to match _join.csv file, on ID
+  # need to match html / meta files, on ID?
+
+  # csv_slice: extract 
+
+  # process matched files
+
+  # concatenate all-- big data resilient
+
+  # find unique elements-- big data resilient
+  meta_file <- "craigslist-bc-sublets-data-mar.csv"
+  html_file <- "craigslist-sublet-data-bc-html-mar.csv"
+  harmari_craigslist_parsing(html_file, meta_file)
 }
 
 match_infiles(".")
-
-meta_file <- "craigslist-bc-sublets-data-mar.csv"
-html_file <- "craigslist-sublet-data-bc-html-mar.csv"
-# harmari_craigslist_parsing(html_file, meta_file)
