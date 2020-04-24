@@ -17,7 +17,7 @@ def assert_remove(fn):
 
 def join(args_s):
     '''join together the following sources, join on ID number
-            1) metadata entry
+            1) metadata entry -- if available :D  
             2) attr from parsed/ files
             3) attr from otherAttributes/ files'''
 
@@ -186,5 +186,3 @@ def join(args_s):
 
     print("number of records, total", ci)
     print("metadata records skipped", n_skip)
-
-    outf.close()
