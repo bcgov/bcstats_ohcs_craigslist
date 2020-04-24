@@ -151,6 +151,15 @@ match_infiles<-function(in_dir){
     return(s)
   }
 
+  find<-function(x, s){
+    find<-FALSE
+    for(i in 1:length(x)){
+      if(x[i] == s){
+	      find<-TRUE
+      }
+    }
+  }
+
 
   for(i in 1:length(html)){
     s<-html[i]
@@ -158,6 +167,8 @@ match_infiles<-function(in_dir){
     print(s)
     print(html[i])
     for(j in 1:length(meta)){
+	score<-0
+	
 
     }
   }
