@@ -39,6 +39,9 @@ bool csv_cat(StringVector args){
     }
 
     if(!dfile.is_open()){
+      str msg("failed to open input data file: ");
+      msg += str(filenames[i]);
+      err(msg.c_str());
       err("failed to open input data file:");
     }
     dfile.close();
