@@ -38,10 +38,14 @@ library(reticulate) # install.packages("reticulate")
 
 p_sep <- .Platform$file.sep # platform specific path separator
 
-wait_return <- function(){
-  cat('press [return] to continue')
-  return(scan("stdin", character(), nlines=1, quiet=TRUE))
-  # b <- scan("stdin", character(), n=1)
+rmrf<-function(d){
+  cat(paste("rm -rf ", d, "\n", sep=""))
+  unlink(d, recursive=TRUE, force=TRUE)
+}
+
+if(FALSE){
+  cat("force recompile..\n")
+  rmrf("tmp")
 }
 
 mod<-function(x, m){
@@ -88,7 +92,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   source_python("py/join.py")
   source_python("py/html_parse.py")
 
-  # test big-data resilient csv-file concatenation
+  # test big-data resilient csv-file concatenation, on small data ironically
   test_csv_cat<-function(){
     print(paste("test", p_sep, "A.csv", sep=""))
     csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
@@ -109,25 +113,35 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   }
 
   # 1) index the html file
+  message("1. start index step..")
   tag_file <-paste(html_file, "_tag", sep="")
   if(!file.exists(tag_file)){
     find_start(html_file)
   }
+  message(" 1. end index step..")
 
   # 2) extract html files
+  message("2. start extract step..")
   mkdir("html")
   mkdir("otherAttributes")
   extract(html_file) # HTML file extraction
+  message(" 2. end extract step..")
 
   # 3) count records from "meta" file
+  message("3. count records step..")
   n_records <-lc(meta_file)
+  message(" 3. end count records step..")
 
   # 4) parse the html files using multithreading
+  message("4. parse html step..")
   mkdir("parsed")
   html_parse(paste(html_file, n_records, sep=","))
+  message(" 4. end parse html step")
 
   # 5) join the HTML data with the metadata from the other file
+  message("5. join html and metadata step..")
   join(paste(html_file, meta_file, n_records, sep=','))
+  message(" 5. end join html and metadata step..")
 }
 
 match_infiles<-function(in_dir){
@@ -183,7 +197,7 @@ match_infiles<-function(in_dir){
   }
 
   # could hypothetically match on ID but we'll match on name and:
-  # *****  warn (don't forget to implement)
+  # ***** warn (don't forget to implement)
 
   # *** at this point, need to restrict string chunks to length 3, if not numeric
 
@@ -194,7 +208,7 @@ match_infiles<-function(in_dir){
     n_x<-length(x[[1]])
     max_j <- 0
     max_s <- 0.
-    
+
     for(j in 1:length(meta)){
       score<-0
       mj <- meta[j]
@@ -212,8 +226,8 @@ match_infiles<-function(in_dir){
       score <- 2. * score / (n_x + n_y)
 
       if(score > max_s){
-	max_j <- j
-        max_s <- score 
+        max_j <- j
+        max_s <- score
       }
       cat(paste("**score:", score, " html: ", html[i], " meta: ", meta[j], "\n", sep=""))
     }
@@ -237,24 +251,34 @@ match_infiles<-function(in_dir){
     html_file <- html_match[i]
     cat(paste("harmari_craigslist_parsing(", html_file, ",", meta_file, ")\n"), sep='')
   }
-  quit()
+  cat("N.B. if you wish to abort, please press ctrl-c (and then return). If not, please just press return.\n")
   wait_return()
 
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
+
+    # clear intermediary folders before proceeding
+    rmrf<-function(d){
+      unlink(d, recursive=TRUE, force=TRUE)
+    }
+    rmrf("html")
+    rmrf("otherAttributes")
+    rmrf("parsed")
+
+    # n.b. if join_file already exists, this iteration of harmari_craigslist_parsing will return without performing any action
+    join_file = paste(meta_file, "_join.csv", sep="")
     harmari_craigslist_parsing(html_file, meta_file)
   }
 
+  # don't forget to delete intermediaries before each run
 
   # when the program runs, it generates a new file: meta_file_name + "_join.csv"
   # therefore, a non-identified output file, is a concatenated file
-
 
   # csv_slice: extract? if matching on ID
   # concatenate all-- big data resilient
   # find unique elements-- big data resilient (unique.cpp)
 }
-
 
 match_infiles(".")
