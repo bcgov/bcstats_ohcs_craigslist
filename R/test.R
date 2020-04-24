@@ -16,9 +16,9 @@ library(reticulate) # install.packages("reticulate")
 p_sep <- .Platform$file.sep # platform specific path separator
 
 wait_return <- function(){
-	cat('press [return] to continue')
-	invisible(scan("stdin", character(), nlines=1, quiet=TRUE))
-	# b <- scan("stdin", character(), n=1)
+  cat('press [return] to continue')
+  invisible(scan("stdin", character(), nlines=1, quiet=TRUE))
+  # b <- scan("stdin", character(), n=1)
 }
 
 mod<-function(x, m){
@@ -147,34 +147,31 @@ match_infiles<-function(in_dir){
   chunks<-function(str){
     s<-str
     s<-gsub("[.]", "-", s)
-    s<-strsplit(s, "-") 
-    return(s)
+    return(strsplit(s, "-"))
   }
 
-  find<-function(x, s){
+  within<-function(x, s){
     find<-FALSE
     for(i in 1:length(x)){
       if(x[i] == s){
-	      find<-TRUE
+        find<-TRUE
       }
     }
+    return(find)
   }
-
 
   for(i in 1:length(html)){
     s<-html[i]
-    s<-chunks(s)
-    print(s)
-    print(html[i])
+    x<-chunks(s)
     for(j in 1:length(meta)){
-	score<-0
-	
-
+      score<-0
+      mj<-meta[j]
+      x1 <- x[[1]]
+      if(within(x1, mj)){
+        score <- score + 1
+      }
     }
   }
-
-
-
 
   # when the program runs, it generates a new file: meta_file_name + "_join.csv"
   # therefore, a non-identified output file, is a concatenated file
@@ -190,7 +187,7 @@ match_infiles<-function(in_dir){
   wait_return()
   quit()
 
-  # find unique elements-- big data resilient  (unique.cpp)
+  # find unique elements-- big data resilient (unique.cpp)
   meta_file <- "craigslist-bc-sublets-data-mar.csv"
   html_file <- "craigslist-sublet-data-bc-html-mar.csv"
   harmari_craigslist_parsing(html_file, meta_file)
