@@ -188,6 +188,8 @@ match_infiles<-function(in_dir){
     meta_match[length(meta_match) + 1] <- meta[max_j]
   }
 
+  # *** at this point, need to flag if the correspondence is not 1-1
+
   # check if number of unique elements in dom and rng are same
   cat("\n\n\t** To be executed after pressing [return] (press ctrl-c to abort):\n")
   for(i in 1:length(html_match)){
