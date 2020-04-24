@@ -189,7 +189,7 @@ match_infiles<-function(in_dir){
   }
 
   # check if number of unique elements in dom and rng are same
-  cat("\n\n\tto be executed after pressing return:\n")
+  cat("\n\n\t** To be executed after pressing [return] (press ctrl-c to abort):\n")
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
