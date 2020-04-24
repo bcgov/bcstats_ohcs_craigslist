@@ -39,6 +39,9 @@ def join(args_s):
     print('+w', out_fn)
     outf = open(out_fn, 'wb')
 
+    ld = os.listdir('html')
+    open(".listdir_1.txt", "wb").write(("\n".join(ld)).encode())
+
     with open(meta_f, encoding="utf8", errors='ignore') as csvfile:
         csvreader, is_hdr = csv.reader(csvfile, delimiter=','), True
         ci, n_fields, rng = 0, 0, 0
@@ -81,6 +84,7 @@ def join(args_s):
                     print(line)
                     err('bad parse: ' + str(len(line)) + ' ' + str(len(html_fields)))
 
+                assert_remove('html' + os.path.sep + id_s)
                 assert_remove(fn)  # delete file so we know which html records aren't in meta_file
 
                 line = line.split(',')
@@ -124,5 +128,63 @@ def join(args_s):
                       "eta=" + str(round(trem / 3600., 2)) + 'h',
                       "n=" + str(ci))
             ci += 1
-    print("number of records", ci)
+
+    print("number of records, meta only", ci)
+    ld = os.listdir('html')
+    open(".listdir_2.txt", "wb").write(("\n".join(ld)).encode())
+
+    for id_s in ld:
+        new_row = ['' for i in range(0, len(meta_fields))]
+        new_row[0] = id_s
+
+        # should probably mod out the common code sections here!
+        id_s = id_s.strip()
+        # open parsed html file
+        fn = 'parsed' + os.path.sep + id_s
+        if not os.path.exists(fn):
+            print('could not find file: ' + str([fn]))
+            n_skip += 1
+            continue
+
+        # print("fn", fn)
+        fields, line = html_cleanup(fn)
+        if len(line.split(',')) != len(html_fields):
+            print(line)
+            err('bad parse: ' + str(len(line)) + ' ' + str(len(html_fields)))
+
+        assert_remove('html' + os.path.sep + id_s)
+        assert_remove(fn)  # delete file so we know which html records aren't in meta_file
+     
+        line = line.split(',')
+        new_row = [*new_row, *line]
+
+        # open otherAttributes file
+        fn2 = 'otherAttributes' + os.path.sep + id_s
+        if not os.path.exists(fn2):
+            print('could not find file: ' + str([fn2]))
+            n_skip += 1
+            continue
+
+        other = open(fn2, 'rb').read()
+        try:
+            other = other.decode('latin-1')
+        except Exception:
+            other = other.decode('utf-8')
+
+        assert_remove(fn2) # delete file so we know which otherAttrs records not in meta_file
+
+        other = other.strip().strip("!")
+        other = other[2:]
+        other = other.replace('"', '')
+        other = other.replace(';', '&')
+        other = other.replace(',', ';')
+
+        new_row.append(other)
+        new_row = '\n' + ','.join(new_row)
+        outf.write(new_row.encode())  # write out header
+        ci += 1
+
+    print("number of records, total", ci)
     print("metadata records skipped", n_skip)
+
+    outf.close()
