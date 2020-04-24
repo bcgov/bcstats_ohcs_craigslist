@@ -106,7 +106,6 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
 
   # 4) parse the html files using multithreading
   mkdir("parsed")
-  print(paste(i, html[i], j, meta[j], score))
   html_parse(paste(html_file, n_records, sep=","))
 
   # 5) join the HTML data with the metadata from the other file
@@ -190,7 +189,7 @@ match_infiles<-function(in_dir){
   }
 
   # check if number of unique elements in dom and rng are same
-  cat("to be executed after pressing return:\n")
+  cat("\n\n\tto be executed after pressing return:\n")
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
@@ -208,18 +207,10 @@ match_infiles<-function(in_dir){
   # when the program runs, it generates a new file: meta_file_name + "_join.csv"
   # therefore, a non-identified output file, is a concatenated file
 
-  # so, don't need to match _join.csv file, on ID
-  # need to match html / meta files, on ID?
 
-  # csv_slice: extract
-
-  # process matched files
-
+  # csv_slice: extract? if matching on ID
   # concatenate all-- big data resilient
-
   # find unique elements-- big data resilient (unique.cpp)
-  # meta_file <- "craigslist-bc-sublets-data-mar.csv"
-  # html_file <- "craigslist-sublet-data-bc-html-mar.csv"
 }
 
 
