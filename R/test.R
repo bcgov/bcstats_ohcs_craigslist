@@ -160,11 +160,12 @@ match_infiles<-function(in_dir){
     return(find)
   }
 
-  # could hypothetically match on ID but we'll match on name and warn
+  # could hypothetically match on ID but we'll match on name and:
+  # *****  warn (don't forget to implement)
 
-  # at this point, need to restrict string chunks to length 3, if not numeric
+  # *** at this point, need to restrict string chunks to length 3, if not numeric
 
-  # might also need to adapt metric to handle potentially varying number of chunks (try it on all data files with original names, and see if it works!!!)
+  # *** might also need to adapt metric to handle potentially varying number of chunks (try it on all data files with original names, and see if it works!!!)
   for(i in 1:length(html)){
     s<-html[i]
     x<-chunks(s)
