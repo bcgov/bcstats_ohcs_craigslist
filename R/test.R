@@ -17,7 +17,7 @@ p_sep <- .Platform$file.sep # platform specific path separator
 
 wait_return <- function(){
   cat('press [return] to continue')
-  invisible(scan("stdin", character(), nlines=1, quiet=TRUE))
+  return(scan("stdin", character(), nlines=1, quiet=TRUE))
   # b <- scan("stdin", character(), n=1)
 }
 
@@ -106,6 +106,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
 
   # 4) parse the html files using multithreading
   mkdir("parsed")
+  print(paste(i, html[i], j, meta[j], score))
   html_parse(paste(html_file, n_records, sep=","))
 
   # 5) join the HTML data with the metadata from the other file
@@ -160,18 +161,49 @@ match_infiles<-function(in_dir){
     return(find)
   }
 
+  # could hypothetically match on ID but we'll match on name and warn
   for(i in 1:length(html)){
     s<-html[i]
     x<-chunks(s)
+    max_j <- 0
+    max_s <- 0.
+    
     for(j in 1:length(meta)){
       score<-0
-      mj<-meta[j]
+      mj <- meta[j]
       x1 <- x[[1]]
-      if(within(x1, mj)){
-        score <- score + 1
+      y <- chunks(mj)
+
+      for(k in 1:length(y[[1]])){
+        if(within(x1, y[[1]][k])){
+          score <- score + 1
+        }
+      }
+
+      if(score > max_s){
+	max_j <- j
+        max_s <- score 
       }
     }
+    html_match[length(html_match) + 1] <- html[i]
+    meta_match[length(meta_match) + 1] <- meta[max_j]
   }
+
+  # check if number of unique elements in dom and rng are same
+  cat("to be executed after pressing return:\n")
+  for(i in 1:length(html_match)){
+    meta_file <- meta_match[i]
+    html_file <- html_match[i]
+    cat(paste("harmari_craigslist_parsing(", html_file, ",", meta_file, ")\n"), sep='')
+  }
+  wait_return()
+
+  for(i in 1:length(html_match)){
+    meta_file <- meta_match[i]
+    html_file <- html_match[i]
+    harmari_craigslist_parsing(html_file, meta_file)
+  }
+
 
   # when the program runs, it generates a new file: meta_file_name + "_join.csv"
   # therefore, a non-identified output file, is a concatenated file
@@ -184,15 +216,11 @@ match_infiles<-function(in_dir){
   # process matched files
 
   # concatenate all-- big data resilient
-  wait_return()
-  quit()
 
   # find unique elements-- big data resilient (unique.cpp)
-  meta_file <- "craigslist-bc-sublets-data-mar.csv"
-  html_file <- "craigslist-sublet-data-bc-html-mar.csv"
-  harmari_craigslist_parsing(html_file, meta_file)
+  # meta_file <- "craigslist-bc-sublets-data-mar.csv"
+  # html_file <- "craigslist-sublet-data-bc-html-mar.csv"
 }
 
-wait_return()
 
 match_infiles(".")
