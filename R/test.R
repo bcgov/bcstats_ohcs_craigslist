@@ -10,6 +10,29 @@ if(length(args)==0){
   # stop("test.R [input directory name]");
 }
 
+err <- function(msg){
+  cat(paste("Error:", msg, "\n", sep=""))
+  quit()
+}
+
+wait_return <- function(){
+  cat('press [return] to continue')
+  return(scan("stdin", character(), nlines=1, quiet=TRUE))
+  # b <- scan("stdin", character(), n=1)
+}
+
+pkg_reqd<-c("Rcpp", "reticulate")
+to_install<-pkg_reqd[!(pkg_reqd %in% installed.packages()[,"Package"])]
+if(length(to_install)){
+  cat("required packages to install:\n")
+  print(to_install)
+  cat("press return to install required packages:\n")
+  cat("** NOTE: if this doesn't work, please re-run the script with administrator / super-user privileges..\n")
+  wait_return()
+  install.packages(to_install)
+  err("install complete: exiting, please restart program\n")
+}
+
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
 
@@ -23,11 +46,6 @@ wait_return <- function(){
 
 mod<-function(x, m){
   return(x - floor(x / m) * m)
-}
-
-err<-function(m){
-  cat(paste("Error:", m, "\n"))
-  quit()
 }
 
 # thanks to Sam Albers and Craig Hutton for helping solve this
@@ -144,10 +162,14 @@ match_infiles<-function(in_dir){
   html_match<-character(0)
   meta_match<-character(0)
 
-  chunks<-function(str){
+  chunks<-function(str, chunk_len){
     s<-str
     s<-gsub("[.]", "-", s)
-    return(strsplit(s, "-"))
+    x<-strsplit(s, "-")
+    for(k in 1:length(x[[1]])){
+      x[[1]][k] <- substr(x[[1]][k], 1, chunk_len)
+    }
+    return(x)
   }
 
   within<-function(x, s){
@@ -168,7 +190,8 @@ match_infiles<-function(in_dir){
   # *** might also need to adapt metric to handle potentially varying number of chunks (try it on all data files with original names, and see if it works!!!)
   for(i in 1:length(html)){
     s<-html[i]
-    x<-chunks(s)
+    x<-chunks(s, 3)
+    n_x<-length(x[[1]])
     max_j <- 0
     max_s <- 0.
     
@@ -176,7 +199,8 @@ match_infiles<-function(in_dir){
       score<-0
       mj <- meta[j]
       x1 <- x[[1]]
-      y <- chunks(mj)
+      y <- chunks(mj, 3)
+      n_y <- length(y[[1]])
 
       for(k in 1:length(y[[1]])){
         if(within(x1, y[[1]][k])){
@@ -184,16 +208,27 @@ match_infiles<-function(in_dir){
         }
       }
 
+      # scale score with respect to length of strings
+      score <- 2. * score / (n_x + n_y)
+
       if(score > max_s){
 	max_j <- j
         max_s <- score 
       }
+      cat(paste("**score:", score, " html: ", html[i], " meta: ", meta[j], "\n", sep=""))
     }
+    cat(paste("->score:", score, " html: ", html[i], " meta: ", meta[max_j], "\n", sep=""))
     html_match[length(html_match) + 1] <- html[i]
     meta_match[length(meta_match) + 1] <- meta[max_j]
   }
 
-  # *** at this point, need to flag if the correspondence is not 1-1
+  # error if the correspondence is not 1-1
+  if(length(html_match) != length(unique(html_match))){
+    err("automatic file-matching failed")
+  }
+  if(length(meta_match) != length(unique(meta_match))){
+    err("automatic file-matching failed")
+  }
 
   # check if number of unique elements in dom and rng are same
   cat("\n\n\t** To be executed after pressing [return] (press ctrl-c to abort):\n")
@@ -202,6 +237,7 @@ match_infiles<-function(in_dir){
     html_file <- html_match[i]
     cat(paste("harmari_craigslist_parsing(", html_file, ",", meta_file, ")\n"), sep='')
   }
+  quit()
   wait_return()
 
   for(i in 1:length(html_match)){
