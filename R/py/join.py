@@ -12,7 +12,7 @@ def assert_remove(fn):
     if os.path.exists(fn):
         err("file not removed: " + str(fn))
 
-    print("rm " + str(fn))
+    # print("rm " + str(fn))
 
 
 def join(args_s):
