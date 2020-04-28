@@ -43,11 +43,6 @@ rmrf<-function(d){
   unlink(d, recursive=TRUE, force=TRUE)
 }
 
-if(FALSE){
-  cat("force recompile..\n")
-  rmrf("tmp")
-}
-
 mod<-function(x, m){
   return(x - floor(x / m) * m)
 }
