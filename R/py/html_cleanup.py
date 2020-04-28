@@ -28,8 +28,9 @@ def html_cleanup(fn):
     data = {}
     if not os.path.exists(fn):
         err("Error: could not find file: " + str(fn))
+        sys.exit(1)
 
-    html = open(fn).read()  # open the data
+    html = open(fn, "rb").read().decode()  # open the data
     soup = BeautifulSoup(html, 'lxml')  # parse the data
 
     # results from fp() get keyed w./ tag, minus symbol prefix \in {., #}
