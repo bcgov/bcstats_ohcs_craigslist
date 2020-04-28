@@ -68,7 +68,7 @@ void cr(FILE * f){
 }
 
 //[[Rcpp::export]]
-int extract(StringVector args){
+size_t extract(StringVector args){
   printf("extract()\n");
 
   int argc = args.size();
@@ -139,7 +139,7 @@ int extract(StringVector args){
 
     // the next five lines replace the statement: sscanf(*s, "%zu", &start_p);
     char * tmp1 = (char *)(void *) alloc(n + 1);
-    for(int m = 0; m < n; m++) tmp1[m] = (*s)[m];
+    for(size_t m = 0; m < n; m++) tmp1[m] = (*s)[m];
     tmp1[n] = '\0';
     sscanf(tmp1, "%zu", &start_p);
     free(tmp1);
@@ -149,7 +149,8 @@ int extract(StringVector args){
 
     // now find end tag
     next = 0;
-    while(!go_to(f, end_tag, tag_len, buf, &next, &fp));
+    while(!go_to(f, end_tag, tag_len, buf, &next, &fp)){
+    }
 
     // this is the span of the html
     if(debug){
@@ -191,6 +192,7 @@ int extract(StringVector args){
     if(debug){
       printf("\nofn:[%s]\n", t2);
     }
+
     FILE * j = fopen(t2, duplicates?"ab":"wb");
 
     // write html to file, here:
@@ -223,20 +225,24 @@ int extract(StringVector args){
       prints(*s, n2);
       printf("\n");
     }
-    size_t nw2 = fwrite(*s, sizeof(char), strlen(*s), j);
+    fwrite(*s, sizeof(char), strlen(*s), j);
     fclose(j);
-
+	
     if(++i % 1000 == 0){
-      float frac = 100. * (float)fp / (float)infile_size;
+      double frac = 100. * (double)fp / (double)infile_size;
       // time_t t1; time(&t1);
-      float dt = (float)(clock() - c0) / (float) CLOCKS_PER_SEC; // (float)t1 - (float)t0;
-      float nps = (float)fp / dt;
-      float eta = (float)(infile_size - fp) / nps;
-      printf("  %%%.3f +w %s eta: %fs i=%zu\n", frac, t, eta, i );
+      double dt = (double)(clock() - c0) / (double) CLOCKS_PER_SEC; // (float)t1 - (float)t0;
+      double nps = (double)fp / (double)dt;
+      double eta = (double)((double)infile_size - (double)fp) / (double)nps;
+      int pct = (int)ceil(frac);
+      printf("  %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
     }
     free(t);
   }
   while(n > 0);
+ 
+  fclose(f);
+  fclose(g);
 
   // end program
   free(*s);
@@ -244,6 +250,5 @@ int extract(StringVector args){
   time_t t1;
   time(&t1);
   printf("dt %fs\n", (float)(t1 - t0));
-
   return 0;
 }
