@@ -14,20 +14,22 @@ def fp(soup, pattern):
     return s
 
 def parse_file(fn):
-    html = open(fn).read()
+    html = open(fn, "rb").read().decode()
     html = html.replace('""', '"')
     soup = BeautifulSoup(html, 'lxml')
     # print("title", soup.title.string)
 
     # discard info not inside html tag
     if 'html' not in soup.contents:
-        err("expected html in soup.contents")
-
-    for c in soup.contents:
-        if c.name == 'html':
-            soup = c
-            break
-
+        # print("soup.contents", soup.contents)
+        # err("expected html in soup.contents")
+        # on windows, everything is inside the html tag.
+        pass
+    else:
+        for c in soup.contents:
+            if c.name == 'html':
+                soup = c
+                break
     patterns = ['.postingtitletext',
                 '.price',
                 '.attrgroup',
@@ -47,6 +49,8 @@ def parse_file(fn):
     return ofn  # return output file name
 
 def html_parse(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
+    if __name__ != "__main__":
+        return
     '''
     input html files reside in html/
     output results will be put in parsed/
@@ -66,13 +70,21 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
 
     if not os.path.exists("parsed"):
         os.mkdir("parsed") # make "parsed" folder
-    t0, ci, inputs = time.time(), 0, []
+    t0 = time.time()
+    ci = 0
+    inputs = []
 
     # walk the file structure and list the files to parse
-    for root, dirs, files in os.walk("html", topdown=False):
+    for root, dirs, files in os.walk("html" + os.path.sep, topdown=False):
         for name in files:
             fn = os.path.join(root, name)  # html filename
-            inputs.append(fn)  # add it to the list to process in parallel
+            number = 0
+            is_number = False
+            try: number = int(name); is_number = True
+            except: pass
+                
+            if is_number:  # skip a phantom file that exists in windows for some reason?
+                inputs.append(fn)  # add it to the list to process "in parallel" (not on windows)
 
             # simple progress bar
             ci += 1
@@ -83,5 +95,4 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
                 print(ci, ci / nrow, "t", nt - t0, "eta", trem, "eta(h)", trem / 3600.)
 
     # run the html parsing in parallel
-    print("start parfor")
     parfor(parse_file, inputs)  # need C/C++ version of this
