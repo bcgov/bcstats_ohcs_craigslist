@@ -35,6 +35,11 @@ if(length(to_install)){
 
 library(Rcpp) # install.packages("Rcpp")
 library(reticulate) # install.packages("reticulate")
+cat("checking that python libraries are installed..\n")
+py_install("bs4")
+py_install("html5lib")
+py_install("lxml")
+cat("got past the python libraries installation\n")
 
 p_sep <- .Platform$file.sep # platform specific path separator
 
