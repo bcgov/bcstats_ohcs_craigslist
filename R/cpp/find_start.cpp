@@ -66,21 +66,36 @@ int find_start(StringVector args){
 
   string c(arg + string("_tag"));
   h = fopen(c.c_str(), "wb");
+  if(!h){
+    str msg("failed to open file:");
+    msg += str(c);
+    err(msg.c_str());
+  }
+
 
   fseek(f, 0L, SEEK_END); // get file size
   size_t fs = ftell(f);
+  printf("file size (bytes): %zu\n", fs);
+
   rewind(f);
   rewind(g);
 
   size_t i;
+  size_t n_match = 0;
   for(i = 0; i < fs; i++){
     if(i < fp) continue; // delete this?
 
-    match(start_tag, start_tag_len, buf, &next, &fp);
-    if(i % 100000000 == 0){
+    int result = match(start_tag, start_tag_len, buf, &next, &fp);
+
+    if(result == 1){
+      n_match += 1;
+    }
+
+    if(i % 10000000 == 0){
       printf("%f\n", 100. * ((float)(i + 1) / (float)fs));
     }
   }
+  Rprintf("n_match %zu\n", n_match);
   // printf("n %ld\n", (long int)n);
   free(buf);
   fclose(f);

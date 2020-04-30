@@ -127,6 +127,8 @@ size_t extract(StringVector args){
   char ** s = (char **) alloc(sizeof(char *));;
   *s = NULL;
 
+  FILE * log_f = fopen("extract_log.txt", "wb");
+
   size_t i = 0;
   do{
     n = gs(g, s);
@@ -153,9 +155,11 @@ size_t extract(StringVector args){
     }
 
     // this is the span of the html
-    if(debug){
-      printf("\nstart_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
-    }
+    //if(debug){
+      printf("start_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
+    //}
+
+    fprintf(log_f, "start_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
 
     // now just need to apply CR and grab the start tag, and we've split the file
     fseek(f, start_p, SEEK_SET);
@@ -204,7 +208,12 @@ size_t extract(StringVector args){
     size_t nr = fread(dat, sizeof(char), dat_sz, f);
     size_t nw = fwrite(dat, sizeof(char), dat_sz, h);
 
-    if(nr != nw) err("write fail");
+    if(nr != nw){
+      Rprintf("nr %zu\n", nr);
+      Rprintf("nw %zu\n", nw);
+      Rprintf("t %s\n", t);
+      err("write fail");
+    }
     fclose(h);
     free(dat);
 
@@ -227,15 +236,16 @@ size_t extract(StringVector args){
     }
     fwrite(*s, sizeof(char), strlen(*s), j);
     fclose(j);
-	
-    if(++i % 1000 == 0){
+
+    i += 1;    
+    if(i% 111 == 0){
       double frac = 100. * (double)fp / (double)infile_size;
       // time_t t1; time(&t1);
       double dt = (double)(clock() - c0) / (double) CLOCKS_PER_SEC; // (float)t1 - (float)t0;
       double nps = (double)fp / (double)dt;
       double eta = (double)((double)infile_size - (double)fp) / (double)nps;
       int pct = (int)ceil(frac);
-      printf("  %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
+      Rprintf("  %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
     }
     free(t);
   }
@@ -244,11 +254,13 @@ size_t extract(StringVector args){
   fclose(f);
   fclose(g);
 
+  fclose(log_f);
   // end program
   free(*s);
 
   time_t t1;
   time(&t1);
   printf("dt %fs\n", (float)(t1 - t0));
+  Rprintf("n_extract %zu\n", i);
   return 0;
 }
