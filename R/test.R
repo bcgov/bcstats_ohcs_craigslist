@@ -1,7 +1,6 @@
 ## test.R:
 ## windows intructions: from cmd.exe:
-## Rscript test.R 
-
+## Rscript test.R
 
 ## todo: check for nonunique records
 
@@ -146,7 +145,6 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   message("5. join html and metadata step..")
   join(paste(html_file, meta_file, n_records, sep=','))
   message(" 5. end join html and metadata step..")
-
 
 }
 
