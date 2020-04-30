@@ -85,7 +85,7 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
                 is_number = True
             except:
                 err("is_number test: failed on name='" + str(name) + "'")
-                
+
             if is_number:  # skip a phantom file that exists in windows for some reason?
                 inputs.append(fn)  # add it to the list to process "in parallel" (not on windows)
 

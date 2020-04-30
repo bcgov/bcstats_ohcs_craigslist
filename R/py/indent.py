@@ -24,7 +24,6 @@ in_f = open(in_fn, 'rb')
 lines = in_f.readlines()
 in_f.close()
 
-lines = [((' ' * shift_width) +
-         line.decode('utf-8').rstrip()) for line in lines]
+lines = [((' ' * shift_width) + line.decode('utf-8').rstrip()) for line in lines]
 
 open(in_fn, 'wb').write(('\n'.join(lines)).encode())

@@ -6,7 +6,7 @@ exec(open("py" + os.path.sep + "html_cleanup.py").read())
 def assert_remove(fn):
     if not os.path.exists(fn):
         err("file did not exist: " + str(fn))
-    
+
     os.remove(fn)
 
     if os.path.exists(fn):
@@ -17,7 +17,7 @@ def assert_remove(fn):
 
 def join(args_s):
     '''join together the following sources, join on ID number
-            1) metadata entry -- if available :D  
+            1) metadata entry -- if available :D
             2) attr from parsed/ files
             3) attr from otherAttributes/ files'''
 
@@ -154,7 +154,7 @@ def join(args_s):
 
         assert_remove('html' + os.path.sep + id_s)
         assert_remove(fn)  # delete file so we know which html records aren't in meta_file
-     
+
         line = line.split(',')
         new_row = [*new_row, *line]
 
