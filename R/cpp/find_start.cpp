@@ -72,7 +72,6 @@ int find_start(StringVector args){
     err(msg.c_str());
   }
 
-
   fseek(f, 0L, SEEK_END); // get file size
   size_t fs = ftell(f);
   printf("file size (bytes): %zu\n", fs);

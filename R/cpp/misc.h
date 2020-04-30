@@ -35,8 +35,8 @@ void prints(char * s, size_t n){
 }
 
 /* get line: from current fpos, until newline / end.
-  dynamic memory allocation: allocates it's own memory
-  but free existing variable first if needed */
+dynamic memory allocation: allocates it's own memory
+but free existing variable first if needed */
 size_t gs(FILE * f, char ** b){
   // clear buffer if exists
   if(*b != NULL) free(*b);
@@ -81,9 +81,9 @@ size_t file_size(const char * fn){
 
 inline char separator(){
   #if defined _WIN32 || defined WIN32 || defined __CYGWIN__
-    return '\\';
+  return '\\';
   #else
-    return '/';
+  return '/';
   #endif
 }
 

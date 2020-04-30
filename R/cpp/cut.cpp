@@ -1,4 +1,4 @@
-// this was used for debugging: not yet migrated to R 
+// this was used for debugging: not yet migrated to R
 //
 // cut.cpp: this is a C program for debugging binary read file access from byte loc in size_t
 //

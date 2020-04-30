@@ -4,20 +4,20 @@ using namespace std;
 using namespace Rcpp;
 
 /* rm extract; gcc -O4 extract.c -o extract; ./extract craigslist-apa-data-bc-html-othermeta.csv
- note: should delete the html and otherAttributes folders before (re)running
+note: should delete the html and otherAttributes folders before (re)running
 
- the program can use append mode for writing files, to catch records with same ID:
- see line: int duplicates = 0; // to ignore duplicates by taking latest record
+the program can use append mode for writing files, to catch records with same ID:
+see line: int duplicates = 0; // to ignore duplicates by taking latest record
 */
 
 int go_to(FILE * f, const char * tag, size_t tag_len, char * buf, size_t * next, size_t * fp){
   if(*next == 0){
-    *fp = ftell(f);  // if at start of match, record position
+    *fp = ftell(f); // if at start of match, record position
   }
 
   char c = fgetc(f);
   if(c != tag[(*next)++]){
-    *next = 0;  // failed to match a char
+    *next = 0; // failed to match a char
     return 0;
   }
   else{
@@ -26,15 +26,15 @@ int go_to(FILE * f, const char * tag, size_t tag_len, char * buf, size_t * next,
   }
 
   if(*next == tag_len){
-    *next = 0;  // if we matched the whole tag
+    *next = 0; // if we matched the whole tag
 
-    fseek(f, *fp, SEEK_SET);  // read stuff from match pos'n to confirm
+    fseek(f, *fp, SEEK_SET); // read stuff from match pos'n to confirm
     size_t br = fread(&buf[0], sizeof(char), tag_len, f);
     if(br != tag_len){
       printf("Err: br != tag_len\n");
       exit(1);
     }
-    buf[tag_len] = '\0';  // printf("match: buf[%s]\n", buf);
+    buf[tag_len] = '\0'; // printf("match: buf[%s]\n", buf);
     if(strncmp(buf, tag, tag_len) != 0){
       printf("Err: mismatch\n");
       exit(1);
@@ -75,7 +75,7 @@ size_t extract(StringVector args){
   if(argc != 1) err("extract [input csv filename]");
 
   // int main(int argc, char ** argv)
-  int duplicates = 0;  // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
+  int duplicates = 0; // duplicates = 0: ignore duplicates by taking latest record, vs duplicates = 1
   int debug = 0; // 1; // apply int debug=1; to print debug statements
 
   size_t next, fp;
@@ -237,7 +237,7 @@ size_t extract(StringVector args){
     fwrite(*s, sizeof(char), strlen(*s), j);
     fclose(j);
 
-    i += 1;    
+    i += 1;
     if(i% 111 == 0){
       double frac = 100. * (double)fp / (double)infile_size;
       // time_t t1; time(&t1);
@@ -245,12 +245,12 @@ size_t extract(StringVector args){
       double nps = (double)fp / (double)dt;
       double eta = (double)((double)infile_size - (double)fp) / (double)nps;
       int pct = (int)ceil(frac);
-      Rprintf("  %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
+      Rprintf(" %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
     }
     free(t);
   }
   while(n > 0);
- 
+
   fclose(f);
   fclose(g);
 
