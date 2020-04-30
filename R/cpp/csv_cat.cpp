@@ -12,12 +12,12 @@ bool csv_cat(StringVector args){
   str ofn(string(args[args.size() - 1]));
   cout << "data output file: " << ofn << endl;
 
-  int i, j;
+  size_t i, j;
   if(argc < 3){
     err("usage: csv_cat.cpp [input file] .. [input file n] [output destination]");
   }
   vector<string> filenames;
-  for(i = 0; i < argc - 1; i++){
+  for(i = 0; i < (size_t)(argc - 1); i++){
     filenames.push_back(string(args[i]));
   }
 
@@ -52,10 +52,9 @@ bool csv_cat(StringVector args){
     err("failed to write-open file:");
   }
   str line; // line buffer
-  time_t t0, t1;
+  time_t t0;
   time(&t0); // start time
   long unsigned int l_i = 0; // row index of output
-  long unsigned int c_i = 0;
 
   string d;
   for(j = 0; j < filenames.size(); j++){
