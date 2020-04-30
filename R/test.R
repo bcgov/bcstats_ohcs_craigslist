@@ -1,9 +1,9 @@
-# 0) track existing blobs
-# 1) need to search for / match new blobs
-# 2) need to search for / match blobs that have already been produced
-# 3) check that sublet vs apa are distinguished in the merged product
-# 4) retain only non-redundant records
-# 5) remove intermed. files, after "join"
+## test.R:
+## windows intructions: from cmd.exe:
+## Rscript test.R 
+
+
+## todo: check for nonunique records
 
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)==0){
@@ -47,28 +47,31 @@ mod<-function(x, m){
   return(x - floor(x / m) * m)
 }
 
-# thanks to Sam Albers and Craig Hutton for helping solve this
+## thanks to Sam Albers and Craig Hutton for helping solve this
 pr<-function(x){
   print(paste(paste(deparse(substitute(x)), "="), x))
 }
 
-# source a c++ function
+## source a c++ function
 src<-function(x){
   cat(paste("src(\"", x, "\")\n", sep=""))
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
-# parse craigslist data as supplied by Harmari, inc.
+## parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
+  cat("harmari_craigslist_parsing", html_file, meta_file, "\n", sep=",")
+  wait_return()
+
   join_file = paste(meta_file, "_join.csv", sep="")
 
-  # check if already extracted
+  ## check if already extracted
   if(file.exists(join_file)){
     cat(paste("file extracted:", join_file[1], sep=""), "\n")
     return(0)
   }
 
-  # c++ functionality
+  ## c++ functionality
   src("cpp/lc.cpp") # wc -l analog to avoid R.utils dep
   src("cpp/head.cpp") # head -1 analog
   src("cpp/insist.cpp") # assertion
@@ -76,7 +79,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   src("cpp/csv_cat.cpp") # merge arb. large csv: assert headers match, keep first hdr
   src("cpp/find_start.cpp") # index an HTML nested in csv, find <HTML> byte start locs
 
-  # python functionality
+  ## python functionality
   cat("Note: if prompted to install Miniconda, please say yes!\n")
   py_discover_config()
   py_available(initialize=TRUE)
@@ -87,7 +90,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   source_python("py/join.py")
   source_python("py/html_parse.py")
 
-  # test big-data resilient csv-file concatenation, on small data ironically
+  ## test big-data resilient csv-file concatenation, on small data ironically
   test_csv_cat<-function(){
     print(paste("test", p_sep, "A.csv", sep=""))
     csv_cat(c(paste("test", p_sep, "A.csv", sep=""),
@@ -107,7 +110,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
     dir.create(fn, showWarnings = FALSE)
   }
 
-  # 1) index the html file
+  ## 1) index the html file
   message("1. start index step..")
   tag_file <-paste(html_file, "_tag", sep="")
   if(!file.exists(tag_file)){
@@ -115,28 +118,31 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   }
   message(" 1. end index step..")
 
-  # 2) extract html files
+  ## 2) extract html files
   message("2. start extract step..")
   mkdir("html")
   mkdir("otherAttributes")
-  extract(html_file) # HTML file extraction
+
+  extract(html_file) ## HTML file extraction
   message(" 2. end extract step..")
 
-  # 3) count records from "meta" file
+  ## 3) count records from "meta" file
   message("3. count records step..")
   n_records <-lc(meta_file)
   message(" 3. end count records step..")
 
-  # 4) parse the html files using multithreading
+  ## 4) parse the html files using multithreading
   message("4. parse html step..")
   mkdir("parsed")
   html_parse(paste(html_file, n_records, sep=","))
   message(" 4. end parse html step")
 
-  # 5) join the HTML data with the metadata from the other file
+  ## 5) join the HTML data with the metadata from the other file
   message("5. join html and metadata step..")
   join(paste(html_file, meta_file, n_records, sep=','))
   message(" 5. end join html and metadata step..")
+
+
 }
 
 match_infiles<-function(in_dir){
@@ -162,7 +168,7 @@ match_infiles<-function(in_dir){
       print(cat(f, " ", hdr, "\n"))
     }
   }
-  # files are now categorized
+  ## files are now categorized
 
   cat("html-type files:", html, "\n") # cat is for printing. paste() is for catting!
   cat("meta-type files:", meta, "\n")
@@ -191,12 +197,6 @@ match_infiles<-function(in_dir){
     return(find)
   }
 
-  # could hypothetically match on ID but we'll match on name and:
-  # ***** warn (don't forget to implement)
-
-  # *** at this point, need to restrict string chunks to length 3, if not numeric
-
-  # *** might also need to adapt metric to handle potentially varying number of chunks (try it on all data files with original names, and see if it works!!!)
   for(i in 1:length(html)){
     s<-html[i]
     x<-chunks(s, 3)
@@ -217,7 +217,7 @@ match_infiles<-function(in_dir){
         }
       }
 
-      # scale score with respect to length of strings
+      ## scale score with respect to length of strings
       score <- 2. * score / (n_x + n_y)
 
       if(score > max_s){
@@ -231,7 +231,7 @@ match_infiles<-function(in_dir){
     meta_match[length(meta_match) + 1] <- meta[max_j]
   }
 
-  # error if the correspondence is not 1-1
+  ## error if the correspondence is not 1-1
   if(length(html_match) != length(unique(html_match))){
     err("automatic file-matching failed")
   }
@@ -239,7 +239,7 @@ match_infiles<-function(in_dir){
     err("automatic file-matching failed")
   }
 
-  # check if number of unique elements in dom and rng are same
+  ## check if number of unique elements in dom and rng are same
   cat("\n\n\t** To be executed after pressing [return] (press ctrl-c to abort):\n")
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
@@ -249,11 +249,13 @@ match_infiles<-function(in_dir){
   cat("N.B. if you wish to abort, please press ctrl-c (and then return). If not, please just press return.\n")
   wait_return()
 
+  join_files = character(0)
+
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
 
-    # clear intermediary folders before proceeding
+    ## clear intermediary folders before proceeding
     rmrf<-function(d){
       unlink(d, recursive=TRUE, force=TRUE)
     }
@@ -261,19 +263,24 @@ match_infiles<-function(in_dir){
     rmrf("otherAttributes")
     rmrf("parsed")
 
-    # n.b. if join_file already exists, this iteration of harmari_craigslist_parsing will return without performing any action
+    ## n.b. if join_file already exists, this iteration of harmari_craigslist_parsing will return without performing any action
     join_file = paste(meta_file, "_join.csv", sep="")
     harmari_craigslist_parsing(html_file, meta_file)
+
+    join_files[length(join_files) + 1] <- join_file
   }
 
-  # don't forget to delete intermediaries before each run
+  ## 6) concatenate csv files together
+  message("6. concatenate csv files together")
+  src("cpp/csv_cat.cpp")
+  join_files[length(join_files) + 1] <- "merge.csv"
+  csv_cat(join_files)
+  message(" 6. end concatenate csv files together")
+  message("output file: merge.csv")
+  cat("done\n")
+  wait_return()
 
-  # when the program runs, it generates a new file: meta_file_name + "_join.csv"
-  # therefore, a non-identified output file, is a concatenated file
-
-  # csv_slice: extract? if matching on ID
-  # concatenate all-- big data resilient
-  # find unique elements-- big data resilient (unique.cpp)
+  ## 7. find unique elements-- big data resilient (unique.cpp)
 }
 
 match_infiles(".")
