@@ -2,15 +2,12 @@ nothing<-function(){
   print("nothing function()")
 }
 
-# include other files if their member functions not yet def'd
-files <- Sys.glob("*.R")
+# include other files
 my_fn <- parent.frame(2)$ofile
 scripts <- c("run.R", "setup.R")
-for(f in files){
-  if(f != my_fn && !(f %in% scripts)){
-    fn <- strsplit(f, "\\.")[[1]][1] # primary function name
-    if(!exists(fn, inherits=TRUE)){
-      source(f)
-    }
+for(f in Sys.glob("*.R")){
+  if(! is.null(my_fn)) if(f == my_fn) next
+   if(!(f %in% scripts)){
+    if(!exists(strsplit(f, "\\.")[[1]][1], inherits=TRUE)) source(f)
   }
 }
