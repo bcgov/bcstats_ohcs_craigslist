@@ -155,9 +155,9 @@ size_t extract(StringVector args){
     }
 
     // this is the span of the html
-    //if(debug){
+    if(debug){
       printf("start_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
-    //}
+    }
 
     fprintf(log_f, "start_p %zu end_p %zu\n", start_p, fp + tag_len - 1);
 
