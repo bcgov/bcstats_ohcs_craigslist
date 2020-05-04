@@ -11,8 +11,8 @@ for(f in Sys.glob("*.R")){
 }
 
 library(Rcpp)
-library(reticulate)
-use_condaenv("r-reticulate")
+# library(reticulate)
+# use_condaenv("r-reticulate")
 p_sep <- .Platform$file.sep # platform specific path sep
 
 ## source a c++ function
@@ -21,9 +21,9 @@ src<-function(x){
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
+src("cpp/lc.cpp")
 src("cpp/fileSize.cpp")
 src("cpp/head.cpp")
-
 
 ## parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
