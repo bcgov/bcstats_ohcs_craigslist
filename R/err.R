@@ -34,6 +34,7 @@ scripts <- c("run.R", "setup.R")
 for(f in Sys.glob("*.R")){
   if(! is.null(my_fn)) if(f == my_fn) next
   if(!(f %in% scripts)){
+    print(paste("from", my_fn, "to", f))
     if(!exists(strsplit(f, "\\.")[[1]][1], inherits=TRUE)) source(f)
   }
 }
