@@ -1,4 +1,5 @@
 ## Rscript run.R ## todo: check for nonunique records
+## .libPaths() to find deps loc
 
 # include other files if their member functions not yet def'd
 my_fn <- parent.frame(2)$ofile
