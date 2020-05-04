@@ -4,6 +4,16 @@
 
 ## todo: check for nonunique records
 
+# source function files
+files <- Sys.glob("*.R")
+my_fn <- parent.frame(2)$ofile
+scripts <- c("run.R", "setup.R")
+for(f in files){
+  if(f != my_fn && !(f %in% scripts)){
+    source(f)
+  }
+}
+
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)==0){
   # stop("test.R [input directory name]");
