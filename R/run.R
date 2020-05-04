@@ -17,7 +17,6 @@ err <- function(msg){
 wait_return <- function(){
   cat('press [return] to continue')
   return(scan("stdin", character(), nlines=1, quiet=TRUE))
-  # b <- scan("stdin", character(), n=1)
 }
 
 pkg_reqd<-c("Rcpp", "reticulate")
