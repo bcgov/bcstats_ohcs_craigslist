@@ -3,6 +3,17 @@ err <- function(msg){
   quit()
 }
 
+first_idx <- function(e, x){
+  ret <- NULL
+  for(i in 1:length(x)){
+    if(x[i] == e){
+      ret <- i
+    }
+  }
+  return(ret)
+}
+
+
 # include other files if their member functions not yet def'd
 c("run.R", "setup.R")
 for(f in Sys.glob("*.R")){
