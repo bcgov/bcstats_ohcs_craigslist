@@ -7,8 +7,6 @@ err <- function(msg){
 scripts <- c("run.R", "setup.R")
 for(f in Sys.glob("*.R")){
   if(f != parent.frame(2)$ofile && !(f %in% scripts)){
-    if(!exists(strsplit(f, "\\.")[[1]][1], inherits=TRUE)){
-      source(f)
-    }
+    if(!exists(strsplit(f, "\\.")[[1]][1], inherits=TRUE)) source(f)
   }
 }
