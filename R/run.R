@@ -21,6 +21,10 @@ src<-function(x){
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
 
+src("cpp/fileSize.cpp")
+src("cpp/head.cpp")
+
+
 ## parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
   cat("harmari_craigslist_parsing", html_file, meta_file, "\n", sep=",")
