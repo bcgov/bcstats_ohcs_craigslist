@@ -12,8 +12,8 @@ for(f in Sys.glob("*.R")){
 }
 
 library(Rcpp)
-# library(reticulate)
-# use_condaenv("r-reticulate")
+library(reticulate)
+use_condaenv("r-reticulate")
 p_sep <- .Platform$file.sep # platform specific path sep
 
 ## source a c++ function
