@@ -2,7 +2,7 @@ nothing<-function(){
   print("nothing function()")
 }
 
-# include another file if function with same name as file (less ".R") asyet undefined
+# include other files if their member functions not yet def'd
 files <- Sys.glob("*.R")
 my_fn <- parent.frame(2)$ofile
 scripts <- c("run.R", "setup.R")
