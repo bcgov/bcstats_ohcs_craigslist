@@ -18,13 +18,9 @@ p_sep <- .Platform$file.sep # platform specific path sep
 
 ## source a c++ function
 src<-function(x){
-  cat(paste("src(\"", x, "\")\n", sep=""))
+  cat(paste("src(", x, ")\n", sep=""))
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
-
-src("cpp/lc.cpp")
-src("cpp/fileSize.cpp")
-src("cpp/head.cpp")
 
 ## parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
@@ -120,16 +116,20 @@ match_infiles<-function(in_dir){
   src("cpp/fileSize.cpp") # file size
 
   files<-list.files(in_dir, pattern="*.csv$")
+  if(length(files) < 1){
+    return()
+  }
+
   for(f in files){
     hdr<-head(f)
     if(hdr == "id,html,otherAttributes"){
-      html[length(html) + 1]<-f
+      html[length(html) + 1] <- f
     }
     else if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng"){
-      meta[length(meta) + 1]<-f
+      meta[length(meta) + 1] <- f
     }
     else if(hdr == "id,title,url,postDate,categoryId,cityId,location,phoneNumbers,contactName,emails,hyperlinks,price,parsedAddress,mapAddress,mapLatLng,h_price,h_bed,h_bath,h_title,h_map_accuracy,h_map_address,h_map_latitude,h_map_longitude,h_map_zoom,h_movein_date,h_notices,h_postingbody,h_attrgroup,h_mapbox,h_housing,otherAttributes"){
-      outp[length(outp) +1]<-f
+      outp[length(outp) +1] <- f
     }
     else{
       cat("Warning: Unrecognized file: ", f, "\n")
@@ -223,11 +223,15 @@ match_infiles<-function(in_dir){
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
-    mfs <- file_size(c(meta_file))
-    hfs <- file_size(c(html_file))
-    print(mfs, hfs)
+    mfs <- fileSize(c(meta_file))
+    hfs <- fileSize(c(html_file))
+
+    mfi <- first_idx(meta_file, past_file_names)
+    hfi <- first_idx(html_file, past_file_names)
+
+    if(mfs != past_file_sizes[[mfi]]) err("file size mismatch")
+    if(hfs != past_file_sizes[[hfi]]) err("file size mismatch")   
   }
-  quit()
 
   cat("N.B. if you wish to abort, please press ctrl-c (and then return). If not, please just press return.\n")
   wait_return()
