@@ -32,16 +32,6 @@ wait_return <- function(){
   return(scan("stdin", character(), nlines=1, quiet=TRUE))
 }
 
-first_idx<-function(e, x){
-  ret<-NULL
-  for(i in 1:length(x)){
-    if(x[i] == e){
-      ret <- i
-    }
-  }
-  return(ret)
-}
-
 # include other files if their member functions not yet def'd
 my_fn <- parent.frame(2)$ofile
 scripts <- c("run.R", "setup.R")
