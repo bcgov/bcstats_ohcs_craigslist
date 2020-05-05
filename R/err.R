@@ -27,6 +27,20 @@ pr<-function(x){
   print(paste(paste(deparse(substitute(x)), "="), x))
 }
 
+wait_return <- function(){
+  cat('press [return] to continue')
+  return(scan("stdin", character(), nlines=1, quiet=TRUE))
+}
+
+first_idx<-function(e, x){
+  ret<-NULL
+  for(i in 1:length(x)){
+    if(x[i] == e){
+      ret <- i
+    }
+  }
+  return(ret)
+}
 
 # include other files if their member functions not yet def'd
 my_fn <- parent.frame(2)$ofile
@@ -34,7 +48,6 @@ scripts <- c("run.R", "setup.R")
 for(f in Sys.glob("*.R")){
   if(! is.null(my_fn)) if(f == my_fn) next
   if(!(f %in% scripts)){
-    print(paste("from", my_fn, "to", f))
     if(!exists(strsplit(f, "\\.")[[1]][1], inherits=TRUE)) source(f)
   }
 }
