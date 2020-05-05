@@ -1,9 +1,10 @@
 ## setup.R 
-## usage mac/linux:
-##   sudo Rscript setup.R 
 ## usage windows:
 ## run with administrator at cmd.exe!
 ## cmd Rscript setup.R 
+
+## usage mac/linux:
+##   sudo Rscript setup.R 
 
 ## install R stuff
 pkg_reqd<-c("Rcpp", "reticulate")
@@ -16,9 +17,21 @@ if(length(to_install)){
   install.packages(to_install)
 }
 
-library(reticulate)
+library(reticulate) # just this one?
+
+if(Sys.info()[[1]] == "Linux"){
+  if(length(Sys.which("anaconda")) < 1){
+    system("sudo apt install curl")
+    if(!file.exists("conda.sh")){
+      download.file("https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh", "conda.sh", method="curl")
+    }
+    system("chmod 755 conda.sh")
+    system("./conda.sh")
+  }
+}
 
 ## install Python stuff
+conda_list()
 conda_create("r-reticulate") # conda_activate("r-reticulate")
 use_condaenv("r-reticulate")
 cat("checking that python libraries are installed..\n")
