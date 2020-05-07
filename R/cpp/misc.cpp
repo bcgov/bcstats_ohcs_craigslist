@@ -223,7 +223,7 @@ const char * sep(){
 }
 
 
-mfile::mfile(string f_n, char * mode){
+mfile::mfile(string f_n, const char * mode){
   /*
   need a flag for if we don't open the whole thing in ram..
   */
