@@ -220,6 +220,9 @@ match_infiles<-function(in_dir){
   past_file_sizes = c(1313723416, 14167108, 540821, 337123080, 301100188, 15806712, 22868906488, 1207390218, 3277267614, 1913701273, 35371689, 115374402, 727855, 1196955, 21663494, 65148136, 6931814, 218584, 308603553, 648129837)
 
   ## check expected file sizes
+  sink("data_file_sizes.txt")
+  cat("meta_file,html_file,meta_file_size,html_file_size")
+  sink()
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
@@ -230,14 +233,17 @@ match_infiles<-function(in_dir){
     hfi <- first_idx(html_file, past_file_names)
 
     if(mfs != past_file_sizes[[mfi]]) err("file size mismatch")
-    if(hfs != past_file_sizes[[hfi]]) err("file size mismatch")   
+    if(hfs != past_file_sizes[[hfi]]) err("file size mismatch")
+
+    sink("data_file_sizes.txt", append=TRUE)
+    cat(paste("\n", meta_file, html_file, mfs, hfs, sep=",")) 
+    sink()
   }
 
-  cat("N.B. if you wish to abort, please press ctrl-c (and then return). If not, please just press return.\n")
-  wait_return()
+  ## cat("N.B. if you wish to abort, please press ctrl-c (and then return). If not, please just press return.\n")
+  ## wait_return()
 
   join_files = character(0)
-
   for(i in 1:length(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
@@ -265,7 +271,7 @@ match_infiles<-function(in_dir){
   message(" 6. end concatenate csv files together")
   message("output file: merge.csv")
   cat("done\n")
-  wait_return()
+  ## wait_return()
 
   ## 7. find unique elements-- big data resilient (unique.cpp)
 }
