@@ -1,5 +1,25 @@
-file_names = ['craigslist-bc-sublets-data-mar.csv', 'craigslist-sublet-data-bc-html-mar.csv', 'craigslist-apa-data-bc.csv', 'craigslist-sublet-data-bc.csv', 'craigslist-apa-data-bc-html-othermeta.csv', 'craigslist-sublet-data-bc-html-othermeta.csv', 'craigslist-apa-data-bc-html-jan.csv', 'craigslist-apa-data-bc-html-sep.csv', 'craigslist-bc-apa-data-jan.csv', 'craigslist-sublet-data-bc-html-jan.csv', 'craigslist-bc-sublet-data-sep.csv', 'craigslist-bc-sublet-data-jan.csv', 'craigslist-bc-apa-data-sep.csv', 'craigslist-sublet-data-bc-html-sep.csv', 'craigslist-bc-apartment-data-apr.csv', 'craigslist-bc-sublets-data-apr.csv', 'craigslist-sublet-data-bc-html-apr.csv', 'craigslist-apa-data-bc-html-apr.csv']
-file_sizes = ['540821', '337123080', '301100188', '15806712', '22868906488', '1207390218', '3277267614', '1913701273', '35371689', '115374402', '727855', '1196955', '21663494', '65148136', '6931814', '218584', '308603553', '648129837']
+file_names = ['craigslist-apa-data-bc-html-mar.csv',
+              'craigslist-bc-apartment-data-mar.csv',
+              'craigslist-bc-sublets-data-mar.csv',
+              'craigslist-sublet-data-bc-html-mar.csv',
+              'craigslist-apa-data-bc.csv',
+              'craigslist-sublet-data-bc.csv',
+              'craigslist-apa-data-bc-html-othermeta.csv',
+              'craigslist-sublet-data-bc-html-othermeta.csv',
+              'craigslist-apa-data-bc-html-jan.csv',
+              'craigslist-apa-data-bc-html-sep.csv',
+              'craigslist-bc-apa-data-jan.csv',
+              'craigslist-sublet-data-bc-html-jan.csv',
+              'craigslist-bc-sublet-data-sep.csv',
+              'craigslist-bc-sublet-data-jan.csv',
+              'craigslist-bc-apa-data-sep.csv',
+              'craigslist-sublet-data-bc-html-sep.csv',
+              'craigslist-bc-apartment-data-apr.csv',
+              'craigslist-bc-sublets-data-apr.csv',
+              'craigslist-sublet-data-bc-html-apr.csv',
+              'craigslist-apa-data-bc-html-apr.csv']
+
+file_sizes = ['1313723416', '14167108', '540821', '337123080', '301100188', '15806712', '22868906488', '1207390218', '3277267614', '1913701273', '35371689', '115374402', '727855', '1196955', '21663494', '65148136', '6931814', '218584', '308603553', '648129837']
 
 import os
 import sys

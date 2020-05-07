@@ -2,7 +2,7 @@ import os
 import datetime
 import sys; args = sys.argv
 
-month_only = False # change to true to trunate to first of month
+month_only = True # False # change to true to trunate to first of month
 
 # e.g., input file: out.csv_unique-id-_.csv_postdate
 if len(args) < 2:
@@ -27,9 +27,8 @@ n_na = 0
 dates = []
 for i in range(0, len(lines)):
     lines[i] = lines[i].split("T")[0]
-    print(lines[i])
-    print("split", lines[i].split("-"))
-    sys.exit(1)
+    #print(lines[i])
+    #print("split", lines[i].split("-"))
     try:
         y, m, d = lines[i].split('-')
         dates.append(datetime.datetime(int(y), int(m), int(d) if not month_only else 1))
@@ -68,7 +67,7 @@ for d in counts:
 import matplotlib.pyplot as plt
 for yy in x:
     plt.plot(x[yy],y[yy], label=str(yy))
-#plt.legend()
+plt.legend()
 plt.title("data counts by month and year")
 plt.tight_layout()
 plt.show()
