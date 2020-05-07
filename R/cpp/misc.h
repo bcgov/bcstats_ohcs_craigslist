@@ -245,7 +245,7 @@ class mfile{
   //T x; // just using this to trick the compiler to let us implement the class in the header!
   public:
 
-  mfile(string f_n, char * mode);
+  mfile(string f_n, const char * mode);
   int getline(string & buf);
   void rewind();
   void close();
