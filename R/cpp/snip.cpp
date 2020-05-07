@@ -5,7 +5,8 @@
 //
 int main(int argc, char** argv){
   if(argc < 2){
-    err("snip [filename] #remove whitespace from file-end: optional additional arg: if provided, no backup! By default, filename.bak created");
+    err(str("snip [filename] #remove whitespace from file-end: optional additional arg:") +
+	str(" if provided, no backup! By default, filename.bak created"));
   }
   str fn(argv[1]);
   if(str(".dat") == fn.substr(fn.size() - 4, fn.size())){
