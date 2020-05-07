@@ -1,17 +1,3 @@
-// Copyright 2019 Province of British Columbia
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 /* 20190303 csv_select: filter a given CSV file for records where a given field matches the same field in the other file (somewhere)
 
 use this for filtering a dataset for a specific cohort (represented by studyid in another file)
@@ -32,7 +18,7 @@ int main(int argc, char ** argv){
   if(argc < 4) err("usage: csv_select [file to filter by] [field name] [file to filter] .. [last file to filter");
 
   string select_filename(argv[1]); // name of file to select by
-  mfile f_s(select_filename, "rb"); // if this was too big to keep in mem, could use rewind() to re-scan it
+  mfile f_s(((char *) (void *)select_filename.c_str()), "rb"); // if this was too big to keep in mem, could use rewind() to re-scan it
   string s_f_name(argv[2]);
   unsigned int n_files = argc - 3;
   vector<string> file_names;

@@ -16,12 +16,13 @@
 #include<algorithm>
 
 #include <stdio.h> /* defines FILENAME_MAX */
+
 #ifdef WINDOWS
-#include <direct.h>
-#define _cwd _getcwd
+  #include <direct.h>
+  #define _cwd _getcwd
 #else
-#include <unistd.h>
-#define _cwd getcwd
+  #include <unistd.h>
+  #define _cwd getcwd
 #endif
 
 using namespace std;
@@ -39,14 +40,10 @@ using namespace std;
 void rewind(ifstream &a);
 
 #define str string
-string cwd();
+str cwd();
 
 // error message
-void err(const char * msg){
-  printf("Error: %s\n", msg);
-  exit(1);
-}
-
+void err(const char * msg);
 void err(string msg);
 
 /* split a string (a-la python) */
@@ -83,8 +80,9 @@ template<class A, class B> std::ostream& operator << (std::ostream& os, const st
 }
 
 // allocate memory
-void * alloc(size_t nb){
-  // printf("alloc(%zu)\n", nb);
+void * alloc(size_t nb);
+/* 
+      	// printf("alloc(%zu)\n", nb);
   void * d = malloc(nb);
   if(!d){
     printf("bytes requested: %zu\n", nb);
@@ -93,6 +91,7 @@ void * alloc(size_t nb){
   memset(d, '\0', nb);
   return d;
 }
+*/
 
 #include <cctype>
 #include <locale>
@@ -159,17 +158,21 @@ static inline std::string lower_copy(std::string &s){
   return r;
 }
 
-void prints(char * s, size_t n){
-  for(size_t i = 0; i < n; i++){
+void prints(char * s, size_t n);
+/*
+      	for(size_t i = 0; i < n; i++){
     printf("%c", s[i]);
   }
 }
+*/
 
 /* get line: from current fpos, until newline / end.
 dynamic memory allocation: allocates it's own memory
 but free existing variable first if needed */
-size_t gs(FILE * f, char ** b){
-  // clear buffer if exists
+size_t gs(FILE * f, char ** b);
+/*
+
+      	// clear buffer if exists
   if(*b != NULL) free(*b);
 
   size_t n = 0; // number of chars found
@@ -201,6 +204,9 @@ size_t gs(FILE * f, char ** b){
   return n;
 }
 
+*/
+
+
 /* get size of file pointer */
 size_t size(FILE * f);
 size_t fsize(string fn);
@@ -213,14 +219,18 @@ bool exists(string fn);
 
 FILE * wopen(string fn);
 
-size_t file_size(const char * fn){
-  FILE * f = fopen(fn, "rb");
+size_t file_size(const char * fn);
+
+/*
+{
+      	FILE * f = fopen(fn, "rb");
   if(!f) err("failed to open file");
   fseek(f, 0L, SEEK_END);
   size_t s = ftell(f);
   fclose(f);
   return s;
 }
+*/
 
 class mfile{
   FILE * fp;
@@ -311,11 +321,5 @@ inline char separator(){
   #endif
 }
 
-const char * sep(){
-  char c[2];
-  c[0] = separator();
-  c[1] = '\0';
-  string s(&c[0]);
-  return s.c_str();
-}
+const char * sep();
 #endif

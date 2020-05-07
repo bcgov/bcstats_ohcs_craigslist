@@ -6,7 +6,7 @@ using namespace std;
 int main(int argc, char ** argv){
 
   if(argc < 3){
-    system(string("../slice.exe " + cwd() + "/../test/test.csv GENDER studyid").c_str());
+    int a = system(string("../slice.exe " + cwd() + "/../test/test.csv GENDER studyid").c_str());
     err("usage:\n\tslice.exe [infile] [Field name] .. [Field name n]");
   }
   string filename(argv[1]);

@@ -2,6 +2,7 @@ import os
 import datetime
 import sys; args = sys.argv
 
+month_only = False # change to true to trunate to first of month
 
 # e.g., input file: out.csv_unique-id-_.csv_postdate
 if len(args) < 2:
@@ -28,9 +29,10 @@ for i in range(0, len(lines)):
     lines[i] = lines[i].split("T")[0]
     print(lines[i])
     print("split", lines[i].split("-"))
+    sys.exit(1)
     try:
         y, m, d = lines[i].split('-')
-        dates.append(datetime.datetime(int(y), int(m), int(d))) #  int(d))) 
+        dates.append(datetime.datetime(int(y), int(m), int(d) if not month_only else 1))
     except:
         n_na += 1.
 
@@ -55,27 +57,17 @@ print("counts", counts)
 print("sorting..")
 counts.sort(key=operator.itemgetter(0))
 
-
-x = {}
-y = {}
+x, y = {}, {}
 for d in counts:
     dt, c = d
-    yy = int(dt.year)
-    mm = int(dt.month)
-    dd = int(dt.day)
-
-    if yy not in x:
-        x[yy] = []
-        y[yy] = []
-
+    yy, mm, dd = int(dt.year), int(dt.month), int(dt.day)
+    if yy not in x:  x[yy], y[yy] = [], []
     x[yy].append(datetime.datetime(2020, mm, dd))
     y[yy].append(c)
-
 
 import matplotlib.pyplot as plt
 for yy in x:
     plt.plot(x[yy],y[yy], label=str(yy))
-#plt.tight_layout()
 #plt.legend()
 plt.title("data counts by month and year")
 plt.tight_layout()
