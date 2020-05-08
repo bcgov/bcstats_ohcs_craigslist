@@ -3,7 +3,7 @@
 # py_install("html5lib")
 # py_install("lxml")
 
-import os
+import os; exists = os.path.exists
 import sys
 import csv
 import time
