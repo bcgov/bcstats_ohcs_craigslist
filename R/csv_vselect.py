@@ -13,6 +13,10 @@ if not exists(args[1]): err("failed to open select file")
 if not exists(args[3]): err("failed to open file to select from")
 sf = args[2]
 
+corroborant = None
+try: corroborant = args[4]
+except: pass
+
 def hdr_lines(f):  # only use this for reading the 1-col file
     hdr, lines, ci = None, [], 0
     reader = csv.reader(open(f), dialect='my')
@@ -29,10 +33,19 @@ idx = set([x[0] for x in lines])
 
 lines = open(args[3]).readlines()
 hdr = lines[0]
-print(hdr)
-for i in range(0, len(lines)):
-    found, line = False, lines[i]
-    for j in idx:
-        if j in line:
-            found = True
-    if found: print(line)
+print(hdr.strip(), end="")
+if corroborant is None:
+    for i in range(0, len(lines)):
+        found, line = False, lines[i]
+        for j in idx:
+            if j in line:
+                found = True
+        if found: print('\n' + line.strip(), end="")
+else:
+    for i in range(0, len(lines)):
+        found, line = False, lines[i]
+        if corroborant in line:
+            for j in idx:
+                if j in line:
+                    found = True
+        if found: print('\n' + line.strip(), end="")
