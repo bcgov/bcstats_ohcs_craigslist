@@ -14,5 +14,8 @@ lines = lines[1:]
 for i in range(0, len(lines)):
     w = lines[i]
     w = [x.strip() for x in w]
-    if len(w) != len(hdr): err("unexpected number of cols, i=" + str(i))
+    if len(w) != len(hdr):
+        print("expected len: " + len(hdr))
+        print("len(w): " + len(w))
+        err("unexpected number of cols, i=" + str(i))
     if w[fii] == '': print(','.join(w))
