@@ -1,6 +1,12 @@
-# like csv_select.cpp except doesn't parse the target into fields: parses into lines only
+# 20200508 like csv_select.cpp except doesn't parse the target into fields: parses into lines only
 import os; exists = os.path.exists
 import sys; args = sys.argv
+import csv
+csv.register_dialect('my',
+                     delimiter=",",
+                     quoting=csv.QUOTE_ALL,
+                     skipinitialspace=True)
+
 def err(m): print("Error: " + m); sys.exit(1)
 if len(args) < 4: err("usage: python3 csv_vselect [select file 1 col csv] [select field] [file to select from]")
 if not exists(args[1]): err("failed to open select file")
