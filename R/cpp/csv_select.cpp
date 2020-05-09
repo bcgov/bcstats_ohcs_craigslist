@@ -46,6 +46,7 @@ int main(int argc, char ** argv){
     words = split(s);
 
     if(l_i == 0){
+	    cout << "select_header: " << words << endl;
       /* csv header */
       select_nf = words.size();
       int selected = false;
@@ -58,7 +59,7 @@ int main(int argc, char ** argv){
       }
       if(!selected){
 	      cout << "selection field: " << s_f_name << endl;
-	      err("failed to find selection field");
+	      err(str("failed to find selection field within: ") + select_filename);
       }
     }
     else{
@@ -150,6 +151,7 @@ int main(int argc, char ** argv){
           if(words.size() != nf){
             words = split_special(s);
             if(words.size() != nf){
+	      cout << "line index: " << l_i << endl;
               cout << words << endl;
               cout << "Unexpected number of fields (" << words.size() << ") at line number: " << l_i << " expected #: " << nf << endl;
               err("Remediation failed: wrong number of fields");
