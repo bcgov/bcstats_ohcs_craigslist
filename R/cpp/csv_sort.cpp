@@ -16,13 +16,12 @@ class sort_idx{
 };
 
 bool operator<(const sort_idx& a, const sort_idx&b){
-  return a.d < b.d; // priority_queue is max first, need to switch direction for min first
+  return a.d < b.d; // priority_queue max first: switch direction for min first
 }
 
 int main(int argc, char** argv){
 
   priority_queue<sort_idx> queue;
-
   if(argc < 2) err("csv_sort [input file csv] [field name to sort on]; # assumes field is numeric\n");
 
   str s(""); // line buffer
@@ -30,11 +29,7 @@ int main(int argc, char** argv){
   str fn(argv[1]); // input file
   str sort_field_name(argv[2]); // numeric field name to sort on
   str ofn(fn + "_sort.csv"); // output file
-
-  if(argc > 3){
-    ofn = str(argv[3]);
-  }
-
+  if(argc > 3) ofn = str(argv[3]);
   cout << "output file: " << ofn << endl;
 
   size_t f_size = fsize(fn); // size of input file
@@ -54,7 +49,6 @@ int main(int argc, char** argv){
   lower(s); // convert to lower case
   vector<str> w(split(s)); // split on comma by default
   int n_f = w.size(); // count the number of fields
-
   cout << "fields: " << w << endl;
 
   map<str, int> f_i; // map the field name to index
@@ -65,10 +59,9 @@ int main(int argc, char** argv){
   int sort_field = -1;
   if(f_i.count(sort_field_name) < 1) err("couldn't find requested sort field in input file");
   sort_field = f_i[sort_field_name];
-
   cout << "sort field index: " << sort_field << endl;
-
   last_p = f.tellg(); // file location data value was extracted from
+ 
   while(getline(f, s)){
     trim(s);
     lower(s);
@@ -80,8 +73,7 @@ int main(int argc, char** argv){
     }
 
     float d = atof(w[sort_field].c_str());
-    queue.push(sort_idx(d, last_p));
-    // cout << "push " << d << " " << last_p << endl;
+    queue.push(sort_idx(d, last_p)); 
     l_i += 1; // row count for progress indicator
     last_p = f.tellg();
 
@@ -91,19 +83,19 @@ int main(int argc, char** argv){
   }
 
   f.clear();
-  f.seekg(0, ios::beg); // rewind the file
+  f.seekg(0, ios::beg); // rewind file
 
   while(!queue.empty()){
+    
     last_p = queue.top().idx;
     queue.pop();
-
     f.seekg(last_p);
+
     if(!getline(f, s)){
       cout << "file position (bytes): " << last_p << endl;
       err("failed getline");
     }
-    //don't leave newline at very end
-    of << endl << s;
+    of << endl << s; // no newline at very end
   }
   f.close();
   return 0;
