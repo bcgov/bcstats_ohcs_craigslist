@@ -5,6 +5,7 @@
 #include<stdio.h>
 #include<map>
 #include<set>
+#include<queue>
 #include<vector>
 #include<string>
 #include<sstream>
@@ -14,8 +15,6 @@
 #include<memory.h>
 #include<iostream>
 #include<algorithm>
-
-#include <stdio.h> /* defines FILENAME_MAX */
 
 #ifdef WINDOWS
   #include <direct.h>
