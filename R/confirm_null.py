@@ -40,5 +40,10 @@ for f in nf:
         err("assertion failed")
 
     hsf = hf + "_select.csv"
-    cmd = "** python3 csv_vselect.py " + fs + " id " + hf + " > " + hsf
-    print(cmd)
+    cmd = "python3 csv_vselect.py " + fs + " id " + hf + " DOCTYPE  > " + hsf
+    if not os.path.exists(hsf):
+        print("not exists: " + hsf)
+        print(cmd)
+        a = os.system(cmd)
+
+    print(os.popen("wc -l " + hsf).read())
