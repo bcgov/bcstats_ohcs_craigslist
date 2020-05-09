@@ -29,6 +29,16 @@ for f in nf:
     # print(cmd)
     a = os.system(cmd)
 
-    seleted_file = mf + "_select.csv"
-    cmd = "python3 csv_select.py " + fs + " id " + mf + " > " + seleted_file
+    selected_file = mf + "_select.csv"
+    cmd = "python3 csv_select.py " + fs + " id " + mf + " > " + selected_file
     a = os.system(cmd)
+
+    if not os.path.exists(selected_file):
+        err("failed to produce selected_file")
+
+    if open(selected_file).read().strip() != "":
+        err("assertion failed")
+
+    hsf = hf + "_select.csv"
+    cmd = "** python3 csv_vselect.py " + fs + " id " + hf + " > " + hsf
+    print(cmd)
