@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+test ! -f col_count.exe  && g++ -O3 col_count.cpp  misc.cpp -o col_count.exe
 test ! -f csv_sort.exe   && g++ -O3 csv_sort.cpp   misc.cpp -o csv_sort.exe
 test ! -f csv_slice.exe  && g++ -O3 csv_slice.cpp  misc.cpp -o csv_slice.exe
 test ! -f csv_select.exe && g++ -O3 csv_select.cpp misc.cpp -o csv_select.exe
