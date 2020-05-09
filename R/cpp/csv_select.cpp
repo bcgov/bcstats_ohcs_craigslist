@@ -56,7 +56,10 @@ int main(int argc, char ** argv){
           selected = true;
         }
       }
-      if(!selected) err("failed to find selection field");
+      if(!selected){
+	      cout << "selection field: " << s_f_name << endl;
+	      err("failed to find selection field");
+      }
     }
     else{
       /* lower case, just in case */
