@@ -236,7 +236,7 @@ match_infiles<-function(in_dir){
     if(hfs != past_file_sizes[[hfi]]) err("file size mismatch")
 
     sink("data_file_sizes.txt", append=TRUE)
-    cat(paste("\n", meta_file, html_file, mfs, hfs, sep=",")) 
+    cat(paste("\n", meta_file, html_file, mfs, hfs, sep=","))
     sink()
   }
 
@@ -263,7 +263,7 @@ match_infiles<-function(in_dir){
     join_files[length(join_files) + 1] <- join_file
 
     join_null_file <- paste(join_file, "_null.csv", sep="")
-    
+
     # python3 py/select_null.py craigslist-apa-data-bc.csv_join.csv postDate > craigslist-apa-data-bc.csv_join.csv_null.csv
     cmd <- paste("python3", "py/select_null.py", join_file, "postDate >", join_null_file, sep=" ")
     system(cmd)
