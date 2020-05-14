@@ -1,7 +1,7 @@
-## setup.R 
+## setup.R
 ## usage windows:
 ## run at cmd.exe! Possibly may need to run as administrator
-## cmd Rscript setup.R 
+## cmd Rscript setup.R
 
 ## usage mac/linux:
 ##   Rscript setup.R # don't run as sudo: need to enter sudo password if prompted
