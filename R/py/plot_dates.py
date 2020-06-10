@@ -70,4 +70,4 @@ for yy in x:
 plt.legend()
 plt.title("data counts by month and year")
 plt.tight_layout()
-plt.show()
+plt.savefig(args[1] + '.png')
