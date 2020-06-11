@@ -2,12 +2,20 @@ import os
 import datetime
 import sys; args = sys.argv
 
-month_only = False #  True # False # change to true to trunate to first of month
+month_only = False # change to true to trunate to first of month
 
 # e.g., input file: out.csv_unique-id-_.csv_postdate
 if len(args) < 2:
     print("Error: usage: python3 print_dates.py [input file 1 col csv]")
     sys.exit(1)
+
+source_file = None
+if len(args) > 2:
+    source_file = args[2]
+if not os.path.exists(source_file):
+    print("Error: file not found: " + source_file)
+    sys.exit(1)
+
 
 '''
 postdate
@@ -66,10 +74,11 @@ for d in counts:
     y[yy].append(c)
 
 import matplotlib.pyplot as plt
+fig= plt.figure(figsize=(12,5))
 for yy in x:
     plt.plot(x[yy],y[yy], label=str(yy))
 plt.legend()
 plt.title("data counts by month and year")
 plt.tight_layout()
+plt.savefig((source_file if source_file is not None else args[1]) + '.png')
 plt.show()
-# plt.savefig(args[1] + '.png')
