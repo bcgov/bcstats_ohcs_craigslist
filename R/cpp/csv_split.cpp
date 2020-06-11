@@ -46,10 +46,10 @@ int main(int argc, char ** argv){
     else{
       if(words.size() != n_f){
         cout << " l_i " << l_i << " " << words.size();
-        cout <<	" n_f=" << n_f << " " << words << endl;
+        cout <<	" n_f=" << n_f << " expected=" << words.size() << " " << words << endl;
         error = true;
         n_error ++;
-        exit(1);
+        // exit(1);  (should this be commented out?)
       }
     }
 
