@@ -2,7 +2,7 @@ import os
 import datetime
 import sys; args = sys.argv
 
-month_only = True # False # change to true to trunate to first of month
+month_only = False #  True # False # change to true to trunate to first of month
 
 # e.g., input file: out.csv_unique-id-_.csv_postdate
 if len(args) < 2:
@@ -60,7 +60,8 @@ x, y = {}, {}
 for d in counts:
     dt, c = d
     yy, mm, dd = int(dt.year), int(dt.month), int(dt.day)
-    if yy not in x:  x[yy], y[yy] = [], []
+    if yy not in x:
+        x[yy], y[yy] = [], []
     x[yy].append(datetime.datetime(2020, mm, dd))
     y[yy].append(c)
 
@@ -70,4 +71,5 @@ for yy in x:
 plt.legend()
 plt.title("data counts by month and year")
 plt.tight_layout()
-plt.savefig(args[1] + '.png')
+plt.show()
+# plt.savefig(args[1] + '.png')
