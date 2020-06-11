@@ -16,7 +16,6 @@ if not os.path.exists(source_file):
     print("Error: file not found: " + source_file)
     sys.exit(1)
 
-
 '''
 postdate
 2014-11-14T05:00:02Z
@@ -74,11 +73,14 @@ for d in counts:
     y[yy].append(c)
 
 import matplotlib.pyplot as plt
-fig= plt.figure(figsize=(12,5))
+fig= plt.figure(figsize=(16,5))
 for yy in x:
     plt.plot(x[yy],y[yy], label=str(yy))
 plt.legend()
-plt.title("data counts by month and year")
+plt.title(source_file)
+plt.xlabel("Date")
+plt.ylabel("Count")
+plt.xlim(datetime.datetime(2020, 1, 1), datetime.datetime(2020, 12, 31))
 plt.tight_layout()
 plt.savefig((source_file if source_file is not None else args[1]) + '.png')
-plt.show()
+# plt.show()
