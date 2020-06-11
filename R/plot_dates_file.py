@@ -7,7 +7,7 @@ def err(m):
 def run(c):
     print(c)
     if os.system(c) != 0:
-        err("\tcommand failed")
+        err("command failed: " + c)
 
 f = args[1]
 if not exists(f): err("could not find input csv file: " + f)
