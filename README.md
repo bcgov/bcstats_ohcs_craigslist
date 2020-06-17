@@ -1,16 +1,23 @@
 # bcstats ohcs craigslist
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
+**Instructions**
+* Install R 4.0.0 and RStudio first
+* Open RStudio in administrator mode
+* Open R/setup.R and select: session-> set working directory --> to Source location
+* Select all lines and run
+* Open R/run.R, select all lines and run
+* If you're prompted to download additional stuff, pls. say yes
+* N.B., the data must be in the same folder as the source code
 
-**coming soon: R-interface!**
+**Overview**
 
-Use HPC techniques to wrangle a large, irregular housing-market dataset on an ordinary laptop, in a finite amount of time
-
+Use some large data / HPC-ish techniques to wrangle a large, irregular housing-market dataset on an ordinary computer, in a finite amount of time
 * out of memory
 * parallelism
 
 The data include an irregularly formatted CSV file (22GB) incl. approx. 1 million HTML files stuffed into the CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" weren't able to read the data at this time, so custom out-of-memory slicing was developed. Moreover, Python3's BeautifulSoup html-parsing, was applied and accelerated using full machine-parallelism
 
-The data contain sensitive information and will not be posted, however the project documentation will be included when approved
+The data contain sensitive information and will not be posted, however project documentation will be included when approved
 
 ## Process analytics
 Sample visualization of process monitor for one of the steps in this "big-data" application
