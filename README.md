@@ -1,5 +1,6 @@
 # bcstats ohcs craigslist
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
+
 **Instructions**
 * Install R 4.0.0 and RStudio first
 * Open RStudio in administrator mode
