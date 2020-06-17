@@ -1,5 +1,10 @@
 ## Rscript run.R ## todo: check for nonunique records
 ## .libPaths() to find deps loc
+## instructions: open script in RStudio,
+##    session-> set working directory --> to Source location
+## Note: when you run this script, if you are prompted to download additional tools to build R packages, please accept
+## Please run setup.R first 
+## may need to run as administrator, the first time
 
 # include other files if their member functions not yet def'd
 my_fn <- parent.frame(2)$ofile

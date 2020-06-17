@@ -1,12 +1,11 @@
 ## setup.R
-## usage windows:
-## run at cmd.exe! Possibly may need to run as administrator
-## cmd Rscript setup.R
+## usage: 
+##   Rscript setup.R # might need to run with admin privilege if you get permissions error
+## on Windows might need to run Rscript setup.R, Rscript run.R from system prompt within RStudio
+## Notes: please install R 4.0.0, and RStudio first!
 
-## usage mac/linux:
-## Rscript setup.R # don't run as sudo: need to enter sudo password if prompted
 
-## install R stuff
+## install R packages
 pkg_reqd<-c("Rcpp", "reticulate")
 to_install<-pkg_reqd[!(pkg_reqd %in% installed.packages()[,"Package"])]
 if(length(to_install)){
@@ -14,70 +13,22 @@ if(length(to_install)){
   install.packages(to_install)
 }
 cat("* package check complete\n")
+
+## install miniconda / python if necessary
 library(reticulate)
-if(Sys.info()[[1]] == "Darwin"){
-  install_miniconda(path = miniconda_path(), update = TRUE, force = FALSE)
-}
-else if(Sys.info()[[1]] == "Linux"){
-  print(system("which anaconda", intern=TRUE))
-  if(file.exists(Sys.which("anaconda")[[1]]) != TRUE){
-    cat("anaconda not found\n")
-    system("sudo apt install curl")
-    if(!file.exists("conda.sh")){
-      download.file("https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh", "conda.sh", method="curl")
-    }
-    system("chmod 755 conda.sh")
-    system("./conda.sh -u")
-    Sys.setenv(BASH_ENV="~/.bashrc")
-    if(file.exists(Sys.which("anaconda")[[1]]) != TRUE){
-      cat("Error: can't find conda\n")
-      quit()
-    }
-  }
-}
-else{
-  # look for r-reticulate environment in miniconda
-  # if the environment doesn't exist, and the user hasn't requested a separate
-  # environment, then we'll prompt for installation of miniconda
-  miniconda <- miniconda_conda()
-  if (!file.exists(miniconda)) {
+py_config()
+## conda_create("r-reticulate") ## think py_config() does this automatically
+## conda_activate("r-reticulate") ## think py_config() does this automatically too
+cat("* Miniconda check complete\n")
 
-    can_install_miniconda <-
-    interactive() &&
-    length(python_versions) == 0 &&
-    miniconda_enabled() &&
-    miniconda_installable()
-
-    if (can_install_miniconda)
-    miniconda_install_prompt()
-
-  }
-
-  # if the earlier branch installed miniconda, it may exist now -- if so,
-  # try to activate it
-  if (file.exists(miniconda)) {
-
-    # create the conda environment if necessary
-    envpath <- miniconda_python_envpath()
-    if (!file.exists(envpath)) {
-      python <- miniconda_python_package()
-      conda_create(envpath, packages = c(python, "numpy"), conda = miniconda)
-    }
-
-    # bind to it
-    miniconda_python <- conda_python(envpath, conda = miniconda)
-    config <- python_config(miniconda_python, NULL, miniconda_python) # return(config)
-  }
-}
-
-cat("* OS check complete\n")
-
-## install Python stuff
-conda_list()
-conda_create("r-reticulate") # conda_activate("r-reticulate")
+## install Python packages
+## conda_list() ## could use this for debugging
 use_condaenv("r-reticulate")
-conda_install("r-reticulate", "bs4") # py_install("bs4")
-conda_install("r-reticulate", "html5lib") # py_install("html5lib")
-conda_install("r-reticulate", "lxml") # py_install("lxml")
-cat("* python check complete\n")
+conda_install("r-reticulate", "bs4") ## instead of py_install("bs4")
+conda_install("r-reticulate", "html5lib") ## instead of py_install("html5lib")
+conda_install("r-reticulate", "lxml") ## instead of py_install("lxml")
 cat("* setup.R complete\n")
+
+## 
+## system("conda config --set channel_priority false")
+## system("conda config --set auto_update_conda false")
