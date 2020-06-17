@@ -4,10 +4,10 @@ Extractor / parser, written for web-scraped craigslist data as provided to BC St
 **Instructions**
 * Install R 4.0.0 and RStudio first
 * Open RStudio in administrator mode
-* Open R/setup.R and select: session-> set working directory --> to Source location
-* Select all lines and run
+* (first time only) Open R/setup.R and select: session-> set working directory --> to Source location
+* (first time only) Select all lines and run
 * Open R/run.R, select all lines and run
-* If you're prompted to download additional stuff, pls. say yes
+* (first time only) If you're prompted to download additional stuff, pls. say yes
 * N.B., the data must be in the same folder as the source code
 
 **Overview**
