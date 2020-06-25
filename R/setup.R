@@ -1,21 +1,16 @@
 ## setup.R
-## usage: 
+## usage:
 ##   Rscript setup.R # might need to run with admin privilege if you get permissions error
 ## on Windows might need to run Rscript setup.R, Rscript run.R from system prompt within RStudio
 ## Notes: please install R 4.0.0, and RStudio first!
 
 
-## install R packages
-pkg_reqd<-c("Rcpp", "reticulate")
-to_install<-pkg_reqd[!(pkg_reqd %in% installed.packages()[,"Package"])]
-if(length(to_install)){
-  print(paste("install.packages(", to_install, ")", sep=""))
-  install.packages(to_install)
-}
+## Check if packages are installed
+requireNamespace("Rcpp")
+requireNamespace("reticulate")
 cat("* package check complete\n")
 
 ## install miniconda / python if necessary
-library(reticulate)
 py_config()
 ## conda_create("r-reticulate") ## think py_config() does this automatically
 ## conda_activate("r-reticulate") ## think py_config() does this automatically too
@@ -29,6 +24,6 @@ conda_install("r-reticulate", "html5lib") ## instead of py_install("html5lib")
 conda_install("r-reticulate", "lxml") ## instead of py_install("lxml")
 cat("* setup.R complete\n")
 
-## 
+##
 ## system("conda config --set channel_priority false")
 ## system("conda config --set auto_update_conda false")
