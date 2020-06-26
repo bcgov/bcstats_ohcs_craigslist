@@ -89,7 +89,7 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   py_discover_config()
   py_available(initialize=TRUE)
   if(!py_available()){
-    err("python not initialized")
+    stop("python not initialized")
   }
   import_from_path("py")
   source_python("py/join.py")
@@ -208,10 +208,10 @@ match_infiles<-function(in_dir = "."){
 
   ## error if the correspondence is not 1-1
   if(length(html_match) != length(unique(html_match))){
-    err("automatic file-matching failed")
+    stop("automatic file-matching failed")
   }
   if(length(meta_match) != length(unique(meta_match))){
-    err("automatic file-matching failed")
+    stop("automatic file-matching failed")
   }
 
   ## check if number of unique elements in dom and rng are same
@@ -239,8 +239,8 @@ match_infiles<-function(in_dir = "."){
     mfi <- first_idx(meta_file, past_file_names)
     hfi <- first_idx(html_file, past_file_names)
 
-    if(mfs != past_file_sizes[[mfi]]) err("file size mismatch")
-    if(hfs != past_file_sizes[[hfi]]) err("file size mismatch")
+    if(mfs != past_file_sizes[[mfi]]) stop("file size mismatch")
+    if(hfs != past_file_sizes[[hfi]]) stop("file size mismatch")
 
     sink("data_file_sizes.txt", append=TRUE)
     cat(paste("\n", meta_file, html_file, mfs, hfs, sep=","))
