@@ -43,7 +43,7 @@ chunks<-function(str, chunk_len){
   s<-str
   s<-gsub("[.]", "-", s)
   x<-strsplit(s, "-")
-  for(k in 1:length(x[[1]])){
+  for(k in seq_along(x[[1]])){
     x[[1]][k] <- substr(x[[1]][k], 1, chunk_len)
   }
   return(x)
@@ -51,7 +51,7 @@ chunks<-function(str, chunk_len){
 
 within<-function(x, s){
   find<-FALSE
-  for(i in 1:length(x)){
+  for(i in seq_along(x)){
     if(x[i] == s){
       find<-TRUE
     }
@@ -172,21 +172,21 @@ match_infiles<-function(in_dir = "."){
   meta_match<-character(0)
 
 
-  for(i in 1:length(html)){
+  for(i in seq_along(html)){
     s<-html[i]
     x<-chunks(s, 3)
     n_x<-length(x[[1]])
     max_j <- 0
     max_s <- 0.
 
-    for(j in 1:length(meta)){
+    for(j in seq_along(meta)){
       score<-0
       mj <- meta[j]
       x1 <- x[[1]]
       y <- chunks(mj, 3)
       n_y <- length(y[[1]])
 
-      for(k in 1:length(y[[1]])){
+      for(k in seq_along(y[[1]])){
         if(within(x1, y[[1]][k])){
           score <- score + 1
         }
@@ -216,7 +216,7 @@ match_infiles<-function(in_dir = "."){
 
   ## check if number of unique elements in dom and rng are same
   cat("\n\n\t** To be executed after pressing [return] (press ctrl-c to abort):\n")
-  for(i in 1:length(html_match)){
+  for(i in seq_along(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
     cat(paste("harmari_craigslist_parsing(", html_file, ",", meta_file, ")\n"), sep='')
@@ -230,7 +230,7 @@ match_infiles<-function(in_dir = "."){
   sink("data_file_sizes.txt")
   cat("meta_file,html_file,meta_file_size,html_file_size")
   sink()
-  for(i in 1:length(html_match)){
+  for(i in seq_along(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
     mfs <- fileSize(c(meta_file))
@@ -251,7 +251,7 @@ match_infiles<-function(in_dir = "."){
   ## wait_return()
 
   join_files = character(0)
-  for(i in 1:length(html_match)){
+  for(i in seq_along(html_match)){
     meta_file <- meta_match[i]
     html_file <- html_match[i]
 
