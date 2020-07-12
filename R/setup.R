@@ -24,6 +24,10 @@ requireNamespace("Rcpp")
 requireNamespace("reticulate")
 cat("* package check complete\n")
 
+## load packages
+library(Rcpp)
+library(reticulate)
+
 ## install miniconda / python if necessary
 py_config()
 ## conda_create("r-reticulate") ## think py_config() does this automatically
