@@ -2,13 +2,18 @@
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
 
 **Instructions**
-* Install R 4.0.0 and RStudio first
-* Open RStudio in administrator mode
-* (first time only) Open R/setup.R and select: session-> set working directory --> to Source location
-* (first time only) Select all lines and run
-* Open R/run.R, select all lines and run
-* (first time only) If you're prompted to download additional stuff, pls. say yes
+1. Install R 4.0.0, Rtools and RStudio first (make sure your environment variable:
+Path 
+is modified to include your rtools folder. I added
+;C:\rtools40
+to the end of my Path variable). How to change the Path variable? Control panel -> System -> Advanced system settings -> Environment Variables
+2. Open RStudio in administrator mode
+3. (first time only) Open R/setup.R and select: session-> set working directory --> to Source location
+4. (first time only) Select all lines and run
+5. Open R/run.R, select all lines and run
+6. (first time only) If you're prompted to download additional stuff, may need to say yes
 * N.B., the data must be in the same folder as the source code
+* N.B.N.B may need to modify new input data file names so there aren't any collisions
 
 **Overview**
 
