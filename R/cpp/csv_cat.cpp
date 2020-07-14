@@ -13,7 +13,8 @@ bool csv_cat(StringVector args){
   cout << "data output file: " << ofn << endl;
 
   size_t i, j;
-  if(argc < 3){
+  if(argc < 2){
+    // was argc < 3 but argc in Rcpp has one less arg than argc in c++
     err("usage: csv_cat.cpp [input file] .. [input file n] [output destination]");
   }
   vector<string> filenames;
