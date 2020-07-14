@@ -18,8 +18,10 @@ Rscript run.R # from Terminal within Rstudio, supposing Terminal is pointed to t
 * N.B.N.B may need to modify new input data file names so there aren't any collisions
 
 **How to add QA entries for data updates**
+(to be completed)
 
 **How to produce separate outputs for Apartments (vs Sublets)**
+(to be completed)
 
 **Overview**
 
