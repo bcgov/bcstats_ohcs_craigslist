@@ -49,8 +49,9 @@ def parse_file(fn):
     return ofn  # return output file name
 
 def html_parse(args_s): # parse(args_s) where args_s is a string of form html_file,n_records where n_records is the number of records from the "meta" file
-    if __name__ != "__main__":
-        return
+    print("html_parse", str(args_s))
+    # if __name__ != "__main__":
+    #     return
     '''
     input html files reside in html/
     output results will be put in parsed/
@@ -96,6 +97,11 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
                 trow = (nt - t0) / (ci + 1)
                 trem = trow * (nrow - ci)
                 print(ci, ci / nrow, "t", nt - t0, "eta", trem, "eta(h)", trem / 3600.)
-
+    
+    for i in range(0, len(inputs)):
+        if not os.path.exists(inputs[i]):
+            print("Error: file not found: " + str(inputs[i]))
+    return(inputs)
+    # had to call reticulate from inside workers. Pass these names back and iterate from there
     # run the html parsing in parallel
-    parfor(parse_file, inputs)  # need C/C++ version of this
+    # parfor(parse_file, inputs)  # need C/C++ version of this

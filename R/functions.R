@@ -11,13 +11,11 @@
 # See the License for the specific language governing permissions and limitations under the License.
 
 
-
 ## source a c++ function
 src<-function(x){
   cat(paste("src(", x, ")\n", sep=""))
   Rcpp::sourceCpp(x, cacheDir='tmp')
 }
-
 
 test_csv_cat<-function(){
   print(file.path("test", "A.csv"))
@@ -63,7 +61,6 @@ rmrf<-function(d){
   unlink(d, recursive=TRUE, force=TRUE)
 }
 
-
 ## parse craigslist data as supplied by Harmari, inc.
 harmari_craigslist_parsing<-function(html_file, meta_file){
   cat("harmari_craigslist_parsing", html_file, meta_file, "\n", sep=",")
@@ -98,7 +95,6 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   ## test big-data resilient csv-file concatenation, on small data ironically
   test_csv_cat()
 
-
   ## 1) index the html file
   message("1. start index step..")
   tag_file <-paste0(html_file, "_tag")
@@ -123,7 +119,19 @@ harmari_craigslist_parsing<-function(html_file, meta_file){
   ## 4) parse the html files using multithreading
   message("4. parse html step..")
   mkdir("parsed")
-  html_parse(paste(html_file, n_records, sep=","))
+  to_parse <-html_parse(paste(html_file, n_records, sep=","))
+
+  library(parallel) # Detect the number of available cores and create cluster
+  cl <- parallel::makeCluster(detectCores(), type='PSOCK')
+
+  # Parallel
+  parallel::parLapply(cl, to_parse, function(x){
+    library(reticulate)
+    import_from_path("py")
+    source_python("py/html_parse.py")
+    parse_file(x)
+    })
+  stopCluster(cl)
   message(" 4. end parse html step")
 
   ## 5) join the HTML data with the metadata from the other file
