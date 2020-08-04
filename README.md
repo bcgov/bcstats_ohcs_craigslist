@@ -14,8 +14,8 @@ Rscript setup.R # from Terminal within RStudio, supposing Terminal is pointed to
 5. Open R/run.R, select all lines and run (alternately, could run by 
 Rscript run.R # from Terminal within Rstudio, supposing Terminal is pointed to the R folder; this method seems to perform better)
 6. (first time only) If you're prompted to download additional stuff, may need to say yes
-* N.B., the data must be in the same folder as the source code
-* N.B.N.B may need to modify new input data file names so there aren't any collisions
+* N.B., the data must be in the same folder as the source code (the R/ subfolder folder)
+* N.B.N.B may need to modify new input data file names in order to avoid collisions
 
 **How to add QA entries for data updates**
 (to be completed)
