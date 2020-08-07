@@ -230,10 +230,14 @@ match_infiles<-function(in_dir = "."){
     cat(paste("harmari_craigslist_parsing(", html_file, ",", meta_file, ")\n"), sep='')
   }
 
-  past_file_names = c('craigslist-bc-sublets-html-jun.csv', 'craigslist-bc-sublets-data-jun.csv', 'craigslist-bc-apartment-html-jun.csv', 'craigslist-bc-apartment-data-jun.csv', 'craigslist-apa-data-bc-html-mar.csv', 'craigslist-bc-apartment-data-mar.csv', 'craigslist-bc-sublets-data-mar.csv', 'craigslist-sublet-data-bc-html-mar.csv', 'craigslist-apa-data-bc.csv', 'craigslist-sublet-data-bc.csv', 'craigslist-apa-data-bc-html-othermeta.csv', 'craigslist-sublet-data-bc-html-othermeta.csv', 'craigslist-apa-data-bc-html-jan.csv', 'craigslist-apa-data-bc-html-sep.csv', 'craigslist-bc-apa-data-jan.csv', 'craigslist-sublet-data-bc-html-jan.csv', 'craigslist-bc-sublet-data-sep.csv', 'craigslist-bc-sublet-data-jan.csv', 'craigslist-bc-apa-data-sep.csv', 'craigslist-sublet-data-bc-html-sep.csv', 'craigslist-bc-apartment-data-apr.csv', 'craigslist-bc-sublets-data-apr.csv', 'craigslist-sublet-data-bc-html-apr.csv', 'craigslist-apa-data-bc-html-apr.csv', 'craigslist-bc-apartment-data-may.csv', 'craigslist-bc-sublets-data-may.csv', 'craigslist-bc-apartment-html-may.csv', 'craigslist-bc-sublets-html-may.csv')
+  # past_file_names = c('craigslist-bc-sublets-html-jun.csv', 'craigslist-bc-sublets-data-jun.csv', 'craigslist-bc-apartment-html-jun.csv', 'craigslist-bc-apartment-data-jun.csv', 'craigslist-apa-data-bc-html-mar.csv', 'craigslist-bc-apartment-data-mar.csv', 'craigslist-bc-sublets-data-mar.csv', 'craigslist-sublet-data-bc-html-mar.csv', 'craigslist-apa-data-bc.csv', 'craigslist-sublet-data-bc.csv', 'craigslist-apa-data-bc-html-othermeta.csv', 'craigslist-sublet-data-bc-html-othermeta.csv', 'craigslist-apa-data-bc-html-jan.csv', 'craigslist-apa-data-bc-html-sep.csv', 'craigslist-bc-apa-data-jan.csv', 'craigslist-sublet-data-bc-html-jan.csv', 'craigslist-bc-sublet-data-sep.csv', 'craigslist-bc-sublet-data-jan.csv', 'craigslist-bc-apa-data-sep.csv', 'craigslist-sublet-data-bc-html-sep.csv', 'craigslist-bc-apartment-data-apr.csv', 'craigslist-bc-sublets-data-apr.csv', 'craigslist-sublet-data-bc-html-apr.csv', 'craigslist-apa-data-bc-html-apr.csv', 'craigslist-bc-apartment-data-may.csv', 'craigslist-bc-sublets-data-may.csv', 'craigslist-bc-apartment-html-may.csv', 'craigslist-bc-sublets-html-may.csv')
 
-  past_file_sizes = c(18627692, 190242, 657825017, 6866935, 1313723416, 14167108, 540821, 337123080, 301100188, 15806712, 22868906488, 1207390218, 3277267614, 1913701273, 35371689, 115374402, 727855, 1196955, 21663494, 65148136, 6931814, 218584, 308603553, 648129837, 8114544, 179446, 763264057, 17573827)
+  # past_file_sizes = c(18627692, 190242, 657825017, 6866935, 1313723416, 14167108, 540821, 337123080, 301100188, 15806712, 22868906488, 1207390218, 3277267614, 1913701273, 35371689, 115374402, 727855, 1196955, 21663494, 65148136, 6931814, 218584, 308603553, 648129837, 8114544, 179446, 763264057, 17573827)
 
+  past_file_names = c('2020-craigslist-bc-apartment-data-jul.csv', '2020-craigslist-bc-apartment-html-jul.csv', '2020-craigslist-bc-sublets-data-jul.csv', '2020-craigslist-bc-sublets-html-jul.csv', 'craigslist-bc-sublets-html-jun.csv', 'craigslist-bc-sublets-data-jun.csv', 'craigslist-bc-apartment-html-jun.csv', 'craigslist-bc-apartment-data-jun.csv', 'craigslist-apa-data-bc-html-mar.csv', 'craigslist-bc-apartment-data-mar.csv', 'craigslist-bc-sublets-data-mar.csv', 'craigslist-sublet-data-bc-html-mar.csv', 'craigslist-apa-data-bc.csv', 'craigslist-sublet-data-bc.csv', 'craigslist-apa-data-bc-html-othermeta.csv', 'craigslist-sublet-data-bc-html-othermeta.csv', 'craigslist-apa-data-bc-html-jan.csv', 'craigslist-apa-data-bc-html-sep.csv', 'craigslist-bc-apa-data-jan.csv', 'craigslist-sublet-data-bc-html-jan.csv', 'craigslist-bc-sublet-data-sep.csv', 'craigslist-bc-sublet-data-jan.csv', 'craigslist-bc-apa-data-sep.csv', 'craigslist-sublet-data-bc-html-sep.csv', 'craigslist-bc-apartment-data-apr.csv', 'craigslist-bc-sublets-data-apr.csv', 'craigslist-sublet-data-bc-html-apr.csv', 'craigslist-apa-data-bc-html-apr.csv', 'craigslist-bc-apartment-data-may.csv', 'craigslist-bc-sublets-data-may.csv', 'craigslist-bc-apartment-html-may.csv', 'craigslist-bc-sublets-html-may.csv')
+  
+  past_file_sizes = c(8091843, 774760440, 223473, 21837717, 18627692, 190242, 657825017, 6866935, 1313723416, 14167108, 540821, 337123080, 301100188, 15806712, 22868906488, 1207390218, 3277267614, 1913701273, 35371689, 115374402, 727855, 1196955, 21663494, 65148136, 6931814, 218584, 308603553, 648129837, 8114544, 179446, 763264057, 17573827)
+    
   ## check expected file sizes
   sink("data_file_sizes.txt")
   cat("meta_file,html_file,meta_file_size,html_file_size")
@@ -246,7 +250,7 @@ match_infiles<-function(in_dir = "."){
 
     mfi <- first_idx(meta_file, past_file_names)
     hfi <- first_idx(html_file, past_file_names)
-
+      
     if(mfs != past_file_sizes[[mfi]]) stop("file size mismatch")
     if(hfs != past_file_sizes[[hfi]]) stop("file size mismatch")
 
