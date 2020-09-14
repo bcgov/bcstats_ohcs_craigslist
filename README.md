@@ -5,13 +5,11 @@ Extractor / parser, written for web-scraped craigslist data as provided to BC St
 
 **Overview**
 
-Use some large data / HPC-ish techniques to wrangle a large, irregular housing-market dataset on an ordinary computer, in a finite amount of time
+Wrangle a large, irregularly formatted, housing-market dataset on an ordinary computer, in a finite amount of time, using some large data / HPC-ish techniques
 * out of memory
 * parallelism
 
-The data include an irregularly formatted CSV file (22GB) incl. approx. 1 million HTML files stuffed into the CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" weren't able to read the data at this time, so custom out-of-memory slicing was developed. Moreover, Python3's BeautifulSoup html-parsing, was applied and accelerated using full machine-parallelism
-
-The data contain sensitive information and will not be posted
+The original data incl. an irregularly formatted CSV file (22GB) incl. approx. 1,000,000 HTML files stuffed into a CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" couldn't read the data at this time, so custom out-of-memory slice/extract/parse was used. Moreover, Python3's BeautifulSoup html-parsing, was accelerated using full machine parallelism. The data contain sensitive information and will not be posted
 
 **How to add QA entries for data updates**
 (to be completed)
