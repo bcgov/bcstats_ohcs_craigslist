@@ -1,4 +1,4 @@
-**Instructions**
+**Instructions for R version**
 1. Install R 4.0.0, Rtools and RStudio first (make sure your environment variable:
 Path 
 is modified to include your rtools folder. I added
