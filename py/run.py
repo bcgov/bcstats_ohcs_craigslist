@@ -21,16 +21,21 @@ def run_cpp(cpp_file, args, collect_output = False):
     fn = cpp_file[0: -4]
     exe, sep = fn + '.exe', os.path.sep
     file_path = sep.join(__file__.split(sep)[0: -1]) + sep + 'cpp' + sep
-    
+    if file_path[0:5] != '/home':
+        file_path = file_path.lstrip(sep)
+
     if not os.path.exists(file_path + exe):
-        a = os.system('g++ -O4 ' + (file_path + cpp_file) + ' -o ' + (file_path + exe))
-    
+        cmd = 'g++ -O4 ' + (file_path + cpp_file) + ' -o ' + (file_path + exe)
+        print(cmd)
+        a = os.system(cmd)
+
     cmd = file_path + './' + exe + ' ' + ' '.join(args)
     if collect_output:
         output = os.popen(file_path + './' + exe + ' ' + ' '.join(args)).read()
         print(output)
         return output
     else:
+        print(cmd)
         a = os.system(cmd)
         return a
 
@@ -144,8 +149,3 @@ def match_infiles(in_dir = './'):
     run_cpp('csv_cat.cpp',join_files)
 
 match_infiles()
-
-
-            
-
-
