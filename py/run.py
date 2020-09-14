@@ -21,7 +21,9 @@ def run_cpp(cpp_file, args, collect_output = False):
     fn = cpp_file[0: -4]
     exe, sep = fn + '.exe', os.path.sep
     file_path = sep.join(__file__.split(sep)[0: -1]) + sep + 'cpp' + sep
-    if file_path[0:5] != '/home':
+    
+    # might not need initial separator
+    if file_path[0:5] != '/home': 
         file_path = file_path.lstrip(sep)
 
     if not os.path.exists(file_path + exe):
