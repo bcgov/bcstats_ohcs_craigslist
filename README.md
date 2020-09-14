@@ -2,8 +2,8 @@
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
 
 An R-based implementation that is Windows compatible, and a python version that is MacOS/Linux compatible, are available:
-* [R/Windows implementation](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/R)
-* [python-only (MacOS/Linux) implementation](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/py)
+* [R implementation (Windows/MacOS/Linux compatible)](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/R)
+* [python-only implementation (MacOS/Linux compatible)](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/py)
 
 **Overview**
 
