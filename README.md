@@ -11,9 +11,6 @@ Wrangle a large, irregularly formatted, housing-market dataset on an ordinary co
 
 The original data incl. an irregularly formatted CSV file (22GB) incl. approx. 1,000,000 HTML files stuffed into a CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" couldn't read the data at this time, so custom out-of-memory slice/extract/parse was used. Moreover, Python3's BeautifulSoup html-parsing, was accelerated using full machine parallelism. The data contain sensitive information and will not be posted
 
-**How to add QA entries for data updates**
-(to be completed)
-
 **How to produce separate outputs for Apartments (vs Sublets)**
 (to be completed)
 
