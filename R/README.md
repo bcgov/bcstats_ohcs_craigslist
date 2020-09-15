@@ -13,3 +13,6 @@ Rscript run.R # from Terminal within Rstudio, supposing Terminal is pointed to t
 6. (first time only) If you're prompted to download additional stuff, may need to say yes
 * N.B., the data must be in the same folder as the source code (the R/ subfolder folder)
 * N.B.N.B may need to modify new input data file names in order to avoid collisions
+
+**How to add QA entries for data updates**
+(to be completed)
