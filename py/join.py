@@ -1,20 +1,7 @@
 import os
 import time
-'''
-sep = os.path.sep
-file_path = sep.join(__file__.split(sep)[0: -1]) + sep
-
-def src_py(f):
-    exec(open(file_path + f).read())
-
-src_py("misc.py")
-src_py("html_cleanup.py")
-'''
 from misc import *
 from html_cleanup import *
-
-# exec(open(file_path + "misc.py").read())
-# exec(open(file_path + "html_cleanup.py").read())
 
 def assert_remove(fn):
     if not os.path.exists(fn):
@@ -24,9 +11,7 @@ def assert_remove(fn):
 
     if os.path.exists(fn):
         err("file not removed: " + str(fn))
-
     # print("rm " + str(fn))
-
 
 def join(args):
     print(args)
@@ -57,15 +42,19 @@ def join(args):
     ld = os.listdir('html')
     open(".listdir_1.txt", "wb").write(("\n".join(ld)).encode())
 
+
+    # for each meta record
     with open(meta_f, encoding="utf8", errors='ignore') as csvfile:
         csvreader, is_hdr = csv.reader(csvfile, delimiter=','), True
         ci, n_fields, rng = 0, 0, 0
+
         for row in csvreader:
             row = [r.strip() for r in row]
             row = [r.replace('\\,',';') for r in row]  # repl. escape commas
             row = [r.replace(',', ';') for r in row]  # repl. actual commas?
 
             if is_hdr:
+                # now reading the header of the meta file
                 hdr = row
                 if str(hdr) != str(meta_fields):
                     print("hdr", hdr)
@@ -79,7 +68,7 @@ def join(args):
                 outf.write(new_hdr.encode())  # write out header
 
             else:
-
+                # now reading a record of the meta file
                 if len(row) != len(','.join(row).split(',')):
                     print(row)
                     print(','.join(row).split(','))
@@ -95,11 +84,41 @@ def join(args):
                     n_skip += 1
                     continue
 
-                # print("fn", fn)
                 fields, line = html_cleanup(fn)
-                if len(line.split(',')) != len(html_fields):
+
+                ret = line.split(",")
+                # -----------------------------------------------------------------
+                if len(ret) != len(html_fields):
                     print(line)
                     err('bad parse: ' + str(len(line)) + ' ' + str(len(html_fields)))
+
+                for i in range(0, len(ret)):
+                    x = ret[i]
+
+                    if len(x) < 1:
+                        continue
+
+                    if x[0] == "<" and x[-1] == ">":
+                        # assume a simple set of outer tags to remove
+            
+                        li, ri = -1, len(x) # right close of left outer tag, left close of right outer tag
+
+                        for j in range(1, len(x)):
+                            if x[j] == ">":
+                                li = j
+                                break
+            
+                        for j in range(len(x) - 1, 0, -1):
+                            if x[j] == "<":
+                                ri = j
+                                break
+
+                        # can remove tags
+                        if li >= 0 and ri < len(x) and li < ri:
+                            ret[i] = x[li + 1: ri]  # so, remove them
+                        ret[i] = ret[i].strip("$")
+                # ----------------------------------------------------------------
+                line = ",".join(ret)
 
                 assert_remove('html' + os.path.sep + id_s)
                 assert_remove(fn)  # delete file so we know which html records aren't in meta_file
