@@ -1,5 +1,5 @@
 # bcstats ohcs craigslist
-Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.; an R-based implementation that's compatible with Windows and other OS, plus a python version (no R) that's MacOS/Linux compatible, are available:
+Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
 * [R implementation (Windows/MacOS/Linux compatible)](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/R) thanks to Sam Albers for successful deployment verification on Windows
 * [python-only implementation (MacOS/Linux compatible)](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/py)
 
@@ -9,10 +9,12 @@ Wrangle a large, irregularly formatted, housing-market dataset on an ordinary co
 * out of memory
 * parallelism
 
+**The challenge**
+
 The original data incl. an irregularly formatted CSV file (22GB) incl. approx. 1,000,000 HTML files stuffed into a CSV, where each HTML-file attribute, spans approx. 500 lines. Python 3's "import csv" and R's "library{vroom}" couldn't read the data at this time, so custom out-of-memory slice/extract/parse was used. Moreover, Python3's BeautifulSoup html-parsing, was accelerated using full machine parallelism. The data contain sensitive information and will not be posted
 
 **How to produce separate outputs for Apartments (vs Sublets)**
-(to be completed)
+Place only apartments (or sublets) related data input files, in the code directory, to produce a merged output file that contains only apartments (or sublets) related data
 
 ## Process analytics
 Sample visualization of process monitor for one of the steps in this "big-data" application
