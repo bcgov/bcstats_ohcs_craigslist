@@ -39,6 +39,32 @@ def parse_file(fn):
                 '.postinginfos']
 
     ret = [fp(soup, x) for x in patterns]
+    
+    for i in range(0, len(ret)):
+        x = ret[i]
+
+        if len(x) < 1:
+            continue
+
+        if x[0] == "<" and x[-1] == ">":
+            # assume a simple set of outer tags to remove
+            
+            li, ri = -1, len(x)
+
+            for j in range(1, len(x)):
+                if x[j] == ">":
+                    li = j
+                    break
+            
+            for j in range(len(x) - 1, 0, -1):
+                if x[j] == "<":
+                    ri = j
+                    break
+
+            # can remove tags
+            if li >= 0 and ri < len(x) and li < ri:
+                ret[i] = x[li + 1: ri]  # so, remove them
+
     ofn = "parsed" + os.path.sep + fn.split(os.path.sep)[-1]
     open(ofn, "wb").write(("\n".join(ret)).encode())
 
