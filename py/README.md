@@ -1,6 +1,6 @@
 **Instructions**
 
-**Notes **
+** Notes **
 This version is a python only adaptation of the version of the CraigsList parser which was created to be run from R
 
 Relative to the R based and original python/C++ implementations, this version:
