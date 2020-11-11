@@ -2,7 +2,6 @@
 #define _MISC_H_
 
 #include<time.h>
-#include<math.h>
 #include<stdio.h>
 #include<map>
 #include<set>
@@ -18,11 +17,11 @@
 #include<algorithm>
 
 #ifdef WINDOWS
-#include <direct.h>
-#define _cwd _getcwd
+  #include <direct.h>
+  #define _cwd _getcwd
 #else
-#include <unistd.h>
-#define _cwd getcwd
+  #include <unistd.h>
+  #define _cwd getcwd
 #endif
 
 using namespace std;
@@ -43,15 +42,8 @@ void rewind(ifstream &a);
 str cwd();
 
 // error message
-void err(const char * msg){
-  printf("Error: %s\n", msg);
-  exit(1);
-}
-
-void err(string msg){
-  cout << "Error: " << msg << endl;
-  exit(1);
-}
+void err(const char * msg);
+void err(string msg);
 
 /* split a string (a-la python) */
 vector<string> split(string s, char delim);
@@ -87,8 +79,9 @@ template<class A, class B> std::ostream& operator << (std::ostream& os, const st
 }
 
 // allocate memory
-void * alloc(size_t nb){
-  // printf("alloc(%zu)\n", nb);
+void * alloc(size_t nb);
+/* 
+      	// printf("alloc(%zu)\n", nb);
   void * d = malloc(nb);
   if(!d){
     printf("bytes requested: %zu\n", nb);
@@ -97,6 +90,7 @@ void * alloc(size_t nb){
   memset(d, '\0', nb);
   return d;
 }
+*/
 
 #include <cctype>
 #include <locale>
@@ -163,18 +157,21 @@ static inline std::string lower_copy(std::string &s){
   return r;
 }
 
-void prints(char * s, size_t n){
-  for(size_t i = 0; i < n; i++){
+void prints(char * s, size_t n);
+/*
+      	for(size_t i = 0; i < n; i++){
     printf("%c", s[i]);
   }
 }
+*/
 
 /* get line: from current fpos, until newline / end.
 dynamic memory allocation: allocates it's own memory
 but free existing variable first if needed */
-size_t gs(FILE * f, char ** b){
+size_t gs(FILE * f, char ** b);
+/*
 
-  // clear buffer if exists
+      	// clear buffer if exists
   if(*b != NULL) free(*b);
 
   size_t n = 0; // number of chars found
@@ -206,6 +203,9 @@ size_t gs(FILE * f, char ** b){
   return n;
 }
 
+*/
+
+
 /* get size of file pointer */
 size_t size(FILE * f);
 size_t fsize(string fn);
@@ -218,14 +218,18 @@ bool exists(string fn);
 
 FILE * wopen(string fn);
 
-size_t file_size(const char * fn){
-  FILE * f = fopen(fn, "rb");
+size_t file_size(const char * fn);
+
+/*
+{
+      	FILE * f = fopen(fn, "rb");
   if(!f) err("failed to open file");
   fseek(f, 0L, SEEK_END);
   size_t s = ftell(f);
   fclose(f);
   return s;
 }
+*/
 
 class mfile{
   FILE * fp;
@@ -251,17 +255,17 @@ class mfile{
   size_t len();
   void status();
 
-};
+  };
 
-/* function to produce a distributed map of finite trajectory generation, with information-theoretically optimal compression */
-// this requires "class SA" (list / map hybrid)
-//
-// use this to algebraically encode e.g. lists of filenames in the format: msp2000-17, for continuous times..
-// e.g, [ab, ac] --> a[b,c]
-// [abc, ac] --> a[b[c],c]
-//
-//
-//
+  /* function to produce a distributed map of finite trajectory generation, with information-theoretically optimal compression */
+  // this requires "class SA" (list / map hybrid)
+  //
+  // use this to algebraically encode e.g. lists of filenames in the format: msp2000-17, for continuous times..
+  // e.g, [ab, ac] --> a[b,c]
+  // [abc, ac] --> a[b[c],c]
+  //
+  //
+  //
 
 // float-int tuple for sorting distances
 class f_i{
@@ -301,7 +305,7 @@ class f_ij{
     f = a.f;
     i = a.i;
     j = a.j;
-    cout << "*fij(" << f << "," << i << "," << j << ")" << endl;
+   cout << "*fij(" << f << "," << i << "," << j << ")" << endl;
   }
 };
 
@@ -316,9 +320,5 @@ inline char separator(){
   #endif
 }
 
-const char * sep(){
-  return "/";
-}
-
-
+const char * sep();
 #endif
