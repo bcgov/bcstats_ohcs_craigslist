@@ -6,6 +6,11 @@ from html_parse import html_parse as html_parse
 def err(m):
     print('Error: ' + m); sys.exit(1)
 
+def run(m):
+    print(m)
+    a = os.system(cmd)
+    if a != 0: err("command failed: " + m)
+
 # assert system is Mac or Linux
 try:
     import posix
@@ -135,9 +140,9 @@ def match_infiles(in_dir = './'):
 
     for i in range(0, len(html_match)):
         html_file, meta_file = html_match[i], meta_match[i]
-        a = os.system("rm -rf ./html/")
-        a = os.system("rm -rf ./otherAttributes")
-        a = os.system("rm -rf ./parsed/")
+        run("rm -rf ./html/")
+        run("rm -rf ./otherAttributes")
+        run("rm -rf ./parsed/")
 
         join_file = meta_file + "_join.csv"
 
