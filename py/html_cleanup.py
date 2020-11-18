@@ -8,8 +8,8 @@
 
 import os
 sep = os.path.sep
-file_path = sep.join(__file__.split(sep)[0: -1]) + sep
-
+file_path = sep.join(os.path.abspath(__file__).split(sep)[0: -1]) + sep
+print(file_path)
 def src_py(f):
     exec(open(file_path + f).read())
 
