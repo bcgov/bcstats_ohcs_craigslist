@@ -39,6 +39,8 @@ def parse_file(fn):
                 '.postinginfos']
 
     ret = [fp(soup, x) for x in patterns]
+    for x in ret: print(x)
+    sys.exit(1)
 
     ofn = "parsed" + os.path.sep + fn.split(os.path.sep)[-1]
     open(ofn, "wb").write(("\n".join(ret)).encode())
@@ -105,3 +107,8 @@ def html_parse(args_s): # parse(args_s) where args_s is a string of form html_fi
     
     # execute in parallel
     parfor(parse_file, inputs)  # need C/C++ version of this?
+
+if __name__ == '__main__':
+    import sys
+    args = sys.argv
+    parse_file(args[1])
