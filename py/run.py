@@ -8,7 +8,7 @@ def err(m):
 
 def run(m):
     print(m)
-    a = os.system(cmd)
+    a = os.system(m)
     if a != 0: err("command failed: " + m)
 
 # assert system is Mac or Linux
@@ -129,9 +129,7 @@ def match_infiles(in_dir = './'):
         
             score = 2. * score / (n_x + n_y)
         
-            if score > max_s:
-                max_j, max_s = j, score
-        
+            if score > max_s: max_j, max_s = j, score
             print("**score", score, "html:", html[i], "meta:", meta[j])
         
         print("  ->score:", max_s, "html:", html[i], "meta:", meta[max_j])
@@ -141,15 +139,11 @@ def match_infiles(in_dir = './'):
     for i in range(0, len(html_match)):
         html_file, meta_file = html_match[i], meta_match[i]
         run("rm -rf ./html/")
-        run("rm -rf ./otherAttributes")
+        run("rm -rf ./otherAttributes/")
         run("rm -rf ./parsed/")
-
         join_file = meta_file + "_join.csv"
-
         harmari_craigslist_parsing(html_file, meta_file)
-
         join_files.append(join_file)
-
 
     # print("6. concatenate csv files together")
     join_files.append("csv_cat.csv")
