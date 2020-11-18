@@ -225,7 +225,7 @@ size_t extract(string arg){
       double dt = (double)(clock() - c0) / (double) CLOCKS_PER_SEC; // (float)t1 - (float)t0;
       double nps = (double)fp / (double)dt;
       double eta = (double)((double)infile_size - (double)fp) / (double)nps;
-      int pct = (int)ceil(frac);
+      int pct = (int)std::ceil(frac);
       printf(" %%%d +w %s eta: %e s i=%zu\n", pct, t, eta, i );
     }
     free(t);

@@ -32,7 +32,7 @@ def run_cpp(cpp_file, args, collect_output = False):
         file_path = file_path.lstrip(sep)
 
     if not os.path.exists(file_path + exe):
-        cmd = 'g++ -O4 ' + (file_path + cpp_file) + ' -o ' + (file_path + exe)
+        cmd = 'g++ -O4 ' + (file_path + cpp_file) + ' ' + file_path + "/misc.cpp" + ' -o ' + (file_path + exe)
         print(cmd)
         a = os.system(cmd)
 
