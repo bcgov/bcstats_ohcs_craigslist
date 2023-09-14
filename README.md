@@ -1,3 +1,7 @@
+[![Lifecycle:Retired](https://img.shields.io/badge/Lifecycle-Retired-d45500)](<Redirect-URL>)
+[![status: archive](https://github.com/GIScience/badges/raw/master/status/archive.svg)](https://github.com/GIScience/badges#archive)
+
+
 # bcstats ohcs craigslist
 Extractor / parser, written for web-scraped craigslist data as provided to BC Stats, by Harmari Inc.
 * [R implementation (Windows/MacOS/Linux compatible)](https://github.com/bcgov/bcstats_ohcs_craigslist/tree/master/R) thanks to Sam Albers for successful deployment verification on Windows
